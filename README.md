@@ -1,6 +1,6 @@
 # ProgrammingHomeworkFs
 
-[Enter useful description for ProgrammingHomeworkFs]
+
 
 ---
 
