@@ -1,100 +1,111 @@
-namespace ProgrammingHomeworkFs
+module ProgrammingHomeworkFs
 
-open System.Reflection
+// Number 1
+let expo (basement: float) (exponent: int) : float =
+    if
+        basement = 0.0
+        && exponent = 0
+    then
+        printf "Undefined"
+        -1.0
+    elif basement = 0.0 then
+        0.0
+    else
+        let mutable ans = 1.0
+        // counter for while-loop
+        let mutable counter =
+            if exponent > 0 then
+                exponent
+            else
+                -1
+                * exponent
+        // product will be multiplied by itself
+        let product =
+            if exponent > 0 then
+                basement
+            else
+                1.0
+                / basement
 
-module AssemblyInfo =
+        while counter > 0 do
+            ans <-
+                ans
+                * product
 
-    let metaDataValue (mda: AssemblyMetadataAttribute) = mda.Value
+            counter <-
+                counter
+                - 1
 
-    let getMetaDataAttribute (assembly: Assembly) key =
-        assembly.GetCustomAttributes(typedefof<AssemblyMetadataAttribute>)
-        |> Seq.cast<AssemblyMetadataAttribute>
-        |> Seq.find (fun x -> x.Key = key)
+        ans
 
-    let getReleaseDate assembly =
-        "ReleaseDate"
-        |> getMetaDataAttribute assembly
-        |> metaDataValue
+// Number 2
+let rec fast_expo (basement: float) (exponent: int) : float = // exponent >= 0
+    if
+        basement = 0.0
+        && exponent = 0
+    then
+        printf "Undefined"
+        -1
+    elif exponent = 1 then
+        basement
+    elif exponent = 0 then
+        1
+    else
+        let body =
+            fast_expo
+                basement
+                (exponent
+                 / 2) // save "previous" value of rec in body
 
-    let getGitHash assembly =
-        "GitHash"
-        |> getMetaDataAttribute assembly
-        |> metaDataValue
+        if exponent % 2 = 0 then
+            body
+            * body
+        else
+            body
+            * body
+            * basement
 
-    let getVersion assembly =
-        "AssemblyVersion"
-        |> getMetaDataAttribute assembly
-        |> metaDataValue
+// Number 3
+let arrays (arr: int array) : int =
+    let mutable maximum = arr[0]
+    let mutable minimum = arr[0]
 
-    let assembly = lazy (Assembly.GetEntryAssembly())
+    for i in
+        1 .. arr.Length
+             - 1 do
+        if maximum < arr[i] then maximum <- arr[i]
+        elif minimum > arr[i] then minimum <- arr[i]
+        else ()
 
-    let printVersion () =
-        let version = assembly.Force().GetName().Version
-        printfn "%A" version
+    maximum
+    - minimum
 
-    let printInfo () =
-        let assembly = assembly.Force()
-        let name = assembly.GetName()
-        let version = assembly.GetName().Version
-        let releaseDate = getReleaseDate assembly
-        let githash = getGitHash assembly
-        printfn "%s - %A - %s - %s" name.Name version releaseDate githash
+// Number 4
+let odds (x: int) (y: int) : int array =
 
-module Say =
-    open System
+    let odds_array =
+        if x < y then
+            [|
+                for i in
+                    x
+                    + x % 2
+                    + 1 .. y - y % 2 do
+                    if abs i % 2 = 1 then
+                        yield i
+            |]
+        else
+            [|
+                for i in
+                    y
+                    + y % 2
+                    + 1 .. x - x % 2 do
+                    if abs i % 2 = 1 then
+                        yield i
+            |]
 
-    let nothing name =
-        name
-        |> ignore
-
-    let hello name = sprintf "Hello %s" name
-
-    let colorizeIn (color: string) str =
-        let oldColor = Console.ForegroundColor
-        Console.ForegroundColor <- (Enum.Parse(typedefof<ConsoleColor>, color) :?> ConsoleColor)
-        printfn "%s" str
-        Console.ForegroundColor <- oldColor
+    odds_array
 
 module Main =
-    open Argu
-
-    type CLIArguments =
-        | Info
-        | Version
-        | Favorite_Color of string // Look in App.config
-        | [<MainCommand>] Hello of string
-
-        interface IArgParserTemplate with
-            member s.Usage =
-                match s with
-                | Info -> "More detailed information"
-                | Version -> "Version of application"
-                | Favorite_Color _ -> "Favorite color"
-                | Hello _ -> "Who to say hello to"
 
     [<EntryPoint>]
-    let main (argv: string array) =
-        let parser =
-            ArgumentParser.Create<CLIArguments>(programName = "ProgrammingHomeworkFs")
-
-        let results = parser.Parse(argv)
-
-        if results.Contains Version then
-            AssemblyInfo.printVersion ()
-        elif results.Contains Info then
-            AssemblyInfo.printInfo ()
-        elif results.Contains Hello then
-            match results.TryGetResult Hello with
-            | Some v ->
-                let color = results.GetResult Favorite_Color
-
-                Say.hello v
-                |> Say.colorizeIn color
-            | None ->
-                parser.PrintUsage()
-                |> printfn "%s"
-        else
-            parser.PrintUsage()
-            |> printfn "%s"
-
-        0
+    let main (argv: string array) = 0

@@ -224,35 +224,16 @@ var assemblies = [
   {
     "name": "ProgrammingHomeworkFs",
     "classes": [
-      { "name": "ProgrammingHomeworkFs.AssemblyInfo", "rp": "ProgrammingHomeworkFs_AssemblyInfo.html", "cl": 0, "ucl": 22, "cal": 22, "tl": 100, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "ProgrammingHomeworkFs.Main", "rp": "ProgrammingHomeworkFs_Main.html", "cl": 0, "ucl": 22, "cal": 22, "tl": 100, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 12, "lch": [], "bch": [], "hc": [] },
-      { "name": "ProgrammingHomeworkFs.Say", "rp": "ProgrammingHomeworkFs_Say.html", "cl": 3, "ucl": 4, "cal": 7, "tl": 100, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "ProgrammingHomeworkFs", "rp": "ProgrammingHomeworkFs_ProgrammingHomeworkFs.html", "cl": 71, "ucl": 2, "cal": 73, "tl": 111, "ct": "LineCoverage", "mc": "-", "cb": 36, "tb": 38, "lch": [], "bch": [], "hc": [] },
     ]},
 ];
 
 var historicCoverageExecutionTimes = [];
 
 var riskHotspotMetrics = [
-      { "name": "Cyclomatic complexity", "explanationUrl": "https://en.wikipedia.org/wiki/Cyclomatic_complexity" },
-      { "name": "NPath complexity", "explanationUrl": "https://modess.io/npath-complexity-cyclomatic-complexity-explained" },
-      { "name": "Crap Score", "explanationUrl": "https://googletesting.blogspot.de/2011/02/this-code-is-crap.html" },
 ];
 
 var riskHotspots = [
-  {
-    "assembly": "ProgrammingHomeworkFs", "class": "ProgrammingHomeworkFs.Main", "reportPath": "ProgrammingHomeworkFs_Main.html", "methodName": "System.Int32 ProgrammingHomeworkFs.Main::main(System.String[])", "methodShortName": "main(...)", "fileIndex": 0, "line": 77,
-    "metrics": [
-      { "value": 5, "exceeded": false },
-      { "value": 16, "exceeded": false },
-      { "value": 30, "exceeded": true },
-    ]},
-  {
-    "assembly": "ProgrammingHomeworkFs", "class": "ProgrammingHomeworkFs.Main", "reportPath": "ProgrammingHomeworkFs_Main.html", "methodName": "System.String ProgrammingHomeworkFs.Main/CLIArguments::Argu.IArgParserTemplate.get_Usage()", "methodShortName": "Argu.IArgParserTemplate.get_Usage()", "fileIndex": 0, "line": 69,
-    "metrics": [
-      { "value": 4, "exceeded": false },
-      { "value": 4, "exceeded": false },
-      { "value": 20, "exceeded": true },
-    ]},
 ];
 
 var branchCoverageAvailable = true;
