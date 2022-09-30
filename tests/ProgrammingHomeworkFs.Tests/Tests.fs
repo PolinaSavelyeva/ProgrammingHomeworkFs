@@ -21,27 +21,41 @@ module SayTests =
                 Expect.equal ActualResult -8000000 "Exponentiation -200 x 3 = -8000000"
             testCase "Tests 1.3"
             <| fun _ ->
-                let ActualResult = expo 2 -1
+                let ActualResult = expo 2.0 -1
                 Expect.equal ActualResult 0.5 "Exponentiation 2 x -1 = 0.5"
             testCase "Tests 1.4"
             <| fun _ ->
-                let ActualResult = expo 0 0
-                Expect.equal ActualResult -1 "Exponentiation 0 x 0 is not defined"
+                let ActualResult =
+                    Expect.throws
+                        (fun _ ->
+                            expo 0.0 0
+                            |> ignore
+                        )
+                        "Undefined expo"
+
+                ActualResult
             testCase "Tests 2.0"
             <| fun _ ->
-                let ActualResult = expo 7.0 12
+                let ActualResult = fastExpo 7.0 12
                 Expect.equal ActualResult 13841287201.0 "Fast exponentiation 7 x 12 = 13841287201"
             testCase "Tests 2.1"
             <| fun _ ->
-                let ActualResult = fast_expo 0.0 12344
+                let ActualResult = fastExpo 0.0 12344
                 Expect.equal ActualResult 0 "Fast exponentiation 0 x 12344 = 0"
             testCase "Tests 2.2"
             <| fun _ ->
-                let ActualResult = fast_expo 0.0 0
-                Expect.equal ActualResult -1 "Fast exponentiation 0 x 0 is not defined"
+                let ActualResult =
+                    Expect.throws
+                        (fun _ ->
+                            fastExpo 0.0 0
+                            |> ignore
+                        )
+                        "Undefined fastExpo"
+
+                ActualResult
             testCase "Tests 2.3"
             <| fun _ ->
-                let ActualResult = expo -200.0 3
+                let ActualResult = fastExpo -200.0 3
                 Expect.equal ActualResult -8000000 "Fast exponentiation -200 x 3 = -8000000"
             testCase "Tests 3.0"
             <| fun _ ->
@@ -90,6 +104,21 @@ module SayTests =
                     ActualResult
                     2332141
                     "Maximum - minimum of [|102932; 12; -10; 2331141; -15; -19; 1991; 900; -1000|] = 2332141"
+            testCase "Tests 3.3"
+            <| fun _ ->
+                let ActualResult = arrays [| 1 |]
+                Expect.equal ActualResult 0 "Maximum - minimum of [|1|] = 0"
+            testCase "Tests 3.4"
+            <| fun _ ->
+                let ActualResult =
+                    Expect.throws
+                        (fun _ ->
+                            arrays [||]
+                            |> ignore
+                        )
+                        "Undefined min/max array"
+
+                ActualResult
             testCase "Tests 4.0"
             <| fun _ ->
                 let ActualResult = odds 3 12
