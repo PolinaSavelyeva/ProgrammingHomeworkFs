@@ -1,106 +1,251 @@
 module ProgrammingHomeworkFs
 
-// Number 1
-let expo (basement: float) (exponent: int) : float =
-    if
-        basement = 0.0
-        && exponent = 0
+(*Объявление нового типа t5 (списка), являющегося декартовым произведением числа * строки * булевого значения * числа
+type t5 = int * string * bool * int
+// Создание переменной f типа t5
+let f: t5 = (1, "3", true, 3)
+// Создание функции g, принимающей значение типа t5 и возвращающей список : (2,"1",false,5)
+let g (x: t5) =
+    // Разбиение на соответствия с помощью match with
+    match x with
+    |_, _, _, _ -> (2, "1", false, 5)*)
+
+//------------------------------------------------------АЛГЕБРАИЧЕСКИЙ-ТИП--------------------------
+// Алгебраический тип MyList- перемножаем декартово
+type MyList<'value> =
+    | Construct of head: 'value * tail: MyList<'value>
+    | Empty
+
+// Рекурсивная функция map, применяющая функцию f ко всем элементам lst типа MyList
+let rec map f lst =
+    match lst with
+    | Empty -> Empty
+    | Construct (hd, tl) -> Construct(f hd, map f tl)
+
+// Функция gо, вызывающая функцию map, которая к каждому элементу прибавляет +1
+let go () =
+    map ((+) 1) (Construct(1, Construct(3, Empty)))
+
+// Функция _gо, вызывающая функцию map, которая к каждому элементу прибавляет -1
+let _go () =
+    map ((-) 1) (Construct(1, Construct(3, Empty)))
+
+//------------------------------------------------------------ООП-ТИП-------------------------------
+// Объявление нового типа IList
+type IList<'value> =
+    interface
+    end
+
+// Объявление нового типа MyOOPNonEmptyList
+//[<AllowNullLiteral>]
+type MyOOPNonEmptyList<'value>(head: 'value, tail: IList<'value>) =
+    interface IList<'value>
+    member this.Head = head
+    member this.Tail = tail
+
+// Объявление нового типа MyOOPEmptyList
+type MyOOPEmptyList<'value>() =
+    interface IList<'value>
+
+// Объявление нового типа IActor
+type IActor<'inType, 'outType> =
+    abstract Do: 'inType -> 'outType
+
+// Создание типа PlusOneActor на основе IActor, прибавляющий к значению +1
+type PlusOneActor() =
+    interface IActor<int, int> with
+        member this.Do x = x + 1
+
+// Создание типа MinusOneActor на основе IActor, прибавляющий к значению -1
+type MinusOneActor() =
+    interface IActor<int, int> with
+        member this.Do x = x - 1
+
+// Рекурсивная функция oopMap1, аналогичная функции map
+let rec oopMap (f: IActor<'value, 'result>) (lst: IList<'value>) =
+    if lst :? MyOOPEmptyList<'value> // :?  оператор проверки типа (true/false)
     then
-        failwith "Undefined expo"
-    elif basement = 0.0 then
-        0.0
+        MyOOPEmptyList() :> IList<'result> // :> оператор преобразует тип в тип, находящийся на более высоком уровне иерархии
+    elif lst :? MyOOPNonEmptyList<'value> then
+        let lst1 = lst :?> MyOOPNonEmptyList<'value> // :?> оператор преобразует тип в тип, находящийся на более низком уровне иерархии
+        MyOOPNonEmptyList(f.Do lst1.Head, oopMap f lst1.Tail)
     else
-        let mutable ans = 1.0
-        let mutable counter = abs exponent // counter for while-loop
+        failwith "!!!"
 
-        let product = // product will be multiplied by itself
-            if exponent > 0 then
-                basement
-            else
-                1.0
-                / basement
+// Рекурсивная функция oopMap2, аналогичная функции oopMap1
+let rec oopMap2 (f: IActor<'value, 'result>) (lst: IList<'value>) =
+    match lst with
+    | :? MyOOPEmptyList<'value> -> MyOOPEmptyList() :> IList<'result> // преобразование необходимо для устранения конфликта между разными типами, получаемыми из функции
+    | :? MyOOPNonEmptyList<'value> as lst -> // разные lst
+        MyOOPNonEmptyList(f.Do lst.Head, oopMap f lst.Tail)
 
-        while counter > 0 do
-            ans <-
-                ans
-                * product
+// Функция go2, вызывающая функцию oopMap, которая к каждому элементу прибавляет +1
+let go2 () =
+    let lst =
+        MyOOPNonEmptyList(1, MyOOPNonEmptyList(3, MyOOPEmptyList()))
 
-            counter <-
-                counter
-                - 1
+    oopMap (PlusOneActor()) lst
 
-        ans
+// Функция _go2, вызывающая функцию oopMap, которая к каждому элементу прибавляет -1
+let _go2 () =
+    let lst =
+        MyOOPNonEmptyList(1, MyOOPNonEmptyList(3, MyOOPEmptyList()))
 
-// Number 2
-let rec fastExpo (basement: float) (exponent: int) : float = // exponent >= 0
-    if
-        basement = 0.0
-        && exponent = 0
-    then
-        failwith "Undefined fastExpo"
-    elif exponent = 1 then
-        basement
-    elif exponent = 0 then
-        1.0
-    else
-        let body =
-            fastExpo
-                basement
-                (exponent
-                 / 2) // save "previous" value of rec in body
+    oopMap (MinusOneActor()) lst
 
-        if exponent % 2 = 0 then
-            body
-            * body
+// Рекурсивная функция fromMyListToMyOOPList, преобразовывающая MyList -> MyOOPList
+let rec fromMyListToMyOOPList lst =
+    match lst with
+    | Empty -> MyOOPEmptyList<'value>() :> IList<'value>
+    | Construct (hd, tl) -> MyOOPNonEmptyList<'value>(hd, fromMyListToMyOOPList tl)
+
+//printf $"%A{g (f)}"
+//------------------------------------------------------№1----АЛГЕБРАИЧЕСКИЙ-ТИП--------------------
+
+let primer: MyList<int> =
+    Construct(48, Construct(0, Construct(0, Construct(734, Construct(-880, Construct(9, Empty))))))
+
+let rec lenMyList (lst: MyList<'value>) : int =
+    match lst with
+    | Empty -> 0
+    | Construct (_, Empty) -> 1
+    | Construct (_, Construct (hd, tl)) -> lenMyList (Construct(hd, tl)) + 1
+
+let rec oneLine (lst: MyList<'value>) : MyList<'value> =
+    match lst with
+    | Empty -> Empty
+    | Construct (hd, Empty) -> Construct(hd, Empty)
+    | Construct (hd1, Construct (hd2, tl)) ->
+        if hd1 > hd2 then
+            Construct(hd2, oneLine (Construct(hd1, tl)))
         else
-            body
-            * body
-            * basement
+            Construct(hd1, oneLine (Construct(hd2, tl)))
 
-// Number 3
-let arrays (arr: int array) =
-    if arr.Length > 0 then
-        let mutable maximum = arr[0]
-        let mutable minimum = arr[0]
+let bubbleSort (lst: MyList<'value>) : MyList<'value> =
+    let mutable sortedLine: MyList<'value> = lst
 
-        for i in
-            1 .. arr.Length
-                 - 1 do
-            if maximum < arr[i] then
-                maximum <- arr[i]
-            elif minimum > arr[i] then
-                minimum <- arr[i]
+    for i in 0 .. (lenMyList lst - 2) do
+        sortedLine <- oneLine sortedLine
 
-        maximum
-        - minimum
-    else
-        failwith "Undefined min/max array"
+    sortedLine
 
-// Number 4
-let odds (x: int) (y: int) =
-    let odds_array =
-        if x < y then
-            [|
-                for i in
-                    x
-                    + x % 2
-                    + 1 .. y - y % 2 do
-                    if abs i % 2 = 1 then
-                        yield i
-            |]
+//printf $"%A{bubbleSort primer}"
+//------------------------------------------------------№3----АЛГЕБРАИЧЕСКИЙ-ТИП--------------------
+let rec concat (lst1: MyList<'value>) (lst2: MyList<'value>) : MyList<'value> =
+    match lst1 with
+    | Empty -> lst2
+    | Construct (hd, tl) -> Construct(hd, concat tl lst2)
+//------------------------------------------------------№2----АЛГЕБРАИЧЕСКИЙ-ТИП--------------------
+// Функция возвращает hd от типа MyList
+(*let takeHead (lst : MyList<'value>) : 'value =
+    match lst with
+    | Construct (hd, _) -> hd
+    | _ -> failwith "Undefined"*)
+
+let transLst (x: 'value) : MyList<'value> =
+    match x with
+    | x -> Construct(x, Empty)
+
+let rec leftLst (x: 'value) (lst: MyList<'value>) : MyList<'value> =
+    match lst with
+    | Empty -> Empty
+    | Construct (hd, Empty) ->
+        if hd <= x then
+            Construct(hd, Empty)
         else
-            [|
-                for i in
-                    y
-                    + y % 2
-                    + 1 .. x - x % 2 do
-                    if abs i % 2 = 1 then
-                        yield i
-            |]
+            Empty
+    | Construct (hd, tl) ->
+        if hd <= x then
+            Construct(hd, leftLst x tl)
+        else
+            leftLst x tl
 
-    odds_array
+let rec rightLst (x: 'value) (lst: MyList<'value>) : MyList<'value> =
+    match lst with
+    | Empty -> Empty
+    | Construct (hd, Empty) ->
+        if hd > x then
+            Construct(hd, Empty)
+        else
+            Empty
+    | Construct (hd, tl) ->
+        if hd > x then
+            Construct(hd, rightLst x tl)
+        else
+            rightLst x tl
 
-module Main =
+(*let rec middleLst (x : 'value) (lst : MyList<'value>) : MyList<'value> =
+    match lst with
+    | Empty -> Empty
+    | Construct (hd, Empty) ->
+        if hd = x then Construct (hd, Empty)
+        else Empty
+    | Construct (hd1, Construct(hd2, tl)) ->
+        if hd1 = x then Construct(hd1, rightLst x tl)
+        else Construct(hd2, tl)*)
 
-    [<EntryPoint>]
-    let main (argv: string array) = 0
+let rec quickSort (lst: MyList<'value>) : MyList<'value> =
+    match lst with
+    | Empty -> Empty
+    | Construct (hd, Empty) -> Construct(hd, Empty)
+    | Construct (hd, tl) -> concat (concat (quickSort (leftLst hd tl)) (transLst hd)) (quickSort (rightLst hd tl))
+
+//printf $"%A{quickSort primer}"
+
+//------------------------------------------------------№1----ООП-ТИП-------------------------------
+
+let oopPrimer =
+    MyOOPNonEmptyList(1, MyOOPNonEmptyList(3, MyOOPNonEmptyList(-9, MyOOPEmptyList())))
+
+let rec lenMyOOPList (lst: IList<'value>) : int =
+    match lst with
+    | :? MyOOPEmptyList<'value> -> 0
+    | :? MyOOPNonEmptyList<'value> as lst -> lenMyOOPList lst.Tail + 1
+
+//printf $"%A{lenMyOOPList oopPrimer}"
+
+let takeOOPHead (lst: IList<'value>) : 'value =
+    match lst with
+    | :? MyOOPNonEmptyList<'value> as lst -> lst.Head
+
+let takeOOPTail (lst: IList<'value>) : IList<'value> =
+    match lst with
+    | :? MyOOPNonEmptyList<'value> as lst ->
+        if lst.Tail :? MyOOPEmptyList<'value> then
+            lst
+        else
+            lst.Tail
+    | _ -> failwith "!!!"
+
+let rec oneOOPLine (lst: IList<'value>) : IList<'value> =
+    match lst with
+    | :? MyOOPEmptyList<'value> -> MyOOPEmptyList() :> IList<'value>
+    | :? MyOOPNonEmptyList<'value> as lst ->
+        if lst.Tail :? MyOOPEmptyList<'value> then
+            lst
+        else if lst.Head > takeOOPHead lst.Tail then
+            MyOOPNonEmptyList(takeOOPHead lst.Tail, oneOOPLine (MyOOPNonEmptyList(lst.Head, takeOOPTail lst.Tail)))
+        else
+            MyOOPNonEmptyList(lst.Head, oneOOPLine lst.Tail)
+    | _ -> failwith "!!!"
+
+
+printf $"%A{oneOOPLine oopPrimer}"
+
+(*let bubbleSort (lst: MyList<'value>) : MyList<'value> =
+    let mutable sortedLine: MyList<'value> = lst
+
+    for i in 0 .. (lenMyList lst - 2) do
+        sortedLine <- oneLine sortedLine
+
+    sortedLine
+*)
+//------------------------------------------------------№3----ООП-ТИП-------------------------------
+
+let rec concatOOP (lst1: IList<'value>) (lst2: IList<'value>) : IList<'value> =
+    match lst1 with
+    | :? MyOOPEmptyList<'value> -> lst2
+    | :? MyOOPNonEmptyList<'value> as lst1 -> MyOOPNonEmptyList(lst1.Head, concatOOP lst1.Tail lst2) :> IList<'value>
+    | _ -> failwith "!!!"
+
+//printf $"%A{concatOOP oopPrimer oopPrimer}"
