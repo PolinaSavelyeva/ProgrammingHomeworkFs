@@ -113,10 +113,7 @@ let rec oneLine (lst: MyList<'value>) : MyList<'value> =
     | Empty -> Empty
     | Construct (hd, Empty) -> Construct(hd, Empty)
     | Construct (hd1, Construct (hd2, tl)) ->
-        if hd1 > hd2 then
-            Construct(hd2, oneLine (Construct(hd1, tl)))
-        else
-            Construct(hd1, oneLine (Construct(hd2, tl)))
+        Construct(min hd1 hd2, oneLine (Construct(max hd1 hd2, tl)))
 
 let bubbleSort (lst: MyList<'value>) : MyList<'value> =
     let mutable sortedLine: MyList<'value> = lst
@@ -165,7 +162,8 @@ let rec quickSort (lst: MyList<'value>) : MyList<'value> =
     match lst with
     | Empty -> Empty
     | Construct (hd, Empty) -> Construct(hd, Empty)
-    | Construct (hd, tl) -> concat (concat (quickSort (leftLst hd tl)) (Construct(hd, Empty))) (quickSort (rightLst hd tl))
+    | Construct (hd, tl) ->
+        concat (concat (quickSort (leftLst hd tl)) (Construct(hd, Empty))) (quickSort (rightLst hd tl))
 
 //------------------------------------------------------№1----ООП-ТИП-------------------------------
 let rec lenMyOOPList (lst: IList<'value>) : int =
@@ -194,7 +192,7 @@ let rec oneOOPLine (lst: IList<'value>) : IList<'value> =
     | :? MyOOPNonEmptyList<'value> as lst ->
         if lst.Tail :? MyOOPEmptyList<'value> then
             lst
-        else if lst.Head > takeOOPHead lst.Tail then
+        elif lst.Head > takeOOPHead lst.Tail then
             MyOOPNonEmptyList(takeOOPHead lst.Tail, oneOOPLine (MyOOPNonEmptyList(lst.Head, takeOOPTail lst.Tail)))
         else
             MyOOPNonEmptyList(lst.Head, oneOOPLine lst.Tail)
@@ -222,11 +220,15 @@ let rec leftOOPLst (x: 'value) (lst: IList<'value>) : IList<'value> =
     | :? MyOOPEmptyList<'value> -> MyOOPEmptyList() :> IList<'value>
     | :? MyOOPNonEmptyList<'value> as lst ->
         if lst.Tail :? MyOOPEmptyList<'value> then
-            if lst.Head <= x then lst
-            else MyOOPEmptyList() :> IList<'value>
+            if lst.Head <= x then
+                lst
+            else
+                MyOOPEmptyList() :> IList<'value>
         else
-            if lst.Head <= x then MyOOPNonEmptyList(lst.Head, leftOOPLst x (MyOOPNonEmptyList(x, lst.Tail)))
-            else leftOOPLst x lst.Tail
+            if lst.Head <= x then
+                MyOOPNonEmptyList(lst.Head, leftOOPLst x (MyOOPNonEmptyList(x, lst.Tail)))
+            else
+                leftOOPLst x lst.Tail
     | _ -> failwith "Undefined in : leftOOPLst"
 
 let rec rightOOPLst (x: 'value) (lst: IList<'value>) : IList<'value> =
@@ -235,28 +237,31 @@ let rec rightOOPLst (x: 'value) (lst: IList<'value>) : IList<'value> =
     | :? MyOOPEmptyList<'value> -> MyOOPEmptyList() :> IList<'value>
     | :? MyOOPNonEmptyList<'value> as lst ->
         if lst.Tail :? MyOOPEmptyList<'value> then
-            if lst.Head > x then lst
-            else MyOOPEmptyList() :> IList<'value>
+            if lst.Head > x then
+                lst
+            else
+                MyOOPEmptyList() :> IList<'value>
         else
-            if lst.Head > x then MyOOPNonEmptyList(lst.Head, rightOOPLst x (MyOOPNonEmptyList(x, lst.Tail)))
-            else rightOOPLst x lst.Tail
+            if lst.Head > x then
+                MyOOPNonEmptyList(lst.Head, rightOOPLst x (MyOOPNonEmptyList(x, lst.Tail)))
+            else
+                rightOOPLst x lst.Tail
     | _ -> failwith "Undefined in : rightOOPLst"
 
 let rec quickOOPSort (lst:IList<'value>) : IList<'value> =
     match lst with
     | :? MyOOPEmptyList<'value> -> MyOOPEmptyList() :> IList<'value>
     | :? MyOOPNonEmptyList<'value> as lst ->
-        if lst.Tail :? MyOOPEmptyList<'value> then lst
-        else concatOOP (concatOOP (quickOOPSort (leftOOPLst lst.Head lst.Tail)) (MyOOPNonEmptyList(lst.Head, MyOOPEmptyList()))) (quickOOPSort (rightOOPLst lst.Head lst.Tail))
+        if lst.Tail :? MyOOPEmptyList<'value> then
+            lst
+        else
+            concatOOP (concatOOP (quickOOPSort (leftOOPLst lst.Head lst.Tail)) (MyOOPNonEmptyList(lst.Head, MyOOPEmptyList()))) (quickOOPSort (rightOOPLst lst.Head lst.Tail))
     | _ -> failwith "Undefined in : quickOOPSort"
 
 let rec fromMyOOPListToMyList (lst : IList<'value>) : MyList<'value> =
     match lst with
     | :? MyOOPEmptyList<'value> -> Empty
-    | :? MyOOPNonEmptyList<'value> as lst->
-        let hd = lst.Head
-        let tl = lst.Tail
-        Construct(hd, fromMyOOPListToMyList tl)
+    | :? MyOOPNonEmptyList<'value> as lst-> Construct(lst.Head, fromMyOOPListToMyList lst.Tail)
     | _ -> failwith "Undefined in : fromMyOOPListToMyList"
 
 
@@ -265,3 +270,4 @@ let rec fromMyOOPListToMyList (lst : IList<'value>) : MyList<'value> =
   let oopPrimer =
     MyOOPNonEmptyList(1, MyOOPNonEmptyList(3, MyOOPNonEmptyList(-9, MyOOPNonEmptyList(-100, MyOOPNonEmptyList(87, MyOOPNonEmptyList(-300, MyOOPNonEmptyList(0, MyOOPNonEmptyList(0, MyOOPEmptyList()))))))))
 *)
+
