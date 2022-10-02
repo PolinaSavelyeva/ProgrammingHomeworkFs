@@ -58,7 +58,7 @@ let rec fastExpo (basement: float) (exponent: int) : float = // exponent >= 0
             * basement
 
 // Number 3
-let arrays (arr: int array) =
+let inline arrays (arr: 'value array) =
     if arr.Length > 0 then
         let mutable maximum = arr[0]
         let mutable minimum = arr[0]
@@ -79,24 +79,18 @@ let arrays (arr: int array) =
 // Number 4
 let odds (x: int) (y: int) =
     let odds_array =
-        if x < y then
-            [|
-                for i in
-                    x
-                    + x % 2
-                    + 1 .. y - y % 2 do
-                    if abs i % 2 = 1 then
-                        yield i
-            |]
-        else
-            [|
-                for i in
-                    y
-                    + y % 2
-                    + 1 .. x - x % 2 do
-                    if abs i % 2 = 1 then
-                        yield i
-            |]
+        let minim = if x < y then x else y
+        let maxim = if x > y then x else y
+
+        [|
+            for i in
+                minim
+                + minim % 2
+                + 1 .. maxim
+                       - maxim % 2 do
+                if abs i % 2 = 1 then
+                    yield i
+        |]
 
     odds_array
 
