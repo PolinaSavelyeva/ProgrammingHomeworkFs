@@ -102,12 +102,14 @@ let rec fromMyListToMyOOPList lst =
     | Construct (hd, tl) -> MyOOPNonEmptyList<'value>(hd, fromMyListToMyOOPList tl)
 
 //------------------------------------------------------№1----АЛГЕБРАИЧЕСКИЙ-ТИП--------------------
+/// Функция lenMyList возвращает длину MyList
 let rec lenMyList (lst: MyList<'value>) : int =
     match lst with
     | Empty -> 0
     | Construct (_, Empty) -> 1
     | Construct (_, Construct (hd, tl)) -> lenMyList (Construct(hd, tl)) + 1
 
+/// Функция oneLine выполняет "попарную" сортировку за 1 цикл, с нулевого до последнего элементов
 let rec oneLine (lst: MyList<'value>) : MyList<'value> =
     match lst with
     | Empty -> Empty
@@ -130,6 +132,7 @@ let rec concat (lst1: MyList<'value>) (lst2: MyList<'value>) : MyList<'value> =
     | Construct (hd, tl) -> Construct(hd, concat tl lst2)
 
 //------------------------------------------------------№2----АЛГЕБРАИЧЕСКИЙ-ТИП--------------------
+/// Функция leftLst возвращает MyList "левого" под-листа, состоящего из элементов lst <= опорного
 let rec leftLst (x: 'value) (lst: MyList<'value>) : MyList<'value> =
     match lst with
     | Empty -> Empty
@@ -144,6 +147,7 @@ let rec leftLst (x: 'value) (lst: MyList<'value>) : MyList<'value> =
         else
             leftLst x tl
 
+/// Функция rightLst возвращает MyList "правого под-листа, состоящего из элементов lst > опорного
 let rec rightLst (x: 'value) (lst: MyList<'value>) : MyList<'value> =
     match lst with
     | Empty -> Empty
