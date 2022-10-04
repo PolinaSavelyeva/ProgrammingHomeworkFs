@@ -6,7 +6,8 @@ let expo (basement: float) (exponent: int) : float =
         basement = 0.0
         && exponent = 0
     then
-        failwith "Undefined expo"
+        failwith
+            "Don't try to raise zero to the power of zero. Expected both non-zero basement and non-zero exponent. \n Error when calling - expo - function."
     elif basement = 0.0 then
         0.0
     else
@@ -37,7 +38,8 @@ let rec fastExpo (basement: float) (exponent: int) : float = // exponent >= 0
         basement = 0.0
         && exponent = 0
     then
-        failwith "Undefined fastExpo"
+        failwith
+            "Don't try to raise zero to the power of zero. Expected both non-zero basement and non-zero exponent. \n Error when calling - fastExpo - function"
     elif exponent = 1 then
         basement
     elif exponent = 0 then
@@ -74,7 +76,8 @@ let inline arrays (arr: 'value array) =
         maximum
         - minimum
     else
-        failwith "Undefined min/max array"
+        failwith
+            "There is no max and min elements in empty array. Expected at least 1 element in array. \n Error when calling - arrays - function"
 
 // Number 4
 let odds (x: int) (y: int) =
@@ -86,10 +89,9 @@ let odds (x: int) (y: int) =
             for i in
                 minim
                 + minim % 2
-                + 1 .. maxim
-                       - maxim % 2 do
-                if abs i % 2 = 1 then
-                    yield i
+                + 1 .. 2 .. maxim
+                            - maxim % 2 do
+                yield i
         |]
 
     odds_array
