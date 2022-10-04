@@ -94,7 +94,7 @@ let _go2 () =
 
     oopMap (MinusOneActor()) lst
 
-// Рекурсивная функция fromMyListToMyOOPList, преобразовывающая MyList -> MyOOPList
+/// Рекурсивная функция fromMyListToMyOOPList, преобразовывающая MyList -> MyOOPList
 let rec fromMyListToMyOOPList lst =
     match lst with
     | Empty -> MyOOPEmptyList<'value>() :> IList<'value>
@@ -108,7 +108,7 @@ let rec lenMyList (lst: MyList<'value>) : int =
     | Construct (_, Empty) -> 1
     | Construct (_, Construct (hd, tl)) -> lenMyList (Construct(hd, tl)) + 1
 
-/// Функция oneLine выполняет "попарную" сортировку за 1 цикл, с нулевого до последнего элементов
+/// Функция oneLine выполняет "попарную" сортировку за 1 цикл, с нулевого до последнего элемента
 let rec oneLine (lst: MyList<'value>) : MyList<'value> =
     match lst with
     | Empty -> Empty
@@ -142,7 +142,7 @@ let rec leftLst (x: 'value) (lst: MyList<'value>) : MyList<'value> =
         else
             leftLst x tl
 
-/// Функция rightLst возвращает MyList "правого под-листа, состоящего из элементов lst > опорного
+/// Функция rightLst возвращает MyList "правого" под-листа, состоящего из элементов lst > опорного
 let rec rightLst (x: 'value) (lst: MyList<'value>) : MyList<'value> =
     match lst with
     | Empty -> Empty
@@ -172,7 +172,7 @@ let takeOOPHead (lst: IList<'value>) : 'value =
     | :? MyOOPNonEmptyList<'value> as lst -> lst.Head
     | _ -> failwith "Incorrect type was given. Expected MyOOPNoneEmptyList<'value> type.\n Error in -takeOOPHead- function."
 
-// Функция takeOOPHead возвращает this.Tail
+// Функция takeOOPTail возвращает this.Tail
 let takeOOPTail (lst: IList<'value>) : IList<'value> =
     match lst with
     | :? MyOOPNonEmptyList<'value> as lst ->
@@ -251,6 +251,7 @@ let rec quickOOPSort (lst: IList<'value>) : IList<'value> =
             concatOOP (concatOOP (quickOOPSort (leftOOPLst lst.Head lst.Tail)) (MyOOPNonEmptyList(lst.Head, MyOOPEmptyList()))) (quickOOPSort (rightOOPLst lst.Head lst.Tail))
     | _ -> failwith "Incorrect type was given. Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types. \n Error in -quickOOPSort- function."
 
+/// Рекурсивная функция fromMyOOPListToMyList, преобразовывающая MyOOPList -> MyList
 let rec fromMyOOPListToMyList (lst: IList<'value>) : MyList<'value> =
     match lst with
     | :? MyOOPEmptyList<'value> -> Empty
