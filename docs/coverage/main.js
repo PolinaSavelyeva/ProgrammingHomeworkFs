@@ -224,16 +224,47 @@ var assemblies = [
   {
     "name": "ProgrammingHomeworkFs",
     "classes": [
-      { "name": "ProgrammingHomeworkFs", "rp": "ProgrammingHomeworkFs_ProgrammingHomeworkFs.html", "cl": 69, "ucl": 2, "cal": 71, "tl": 106, "ct": "LineCoverage", "mc": "-", "cb": 37, "tb": 38, "lch": [], "bch": [], "hc": [] },
+      { "name": "ProgrammingHomeworkFs", "rp": "ProgrammingHomeworkFs_ProgrammingHomeworkFs.html", "cl": 100, "ucl": 86, "cal": 186, "tl": 284, "ct": "LineCoverage", "mc": "-", "cb": 68, "tb": 140, "lch": [], "bch": [], "hc": [] },
     ]},
 ];
 
 var historicCoverageExecutionTimes = [];
 
 var riskHotspotMetrics = [
+      { "name": "Cyclomatic complexity", "explanationUrl": "https://en.wikipedia.org/wiki/Cyclomatic_complexity" },
+      { "name": "NPath complexity", "explanationUrl": "https://modess.io/npath-complexity-cyclomatic-complexity-explained" },
+      { "name": "Crap Score", "explanationUrl": "https://googletesting.blogspot.de/2011/02/this-code-is-crap.html" },
 ];
 
 var riskHotspots = [
+  {
+    "assembly": "ProgrammingHomeworkFs", "class": "ProgrammingHomeworkFs", "reportPath": "ProgrammingHomeworkFs_ProgrammingHomeworkFs.html", "methodName": "ProgrammingHomeworkFs/IList`1<value> ProgrammingHomeworkFs::leftOOPLst(value,ProgrammingHomeworkFs/IList`1<value>)", "methodShortName": "leftOOPLst(...)", "fileIndex": 0, "line": 229,
+    "metrics": [
+      { "value": 6, "exceeded": false },
+      { "value": 32, "exceeded": false },
+      { "value": 42, "exceeded": true },
+    ]},
+  {
+    "assembly": "ProgrammingHomeworkFs", "class": "ProgrammingHomeworkFs", "reportPath": "ProgrammingHomeworkFs_ProgrammingHomeworkFs.html", "methodName": "ProgrammingHomeworkFs/IList`1<value> ProgrammingHomeworkFs::rightOOPLst(value,ProgrammingHomeworkFs/IList`1<value>)", "methodShortName": "rightOOPLst(...)", "fileIndex": 0, "line": 251,
+    "metrics": [
+      { "value": 6, "exceeded": false },
+      { "value": 32, "exceeded": false },
+      { "value": 42, "exceeded": true },
+    ]},
+  {
+    "assembly": "ProgrammingHomeworkFs", "class": "ProgrammingHomeworkFs", "reportPath": "ProgrammingHomeworkFs_ProgrammingHomeworkFs.html", "methodName": "ProgrammingHomeworkFs/IList`1<value> ProgrammingHomeworkFs::oneOOPLine(ProgrammingHomeworkFs/IList`1<value>)", "methodShortName": "oneOOPLine(...)", "fileIndex": 0, "line": 195,
+    "metrics": [
+      { "value": 5, "exceeded": false },
+      { "value": 16, "exceeded": false },
+      { "value": 30, "exceeded": true },
+    ]},
+  {
+    "assembly": "ProgrammingHomeworkFs", "class": "ProgrammingHomeworkFs", "reportPath": "ProgrammingHomeworkFs_ProgrammingHomeworkFs.html", "methodName": "ProgrammingHomeworkFs/IList`1<value> ProgrammingHomeworkFs::quickOOPSort(ProgrammingHomeworkFs/IList`1<value>)", "methodShortName": "quickOOPSort(...)", "fileIndex": 0, "line": 267,
+    "metrics": [
+      { "value": 4, "exceeded": false },
+      { "value": 8, "exceeded": false },
+      { "value": 20, "exceeded": true },
+    ]},
 ];
 
 var branchCoverageAvailable = true;
