@@ -210,7 +210,7 @@ let rec concatOOP (lst1: IList<'value>) (lst2: IList<'value>) : IList<'value> =
         MyOOPNonEmptyList(lst1.Head, concatOOP lst1.Tail lst2) :> IList<'value>
     | _ -> failwith "Incorrect type was given. Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types. \n Error in -concatOOP- function."
 
-//------------------------------------------------------№2----АЛГЕБРАИЧЕСКИЙ-ТИП--------------------
+//------------------------------------------------------№2----ООП-ТИП--------------------
 let rec leftOOPLst (x: 'value) (lst: IList<'value>) : IList<'value> =
     match lst with
     | :? MyOOPEmptyList<'value> -> MyOOPEmptyList() :> IList<'value>
