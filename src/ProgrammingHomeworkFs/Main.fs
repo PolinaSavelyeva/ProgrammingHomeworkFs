@@ -72,7 +72,7 @@ let rec oopMap (f: IActor<'value, 'result>) (lst: IList<'value>) =
         let lst1 = lst :?> MyOOPNonEmptyList<'value> // :?> оператор преобразует тип в тип, находящийся на более низком уровне иерархии
         MyOOPNonEmptyList(f.Do lst1.Head, oopMap f lst1.Tail)
     else
-        failwith "Undefined in : oopMap"
+        failwith "Incorrect type was given. Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types. \n Error in -oopMap- function."
 
 // Рекурсивная функция oopMap2, аналогичная функции oopMap1
 let rec oopMap2 (f: IActor<'value, 'result>) (lst: IList<'value>) =
@@ -80,7 +80,7 @@ let rec oopMap2 (f: IActor<'value, 'result>) (lst: IList<'value>) =
     | :? MyOOPEmptyList<'value> -> MyOOPEmptyList() :> IList<'result> // преобразование необходимо для устранения конфликта между разными типами, получаемыми из функции
     | :? MyOOPNonEmptyList<'value> as lst -> // разные lst
         MyOOPNonEmptyList(f.Do lst.Head, oopMap f lst.Tail)
-    | _ -> failwith "Undefined in : oopMap2"
+    | _ -> failwith "Incorrect type was given. Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types.\n Error in -oopMap2- function."
 
 // Функция go2, вызывающая функцию oopMap, которая к каждому элементу прибавляет +1
 let go2 () =
@@ -106,24 +106,20 @@ let rec lenMyList (lst: MyList<'value>) : int =
     match lst with
     | Empty -> 0
     | Construct (_, Empty) -> 1
-    | Construct (_, Construct (hd, tl)) ->
-        lenMyList (Construct(hd, tl))
-        + 1
+    | Construct (_, Construct (hd, tl)) -> lenMyList (Construct(hd, tl)) + 1
 
 /// Функция oneLine выполняет "попарную" сортировку за 1 цикл, с нулевого до последнего элементов
 let rec oneLine (lst: MyList<'value>) : MyList<'value> =
     match lst with
     | Empty -> Empty
     | Construct (hd, Empty) -> Construct(hd, Empty)
-    | Construct (hd1, Construct (hd2, tl)) ->
-        Construct(min hd1 hd2, oneLine (Construct(max hd1 hd2, tl)))
+    | Construct (hd1, Construct (hd2, tl)) -> Construct(min hd1 hd2, oneLine (Construct(max hd1 hd2, tl)))
 
 let bubbleSort (lst: MyList<'value>) : MyList<'value> =
     let mutable sortedLine: MyList<'value> = lst
 
     for i in
-        0 .. (lenMyList lst
-              - 2) do
+        0 .. (lenMyList lst - 2) do
         sortedLine <- oneLine sortedLine
 
     sortedLine
@@ -161,25 +157,20 @@ let rec quickSort (lst: MyList<'value>) : MyList<'value> =
     match lst with
     | Empty -> Empty
     | Construct (hd, Empty) -> Construct(hd, Empty)
-    | Construct (hd, tl) ->
-        concat
-            (concat (quickSort (leftLst hd tl)) (Construct(hd, Empty)))
-            (quickSort (rightLst hd tl))
+    | Construct (hd, tl) -> concat (concat (quickSort (leftLst hd tl)) (Construct(hd, Empty))) (quickSort (rightLst hd tl))
 
 //------------------------------------------------------№1----ООП-ТИП-------------------------------
 let rec lenMyOOPList (lst: IList<'value>) : int =
     match lst with
     | :? MyOOPEmptyList<'value> -> 0
-    | :? MyOOPNonEmptyList<'value> as lst ->
-        lenMyOOPList lst.Tail
-        + 1
-    | _ -> failwith "Undefined in : lenMyOOPList"
+    | :? MyOOPNonEmptyList<'value> as lst -> lenMyOOPList lst.Tail + 1
+    | _ -> failwith "Incorrect type was given. Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types.\n Error in -lenMyOOPList- function."
 
 // Функция takeOOPHead возвращает this.Head
 let takeOOPHead (lst: IList<'value>) : 'value =
     match lst with
     | :? MyOOPNonEmptyList<'value> as lst -> lst.Head
-    | _ -> failwith "Undefined in : takeOOPHead"
+    | _ -> failwith "Incorrect type was given. Expected MyOOPNoneEmptyList<'value> type.\n Error in -takeOOPHead- function."
 
 // Функция takeOOPHead возвращает this.Tail
 let takeOOPTail (lst: IList<'value>) : IList<'value> =
@@ -189,7 +180,7 @@ let takeOOPTail (lst: IList<'value>) : IList<'value> =
             MyOOPEmptyList()
         else
             lst.Tail
-    | _ -> failwith "Undefined in : takeOOPTail"
+    | _ -> failwith "Incorrect type was given, this.Tale member was not found. The type MyOOPNonEmptyList<'value> which has this.Tale member was expected.\n Error in -takeOOPTail- function."
 
 let rec oneOOPLine (lst: IList<'value>) : IList<'value> =
     match lst with
@@ -198,20 +189,15 @@ let rec oneOOPLine (lst: IList<'value>) : IList<'value> =
         if lst.Tail :? MyOOPEmptyList<'value> then
             lst
         elif lst.Head > takeOOPHead lst.Tail then
-            MyOOPNonEmptyList(
-                takeOOPHead lst.Tail,
-                oneOOPLine (MyOOPNonEmptyList(lst.Head, takeOOPTail lst.Tail))
-            )
+            MyOOPNonEmptyList( takeOOPHead lst.Tail, oneOOPLine (MyOOPNonEmptyList(lst.Head, takeOOPTail lst.Tail)))
         else
             MyOOPNonEmptyList(lst.Head, oneOOPLine lst.Tail)
-    | _ -> failwith "Undefined in : oneOOPLine"
+    | _ -> failwith "Incorrect type was given. Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types.\n Error in -oneOOPLine- function."
 
 let bubbleOOPSort (lst: IList<'value>) : IList<'value> =
     let mutable sortedLine: IList<'value> = lst
 
-    for i in
-        0 .. (lenMyOOPList lst
-              - 2) do
+    for i in 0 .. (lenMyOOPList lst - 2) do
         sortedLine <- oneOOPLine sortedLine
 
     sortedLine
@@ -222,34 +208,26 @@ let rec concatOOP (lst1: IList<'value>) (lst2: IList<'value>) : IList<'value> =
     | :? MyOOPEmptyList<'value> -> lst2
     | :? MyOOPNonEmptyList<'value> as lst1 ->
         MyOOPNonEmptyList(lst1.Head, concatOOP lst1.Tail lst2) :> IList<'value>
-    | _ -> failwith "Undefined in : concatOOP"
+    | _ -> failwith "Incorrect type was given. Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types. \n Error in -concatOOP- function."
 
 //------------------------------------------------------№2----АЛГЕБРАИЧЕСКИЙ-ТИП--------------------
 let rec leftOOPLst (x: 'value) (lst: IList<'value>) : IList<'value> =
     match lst with
-
     | :? MyOOPEmptyList<'value> -> MyOOPEmptyList() :> IList<'value>
     | :? MyOOPNonEmptyList<'value> as lst ->
         if lst.Tail :? MyOOPEmptyList<'value> then
-            if
-                lst.Head
-                <= x
-            then
+            if lst.Head <= x then
                 lst
             else
                 MyOOPEmptyList() :> IList<'value>
-        else if
-            lst.Head
-            <= x
-        then
+        elif lst.Head <= x then
             MyOOPNonEmptyList(lst.Head, leftOOPLst x (MyOOPNonEmptyList(x, lst.Tail)))
         else
             leftOOPLst x lst.Tail
-    | _ -> failwith "Undefined in : leftOOPLst"
+    | _ -> failwith "Incorrect type was given. Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types. \n Error in -leftOOPLst- function."
 
 let rec rightOOPLst (x: 'value) (lst: IList<'value>) : IList<'value> =
     match lst with
-
     | :? MyOOPEmptyList<'value> -> MyOOPEmptyList() :> IList<'value>
     | :? MyOOPNonEmptyList<'value> as lst ->
         if lst.Tail :? MyOOPEmptyList<'value> then
@@ -257,11 +235,11 @@ let rec rightOOPLst (x: 'value) (lst: IList<'value>) : IList<'value> =
                 lst
             else
                 MyOOPEmptyList() :> IList<'value>
-        else if lst.Head > x then
+        elif lst.Head > x then
             MyOOPNonEmptyList(lst.Head, rightOOPLst x (MyOOPNonEmptyList(x, lst.Tail)))
         else
             rightOOPLst x lst.Tail
-    | _ -> failwith "Undefined in : rightOOPLst"
+    | _ -> failwith "Incorrect type was given. Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types. \n Error in -rightOOPLst- function."
 
 let rec quickOOPSort (lst: IList<'value>) : IList<'value> =
     match lst with
@@ -270,15 +248,11 @@ let rec quickOOPSort (lst: IList<'value>) : IList<'value> =
         if lst.Tail :? MyOOPEmptyList<'value> then
             lst
         else
-            concatOOP
-                (concatOOP
-                    (quickOOPSort (leftOOPLst lst.Head lst.Tail))
-                    (MyOOPNonEmptyList(lst.Head, MyOOPEmptyList())))
-                (quickOOPSort (rightOOPLst lst.Head lst.Tail))
-    | _ -> failwith "Undefined in : quickOOPSort"
+            concatOOP (concatOOP (quickOOPSort (leftOOPLst lst.Head lst.Tail)) (MyOOPNonEmptyList(lst.Head, MyOOPEmptyList()))) (quickOOPSort (rightOOPLst lst.Head lst.Tail))
+    | _ -> failwith "Incorrect type was given. Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types. \n Error in -quickOOPSort- function."
 
 let rec fromMyOOPListToMyList (lst: IList<'value>) : MyList<'value> =
     match lst with
     | :? MyOOPEmptyList<'value> -> Empty
     | :? MyOOPNonEmptyList<'value> as lst -> Construct(lst.Head, fromMyOOPListToMyList lst.Tail)
-    | _ -> failwith "Undefined in : fromMyOOPListToMyList"
+    | _ -> failwith "Incorrect type was given. Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types. \n Error in -fromMyOOPListToMyList- function."

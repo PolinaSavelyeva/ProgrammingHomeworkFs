@@ -224,9 +224,7 @@ var assemblies = [
   {
     "name": "ProgrammingHomeworkFs",
     "classes": [
-      { "name": "ProgrammingHomeworkFs.AssemblyInfo", "rp": "ProgrammingHomeworkFs_AssemblyInfo.html", "cl": 0, "ucl": 22, "cal": 22, "tl": 100, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "ProgrammingHomeworkFs.Main", "rp": "ProgrammingHomeworkFs_Main.html", "cl": 0, "ucl": 22, "cal": 22, "tl": 100, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 12, "lch": [], "bch": [], "hc": [] },
-      { "name": "ProgrammingHomeworkFs.Say", "rp": "ProgrammingHomeworkFs_Say.html", "cl": 3, "ucl": 4, "cal": 7, "tl": 100, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "ProgrammingHomeworkFs", "rp": "ProgrammingHomeworkFs_ProgrammingHomeworkFs.html", "cl": 28, "ucl": 95, "cal": 123, "tl": 258, "ct": "LineCoverage", "mc": "-", "cb": 31, "tb": 102, "lch": [], "bch": [], "hc": [] },
     ]},
 ];
 
@@ -240,17 +238,31 @@ var riskHotspotMetrics = [
 
 var riskHotspots = [
   {
-    "assembly": "ProgrammingHomeworkFs", "class": "ProgrammingHomeworkFs.Main", "reportPath": "ProgrammingHomeworkFs_Main.html", "methodName": "System.Int32 ProgrammingHomeworkFs.Main::main(System.String[])", "methodShortName": "main(...)", "fileIndex": 0, "line": 77,
+    "assembly": "ProgrammingHomeworkFs", "class": "ProgrammingHomeworkFs", "reportPath": "ProgrammingHomeworkFs_ProgrammingHomeworkFs.html", "methodName": "ProgrammingHomeworkFs/IList`1<value> ProgrammingHomeworkFs::leftOOPLst(value,ProgrammingHomeworkFs/IList`1<value>)", "methodShortName": "leftOOPLst(...)", "fileIndex": 0, "line": 215,
+    "metrics": [
+      { "value": 6, "exceeded": false },
+      { "value": 32, "exceeded": false },
+      { "value": 42, "exceeded": true },
+    ]},
+  {
+    "assembly": "ProgrammingHomeworkFs", "class": "ProgrammingHomeworkFs", "reportPath": "ProgrammingHomeworkFs_ProgrammingHomeworkFs.html", "methodName": "ProgrammingHomeworkFs/IList`1<value> ProgrammingHomeworkFs::rightOOPLst(value,ProgrammingHomeworkFs/IList`1<value>)", "methodShortName": "rightOOPLst(...)", "fileIndex": 0, "line": 230,
+    "metrics": [
+      { "value": 6, "exceeded": false },
+      { "value": 32, "exceeded": false },
+      { "value": 42, "exceeded": true },
+    ]},
+  {
+    "assembly": "ProgrammingHomeworkFs", "class": "ProgrammingHomeworkFs", "reportPath": "ProgrammingHomeworkFs_ProgrammingHomeworkFs.html", "methodName": "ProgrammingHomeworkFs/IList`1<value> ProgrammingHomeworkFs::oneOOPLine(ProgrammingHomeworkFs/IList`1<value>)", "methodShortName": "oneOOPLine(...)", "fileIndex": 0, "line": 186,
     "metrics": [
       { "value": 5, "exceeded": false },
       { "value": 16, "exceeded": false },
       { "value": 30, "exceeded": true },
     ]},
   {
-    "assembly": "ProgrammingHomeworkFs", "class": "ProgrammingHomeworkFs.Main", "reportPath": "ProgrammingHomeworkFs_Main.html", "methodName": "System.String ProgrammingHomeworkFs.Main/CLIArguments::Argu.IArgParserTemplate.get_Usage()", "methodShortName": "Argu.IArgParserTemplate.get_Usage()", "fileIndex": 0, "line": 69,
+    "assembly": "ProgrammingHomeworkFs", "class": "ProgrammingHomeworkFs", "reportPath": "ProgrammingHomeworkFs_ProgrammingHomeworkFs.html", "methodName": "ProgrammingHomeworkFs/IList`1<value> ProgrammingHomeworkFs::quickOOPSort(ProgrammingHomeworkFs/IList`1<value>)", "methodShortName": "quickOOPSort(...)", "fileIndex": 0, "line": 245,
     "metrics": [
       { "value": 4, "exceeded": false },
-      { "value": 4, "exceeded": false },
+      { "value": 8, "exceeded": false },
       { "value": 20, "exceeded": true },
     ]},
 ];
