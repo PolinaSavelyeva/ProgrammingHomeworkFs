@@ -1,100 +1,76 @@
-namespace ProgrammingHomeworkFs
+module ProgrammingHomeworkFs
 
-open System.Reflection
 
-module AssemblyInfo =
+(*type BinTree1<'value> =
+    | FullNode of value : 'value * left : BinTree1<'value> * right : BinTree1<'value> // поддерево
+    | NodeWithLeft of value : 'value * left : BinTree1<'value>
+    | Leaf of value : 'value //лист не имеет поддеревьев
 
-    let metaDataValue (mda: AssemblyMetadataAttribute) = mda.Value
+[<RequireQualifiedAccess>] // заставялет писать вызов полностью
+type BinTree2<'value> =
+    | Node of value : 'value * left : BinTree2<'value> * right : Option<BinTree2<'value>> // правой ветки может и не быть
+    | Leaf of value : 'value //лист не имеет поддеревьев
 
-    let getMetaDataAttribute (assembly: Assembly) key =
-        assembly.GetCustomAttributes(typedefof<AssemblyMetadataAttribute>)
-        |> Seq.cast<AssemblyMetadataAttribute>
-        |> Seq.find (fun x -> x.Key = key)
+let tree = BinTree2.Node (3, BinTree2.Leaf(1), Some(BinTree2.Node(4, BinTree2.Leaf(2), None))) //Some -> None
 
-    let getReleaseDate assembly =
-        "ReleaseDate"
-        |> getMetaDataAttribute assembly
-        |> metaDataValue
+type BinTree3<'value> =
+    | Node of value : 'value * left : Option<BinTree3<'value>> * right : Option<BinTree3<'value>> // правой ветки может и не быть
+*)
+type BinTree4<'value> =
+    | FullNode of value : 'value * left : BinTree4<'value> * right : BinTree4<'value> // поддерево
+    | NodeWithLeft of value : 'value * left : BinTree4<'value>
+    | NodeWithRight of value : 'value * right : BinTree4<'value>
+    | Leaf of value : 'value //лист не имеет поддеревьев
 
-    let getGitHash assembly =
-        "GitHash"
-        |> getMetaDataAttribute assembly
-        |> metaDataValue
+let rec minInTree (tree : BinTree4<'value>) : 'value =
+    match tree with
+    | Leaf x -> x
+    | NodeWithLeft (x, leftTree) -> min x (minInTree leftTree)
+    | NodeWithRight (x, rightTree) -> min x (minInTree rightTree)
+    | FullNode (x, leftTree, rightTree) ->
+        let leftX = minInTree leftTree
+        let rightX = minInTree rightTree
+        min (min x leftX) rightX
 
-    let getVersion assembly =
-        "AssemblyVersion"
-        |> getMetaDataAttribute assembly
-        |> metaDataValue
+let rec summaTree (tree : BinTree4<'value>) =
+    match tree with
+    | Leaf x -> x
+    | NodeWithLeft (x, leftTree) -> x + summaTree leftTree
+    | NodeWithRight (x, rightTree) -> x + summaTree rightTree
+    | FullNode (x, leftTree, rightTree) ->
+        let leftX = summaTree leftTree
+        let rightX = summaTree rightTree
+        x + rightX + leftX
 
-    let assembly = lazy (Assembly.GetEntryAssembly())
-
-    let printVersion () =
-        let version = assembly.Force().GetName().Version
-        printfn "%A" version
-
-    let printInfo () =
-        let assembly = assembly.Force()
-        let name = assembly.GetName()
-        let version = assembly.GetName().Version
-        let releaseDate = getReleaseDate assembly
-        let githash = getGitHash assembly
-        printfn "%s - %A - %s - %s" name.Name version releaseDate githash
-
-module Say =
-    open System
-
-    let nothing name =
-        name
-        |> ignore
-
-    let hello name = sprintf "Hello %s" name
-
-    let colorizeIn (color: string) str =
-        let oldColor = Console.ForegroundColor
-        Console.ForegroundColor <- (Enum.Parse(typedefof<ConsoleColor>, color) :?> ConsoleColor)
-        printfn "%s" str
-        Console.ForegroundColor <- oldColor
-
-module Main =
-    open Argu
-
-    type CLIArguments =
-        | Info
-        | Version
-        | Favorite_Color of string // Look in App.config
-        | [<MainCommand>] Hello of string
-
-        interface IArgParserTemplate with
-            member s.Usage =
-                match s with
-                | Info -> "More detailed information"
-                | Version -> "Version of application"
-                | Favorite_Color _ -> "Favorite color"
-                | Hello _ -> "Who to say hello to"
-
-    [<EntryPoint>]
-    let main (argv: string array) =
-        let parser =
-            ArgumentParser.Create<CLIArguments>(programName = "ProgrammingHomeworkFs")
-
-        let results = parser.Parse(argv)
-
-        if results.Contains Version then
-            AssemblyInfo.printVersion ()
-        elif results.Contains Info then
-            AssemblyInfo.printInfo ()
-        elif results.Contains Hello then
-            match results.TryGetResult Hello with
-            | Some v ->
-                let color = results.GetResult Favorite_Color
-
-                Say.hello v
-                |> Say.colorizeIn color
-            | None ->
-                parser.PrintUsage()
-                |> printfn "%s"
+(*let rec minInTree (tree : BinTree4<'value>) : 'value =
+    match tree with
+    | Leaf x -> x
+    | NodeWithLeft (x, leftTree) ->
+        if x < minInTree leftTree then
+            x
         else
-            parser.PrintUsage()
-            |> printfn "%s"
+            minInTree leftTree
+    | NodeWithRight (x, rightTree) ->
+        if x < minInTree rightTree then
+            x
+        else
+            minInTree rightTree
+    | FullNode (x, leftTree, rightTree) ->
+        let leftX = minInTree leftTree
+        let rightX = minInTree rightTree
+        if x < leftX && x < rightX then
+            x
+        elif x < leftX && x > rightX then
+            rightX
+        elif x > leftX && x <  rightX then
+            leftX
+        else
+            if leftX > rightX then
+                rightX
+            else
+                leftX*)
 
-        0
+let tree = FullNode (12, Leaf(12), NodeWithLeft(-1, Leaf(-1)))
+
+printf $"%A{summaTree tree}"
+
