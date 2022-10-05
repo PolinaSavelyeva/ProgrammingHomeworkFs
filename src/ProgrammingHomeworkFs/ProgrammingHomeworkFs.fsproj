@@ -17,7 +17,7 @@
         <Compile Include="AssemblyInfo.fs" />
         <None Include="App.config" />
         <Compile Include="Abstraction.fs" />
-        <Compile Include="OOPtype.fs" />
+        <Compile Include="OopType.fs" />
         <Compile Include="AlgebraicType.fs" />
     </ItemGroup>
     <ItemGroup>

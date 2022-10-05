@@ -1,4 +1,4 @@
-module OOPtype
+module OopType
 open Abstraction
 
 ///  Функция lenMyOOPList возвращает длину IList
@@ -51,44 +51,31 @@ let rec concatOOP (lst1: IList<'value>) (lst2: IList<'value>) : IList<'value> =
         MyOOPNonEmptyList(lst1.Head, concatOOP lst1.Tail lst2) :> IList<'value>
     | _ -> failwith "Incorrect type was given. Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types. \n Error in -concatOOP- function."
 
-let rec leftOOPLst (x: 'value) (lst: IList<'value>) : IList<'value> =
+let rec newOOPLst f (x: 'value) (lst: IList<'value>) : IList<'value> =
     match lst with
     | :? MyOOPEmptyList<'value> -> MyOOPEmptyList() :> IList<'value>
     | :? MyOOPNonEmptyList<'value> as lst ->
         if lst.Tail :? MyOOPEmptyList<'value> then
-            if lst.Head <= x then
+            if f lst.Head x then
                 lst
             else
                 MyOOPEmptyList() :> IList<'value>
-        elif lst.Head <= x then
-            MyOOPNonEmptyList(lst.Head, leftOOPLst x (MyOOPNonEmptyList(x, lst.Tail)))
+        elif f lst.Head x then
+            MyOOPNonEmptyList(lst.Head, newOOPLst f x (MyOOPNonEmptyList(x, lst.Tail)))
         else
-            leftOOPLst x lst.Tail
+            newOOPLst f x lst.Tail
     | _ -> failwith "Incorrect type was given. Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types. \n Error in -leftOOPLst- function."
 
-let rec rightOOPLst (x: 'value) (lst: IList<'value>) : IList<'value> =
-    match lst with
-    | :? MyOOPEmptyList<'value> -> MyOOPEmptyList() :> IList<'value>
-    | :? MyOOPNonEmptyList<'value> as lst ->
-        if lst.Tail :? MyOOPEmptyList<'value> then
-            if lst.Head > x then
-                lst
-            else
-                MyOOPEmptyList() :> IList<'value>
-        elif lst.Head > x then
-            MyOOPNonEmptyList(lst.Head, rightOOPLst x (MyOOPNonEmptyList(x, lst.Tail)))
-        else
-            rightOOPLst x lst.Tail
-    | _ -> failwith "Incorrect type was given. Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types. \n Error in -rightOOPLst- function."
-
 let rec quickOOPSort (lst: IList<'value>) : IList<'value> =
+    let fMin x y = x <= y
+    let fMax x y = x > y
     match lst with
     | :? MyOOPEmptyList<'value> -> MyOOPEmptyList() :> IList<'value>
     | :? MyOOPNonEmptyList<'value> as lst ->
         if lst.Tail :? MyOOPEmptyList<'value> then
             lst
         else
-            concatOOP (concatOOP (quickOOPSort (leftOOPLst lst.Head lst.Tail)) (MyOOPNonEmptyList(lst.Head, MyOOPEmptyList()))) (quickOOPSort (rightOOPLst lst.Head lst.Tail))
+            concatOOP (concatOOP (quickOOPSort (newOOPLst fMin lst.Head lst.Tail)) (MyOOPNonEmptyList(lst.Head, MyOOPEmptyList()))) (quickOOPSort (newOOPLst fMax lst.Head lst.Tail))
     | _ -> failwith "Incorrect type was given. Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types. \n Error in -quickOOPSort- function."
 
 /// Рекурсивная функция fromMyOOPListToMyList, преобразовывающая MyOOPList -> MyList

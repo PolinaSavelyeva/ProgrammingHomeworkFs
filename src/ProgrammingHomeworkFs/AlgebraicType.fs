@@ -29,30 +29,23 @@ let rec concat (lst1: MyList<'value>) (lst2: MyList<'value>) : MyList<'value> =
     | Empty -> lst2
     | Construct (hd, tl) -> Construct(hd, concat tl lst2)
 
-/// Функция leftLst возвращает MyList "левого" под-листа, состоящего из элементов lst <= опорного
-let rec leftLst (x: 'value) (lst: MyList<'value>) : MyList<'value> =
+/// Функция newLst совмещает в себе работу rightLst и leftLst
+let rec newLst f (x: 'value) (lst: MyList<'value>) : MyList<'value> =
     match lst with
     | Empty -> Empty
-    | Construct (hd, Empty) -> if hd <= x then Construct(hd, Empty) else Empty
+    | Construct (hd, Empty) -> if f hd x  then Construct(hd, Empty) else Empty
     | Construct (hd, tl) ->
-        if hd <= x then
-            Construct(hd, leftLst x tl)
+        if f hd x then
+            Construct(hd, newLst f x tl)
         else
-            leftLst x tl
-
-/// Функция rightLst возвращает MyList "правого" под-листа, состоящего из элементов lst > опорного
-let rec rightLst (x: 'value) (lst: MyList<'value>) : MyList<'value> =
-    match lst with
-    | Empty -> Empty
-    | Construct (hd, Empty) -> if hd > x then Construct(hd, Empty) else Empty
-    | Construct (hd, tl) ->
-        if hd > x then
-            Construct(hd, rightLst x tl)
-        else
-            rightLst x tl
+            newLst f x tl
 
 let rec quickSort (lst: MyList<'value>) : MyList<'value> =
+    let fMin x y = x <= y
+    let fMax x y = x > y
     match lst with
     | Empty -> Empty
     | Construct (hd, Empty) -> Construct(hd, Empty)
-    | Construct (hd, tl) -> concat (concat (quickSort (leftLst hd tl)) (Construct(hd, Empty))) (quickSort (rightLst hd tl))
+    | Construct (hd, tl) -> concat ( concat (quickSort (newLst fMin hd tl)) (Construct(hd, Empty))) (quickSort (newLst fMax hd tl))
+
+
