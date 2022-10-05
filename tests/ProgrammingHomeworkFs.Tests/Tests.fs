@@ -1,8 +1,9 @@
-namespace ProgrammingHomeworkFs.Tests
+namespace Tests
 
+open Abstraction
+open OOPtype
+open AlgebraicType
 open Expecto
-open FsCheck
-open ProgrammingHomeworkFs
 
 module SayTests =
     [<Tests>]
