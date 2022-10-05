@@ -224,7 +224,7 @@ var assemblies = [
   {
     "name": "ProgrammingHomeworkFs",
     "classes": [
-      { "name": "ProgrammingHomeworkFs", "rp": "ProgrammingHomeworkFs_ProgrammingHomeworkFs.html", "cl": 52, "ucl": 13, "cal": 65, "tl": 100, "ct": "LineCoverage", "mc": "-", "cb": 27, "tb": 37, "lch": [], "bch": [], "hc": [] },
+      { "name": "ProgrammingHomeworkFs", "rp": "ProgrammingHomeworkFs_ProgrammingHomeworkFs.html", "cl": 31, "ucl": 17, "cal": 48, "tl": 79, "ct": "LineCoverage", "mc": "-", "cb": 31, "tb": 43, "lch": [], "bch": [], "hc": [] },
     ]},
 ];
 
@@ -238,14 +238,14 @@ var riskHotspotMetrics = [
 
 var riskHotspots = [
   {
-    "assembly": "ProgrammingHomeworkFs", "class": "ProgrammingHomeworkFs", "reportPath": "ProgrammingHomeworkFs_ProgrammingHomeworkFs.html", "methodName": "a ProgrammingHomeworkFs::arrays(value[])", "methodShortName": "arrays(...)", "fileIndex": 0, "line": 62,
+    "assembly": "ProgrammingHomeworkFs", "class": "ProgrammingHomeworkFs", "reportPath": "ProgrammingHomeworkFs_ProgrammingHomeworkFs.html", "methodName": "a ProgrammingHomeworkFs::arrays(value[])", "methodShortName": "arrays(...)", "fileIndex": 0, "line": 51,
     "metrics": [
       { "value": 5, "exceeded": false },
       { "value": 16, "exceeded": false },
       { "value": 30, "exceeded": true },
     ]},
   {
-    "assembly": "ProgrammingHomeworkFs", "class": "ProgrammingHomeworkFs", "reportPath": "ProgrammingHomeworkFs_ProgrammingHomeworkFs.html", "methodName": "a ProgrammingHomeworkFs::arrays$W(Microsoft.FSharp.Core.FSharpFunc`2<value,Microsoft.FSharp.Core.FSharpFunc`2<value,a>>,value[])", "methodShortName": "arrays$W(...)", "fileIndex": 0, "line": 62,
+    "assembly": "ProgrammingHomeworkFs", "class": "ProgrammingHomeworkFs", "reportPath": "ProgrammingHomeworkFs_ProgrammingHomeworkFs.html", "methodName": "a ProgrammingHomeworkFs::arrays$W(Microsoft.FSharp.Core.FSharpFunc`2<value,Microsoft.FSharp.Core.FSharpFunc`2<value,a>>,value[])", "methodShortName": "arrays$W(...)", "fileIndex": 0, "line": 51,
     "metrics": [
       { "value": 5, "exceeded": false },
       { "value": 16, "exceeded": false },
