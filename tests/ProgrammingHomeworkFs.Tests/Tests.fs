@@ -146,5 +146,13 @@ module SayTests =
                         fromMyOOPListToMyList (concatOOP lst1 lst2)
                      Expect.equal actualResult (Construct("18", Construct("1", Construct("18", Construct("1", Empty)))))
                         "concatOOP MyOOPNonEmptyList('18', MyOOPNonEmptyList('1', MyOOPEmptyList())) and MyOOPNonEmptyList('18', MyOOPNonEmptyList('1', MyOOPEmptyList())) as same as (Construct('18', Construct('1', Construct('18', Construct('1', Empty)))))"
+                testCase "Tests 6.1"
+                <| fun _ ->
+                     let actualResult =
+                        let lst1 = MyOOPEmptyList()
+                        let lst2 = MyOOPEmptyList()
+                        fromMyOOPListToMyList (concatOOP lst1 lst2)
+                     Expect.equal actualResult Empty
+                         "concatOOP MyOOPEmptyList() and MyOOPEmptyList() as same as Empty"
             ]
         ]
