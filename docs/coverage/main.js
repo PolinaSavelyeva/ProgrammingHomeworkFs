@@ -224,9 +224,8 @@ var assemblies = [
   {
     "name": "ProgrammingHomeworkFs",
     "classes": [
-      { "name": "Abstraction", "rp": "ProgrammingHomeworkFs_Abstraction.html", "cl": 4, "ucl": 30, "cal": 34, "tl": 102, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 12, "lch": [], "bch": [], "hc": [] },
-      { "name": "AlgebraicType", "rp": "ProgrammingHomeworkFs_AlgebraicType.html", "cl": 25, "ucl": 2, "cal": 27, "tl": 51, "ct": "LineCoverage", "mc": "-", "cb": 24, "tb": 26, "lch": [], "bch": [], "hc": [] },
-      { "name": "OopType", "rp": "ProgrammingHomeworkFs_OopType.html", "cl": 39, "ucl": 19, "cal": 58, "tl": 100, "ct": "LineCoverage", "mc": "-", "cb": 35, "tb": 56, "lch": [], "bch": [], "hc": [] },
+      { "name": "AlgebraicType", "rp": "ProgrammingHomeworkFs_AlgebraicType.html", "cl": 25, "ucl": 1, "cal": 26, "tl": 55, "ct": "LineCoverage", "mc": "-", "cb": 21, "tb": 22, "lch": [], "bch": [], "hc": [] },
+      { "name": "OopType", "rp": "ProgrammingHomeworkFs_OopType.html", "cl": 45, "ucl": 31, "cal": 76, "tl": 130, "ct": "LineCoverage", "mc": "-", "cb": 38, "tb": 50, "lch": [], "bch": [], "hc": [] },
     ]},
 ];
 

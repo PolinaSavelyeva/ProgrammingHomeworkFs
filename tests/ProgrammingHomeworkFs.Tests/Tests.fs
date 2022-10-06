@@ -60,12 +60,12 @@ module SayTests =
             ]
             testList "quickSort MyList tests" [
                 testProperty "quickSort test -- MyList<int>"
-                <| fun (lst : MyList<int>) ->
-                    quickSort lst = bubbleSort lst
+                <| fun (lst: MyList<int>) ->
+                    Expect.equal <| bubbleSort lst <| quickSort lst <| "Unexpected result"
 
                 testProperty "quickSort test -- MyList<string>"
-                <| fun (lst : MyList<string>) ->
-                    quickSort lst = bubbleSort lst
+                <| fun (lst: MyList<string>) ->
+                    Expect.equal <| bubbleSort lst <| quickSort lst <| "Unexpected result"
             ]
             testList "concat MyList tests" [
                 testCase "concat test -- MyList<string>"
@@ -137,6 +137,15 @@ module SayTests =
                     Expect.equal actualResult (Construct("1", Construct("18", Empty)))
                         "quickOOPSort MyOOPNonEmptyList('18', MyOOPNonEmptyList('1', MyOOPEmptyList())) as same as (Construct('1', Construct('18', Empty))))"
             ]
+            testList "quickOOPSort MyOOPList property tests" [
+                testProperty "quickSort test -- MyList<int>"
+                <| fun (lst : list<int>) ->
+                    Expect.equal<| List.sort lst <|  fromMyOOPListToList (bubbleOOPSort (fromListToMyOOPList lst)) <| "Unexpected result"
+
+                testProperty "quickSort test -- MyList<string>"
+                <| fun (lst : list<string>) ->
+                    Expect.equal<| List.sort lst <|  fromMyOOPListToList (bubbleOOPSort (fromListToMyOOPList lst)) <| "Unexpected result"
+            ]
             testList "concatOOP MyOOPList tests" [
                 testCase "quickOOPSort test -- same string MyOOPLists"
                 <| fun _ ->
@@ -146,6 +155,7 @@ module SayTests =
                         fromMyOOPListToMyList (concatOOP lst1 lst2)
                      Expect.equal actualResult (Construct("18", Construct("1", Construct("18", Construct("1", Empty)))))
                         "concatOOP MyOOPNonEmptyList('18', MyOOPNonEmptyList('1', MyOOPEmptyList())) and MyOOPNonEmptyList('18', MyOOPNonEmptyList('1', MyOOPEmptyList())) as same as (Construct('18', Construct('1', Construct('18', Construct('1', Empty)))))"
+
                 testCase "quickOOPSort test -- same MyOOPEmptyLists"
                 <| fun _ ->
                      let actualResult =
