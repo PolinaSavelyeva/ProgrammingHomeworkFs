@@ -50,6 +50,4 @@ let rec quickSort (lst: MyList<'value>) : MyList<'value> =
     match lst with
     | Empty -> Empty
     | Construct (hd, Empty) -> Construct(hd, Empty)
-    | Construct (hd, tl) -> concat ( concat (quickSort (newLst fMin hd tl)) (Construct(hd, Empty))) (quickSort (newLst fMax hd tl))
-
-
+    | Construct (hd, tl) -> concat (quickSort (newLst fMin hd tl)) (Construct(hd, quickSort (newLst fMax hd tl)))

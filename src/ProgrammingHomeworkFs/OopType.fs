@@ -104,5 +104,5 @@ let rec quickOOPSort (lst: IList<'value>) : IList<'value> =
         if lst.Tail :? MyOOPEmptyList<'value> then
             lst
         else
-            concatOOP (concatOOP (quickOOPSort (newOOPLst fMin lst.Head lst.Tail)) (MyOOPNonEmptyList(lst.Head, MyOOPEmptyList()))) (quickOOPSort (newOOPLst fMax lst.Head lst.Tail))
+            concatOOP (quickOOPSort (newOOPLst fMin lst.Head lst.Tail)) (MyOOPNonEmptyList(lst.Head, quickOOPSort (newOOPLst fMax lst.Head lst.Tail)))
     | _ -> failwith "Incorrect type was given. Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types. \n Error in -quickOOPSort- function."
