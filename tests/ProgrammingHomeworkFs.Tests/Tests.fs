@@ -1,6 +1,5 @@
 namespace Tests
 
-open Abstraction
 open OopType
 open AlgebraicType
 open Expecto

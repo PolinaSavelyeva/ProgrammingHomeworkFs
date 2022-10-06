@@ -16,9 +16,8 @@
     <ItemGroup>
         <Compile Include="AssemblyInfo.fs" />
         <None Include="App.config" />
-        <Compile Include="Abstraction.fs" />
-        <Compile Include="OopType.fs" />
         <Compile Include="AlgebraicType.fs" />
+        <Compile Include="OopType.fs" />
     </ItemGroup>
     <ItemGroup>
       <PackageReference Include="Expecto" Version="9.0.4" />

@@ -1,5 +1,9 @@
 module AlgebraicType
-open Abstraction
+
+// Алгебраический тип MyList- перемножаем декартово
+type MyList<'value> =
+    | Construct of head: 'value * tail: MyList<'value>
+    | Empty
 
 /// Функция lenMyList возвращает длину MyList
 let rec lenMyList (lst: MyList<'value>) : int =

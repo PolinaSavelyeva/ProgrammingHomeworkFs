@@ -1,5 +1,34 @@
 module OopType
-open Abstraction
+open AlgebraicType
+
+// Объявление нового типа IList
+type IList<'value> =
+    interface
+    end
+
+// Объявление нового типа MyOOPNonEmptyList
+//[<AllowNullLiteral>]
+type MyOOPNonEmptyList<'value>(head: 'value, tail: IList<'value>) =
+    interface IList<'value>
+    member this.Head = head
+    member this.Tail = tail
+
+// Объявление нового типа MyOOPEmptyList
+type MyOOPEmptyList<'value>() =
+    interface IList<'value>
+
+/// Рекурсивная функция fromMyOOPListToMyList, преобразовывающая MyOOPList -> MyList
+let rec fromMyOOPListToMyList (lst: IList<'value>) : MyList<'value> =
+    match lst with
+    | :? MyOOPEmptyList<'value> -> Empty
+    | :? MyOOPNonEmptyList<'value> as lst -> Construct(lst.Head, fromMyOOPListToMyList lst.Tail)
+    | _ -> failwith "Incorrect type was given. Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types. \n Error in -fromMyOOPListToMyList- function."
+
+/// Рекурсивная функция fromMyListToMyOOPList, преобразовывающая MyList -> MyOOPList
+let rec fromMyListToMyOOPList lst =
+    match lst with
+    | Empty -> MyOOPEmptyList<'value>() :> IList<'value>
+    | Construct (hd, tl) -> MyOOPNonEmptyList<'value>(hd, fromMyListToMyOOPList tl)
 
 ///  Функция lenMyOOPList возвращает длину IList
 let rec lenMyOOPList (lst: IList<'value>) : int =
@@ -77,11 +106,3 @@ let rec quickOOPSort (lst: IList<'value>) : IList<'value> =
         else
             concatOOP (concatOOP (quickOOPSort (newOOPLst fMin lst.Head lst.Tail)) (MyOOPNonEmptyList(lst.Head, MyOOPEmptyList()))) (quickOOPSort (newOOPLst fMax lst.Head lst.Tail))
     | _ -> failwith "Incorrect type was given. Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types. \n Error in -quickOOPSort- function."
-
-/// Рекурсивная функция fromMyOOPListToMyList, преобразовывающая MyOOPList -> MyList
-let rec fromMyOOPListToMyList (lst: IList<'value>) : MyList<'value> =
-    match lst with
-    | :? MyOOPEmptyList<'value> -> Empty
-    | :? MyOOPNonEmptyList<'value> as lst -> Construct(lst.Head, fromMyOOPListToMyList lst.Tail)
-    | _ -> failwith "Incorrect type was given. Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types. \n Error in -fromMyOOPListToMyList- function."
-
