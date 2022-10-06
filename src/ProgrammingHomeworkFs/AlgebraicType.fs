@@ -33,21 +33,27 @@ let rec concat (lst1: MyList<'value>) (lst2: MyList<'value>) : MyList<'value> =
     | Empty -> lst2
     | Construct (hd, tl) -> Construct(hd, concat tl lst2)
 
+let leftLst (a, _) = a
+let rightLst (_, b) = b
+
 /// Функция newLst совмещает в себе работу rightLst и leftLst
-let rec newLst f (x: 'value) (lst: MyList<'value>) : MyList<'value> =
+let rec newLst (x: 'value) (lst: MyList<'value>) =
     match lst with
-    | Empty -> Empty
-    | Construct (hd, Empty) -> if f hd x  then Construct(hd, Empty) else Empty
+    | Empty -> (Empty, Empty)
+    | Construct (hd, Empty) -> if hd <= x  then (Construct(hd, Empty), Empty) else (Empty, Construct(hd, Empty))
     | Construct (hd, tl) ->
-        if f hd x then
-            Construct(hd, newLst f x tl)
+        if hd <= x then
+            (Construct(hd, leftLst (newLst hd tl)), rightLst (newLst hd tl))
         else
-            newLst f x tl
+            (leftLst (newLst hd tl), Construct(hd,  rightLst (newLst hd tl)))
+
 
 let rec quickSort (lst: MyList<'value>) : MyList<'value> =
-    let fMin x y = x <= y
-    let fMax x y = x > y
+
     match lst with
     | Empty -> Empty
     | Construct (hd, Empty) -> Construct(hd, Empty)
-    | Construct (hd, tl) -> concat (quickSort (newLst fMin hd tl)) (Construct(hd, quickSort (newLst fMax hd tl)))
+    | Construct (hd, tl) ->
+        let tupleLists = newLst hd tl
+        concat (quickSort (leftLst tupleLists)) (Construct(hd, quickSort (rightLst tupleLists)))
+

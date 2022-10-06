@@ -80,7 +80,7 @@ let rec concatOOP (lst1: IList<'value>) (lst2: IList<'value>) : IList<'value> =
         MyOOPNonEmptyList(lst1.Head, concatOOP lst1.Tail lst2) :> IList<'value>
     | _ -> failwith "Incorrect type was given. Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types. \n Error in -concatOOP- function."
 
-let rec newOOPLst f (x: 'value) (lst: IList<'value>) : IList<'value> =
+let rec newOOPLst f (x: 'value) (lst: IList<'value>) : IList<'value> = //возвращает конкат левой стороны элемента hd и правой стороны
     match lst with
     | :? MyOOPEmptyList<'value> -> MyOOPEmptyList() :> IList<'value>
     | :? MyOOPNonEmptyList<'value> as lst ->
@@ -106,3 +106,4 @@ let rec quickOOPSort (lst: IList<'value>) : IList<'value> =
         else
             concatOOP (quickOOPSort (newOOPLst fMin lst.Head lst.Tail)) (MyOOPNonEmptyList(lst.Head, quickOOPSort (newOOPLst fMax lst.Head lst.Tail)))
     | _ -> failwith "Incorrect type was given. Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types. \n Error in -quickOOPSort- function."
+printf $"%A{quickSort  (Construct(48, Construct(0, Construct(0, Construct(734, Construct(-880, Construct(9, Empty)))))))}"
