@@ -1,5 +1,4 @@
-module ProgrammingHomeworkFs
-
+module AbstractTrees
 
 (*type BinTree1<'value> =
     | FullNode of value : 'value * left : BinTree1<'value> * right : BinTree1<'value> // поддерево
@@ -11,7 +10,7 @@ type BinTree2<'value> =
     | Node of value : 'value * left : BinTree2<'value> * right : Option<BinTree2<'value>> // правой ветки может и не быть
     | Leaf of value : 'value //лист не имеет поддеревьев
 
-let tree = BinTree2.Node (3, BinTree2.Leaf(1), Some(BinTree2.Node(4, BinTree2.Leaf(2), None))) //Some -> None
+let tree = Node (3, Leaf(1), Some(Node(4, Leaf(2), None))) //Some -> None
 
 type BinTree3<'value> =
     | Node of value : 'value * left : Option<BinTree3<'value>> * right : Option<BinTree3<'value>> // правой ветки может и не быть
@@ -41,34 +40,6 @@ let rec summaTree (tree : BinTree4<'value>) =
         let leftX = summaTree leftTree
         let rightX = summaTree rightTree
         x + rightX + leftX
-
-(*let rec minInTree (tree : BinTree4<'value>) : 'value =
-    match tree with
-    | Leaf x -> x
-    | NodeWithLeft (x, leftTree) ->
-        if x < minInTree leftTree then
-            x
-        else
-            minInTree leftTree
-    | NodeWithRight (x, rightTree) ->
-        if x < minInTree rightTree then
-            x
-        else
-            minInTree rightTree
-    | FullNode (x, leftTree, rightTree) ->
-        let leftX = minInTree leftTree
-        let rightX = minInTree rightTree
-        if x < leftX && x < rightX then
-            x
-        elif x < leftX && x > rightX then
-            rightX
-        elif x > leftX && x <  rightX then
-            leftX
-        else
-            if leftX > rightX then
-                rightX
-            else
-                leftX*)
 
 let tree = FullNode (12, Leaf(12), NodeWithLeft(-1, Leaf(-1)))
 
