@@ -5,25 +5,31 @@ open AbstractTrees
 // Листья и внутренние узлы хранят некоторые значени произвольного (одинакового для всех) типа.
 
 type Tree<'value> =
-    | Node of ('value * Tree<'value> list)
+    | Node of hd : 'value * bdy : list<Tree<'value>>
     | Leaf of 'value
+    //| Leaf of 'value
 
-let probTree = Node(12, [Node(2, [Leaf(9); Leaf(21)]); Leaf(5)])
-//        12
-//      2   5
-//     9 21
+let tree = Node(1, [Node(2, [Leaf(2)]); Leaf(2); Leaf(2)])
+//   1
+//2  2  2
+//2
 
 //2. Реализовать функцию, которая по дереву (тип, описанный выше),
 //находит количество различных элементов, хранящихся в узлах. Использовать рекурсию,
 //не использовать мутабельные переменные.
 
-let rec countElTree (tree : Tree<'value>) : int =
+let rec countElTree (x : 'value) (tree : Tree<'value>) : int =
     match tree with
-    | Leaf _-> 1
-    | Node (_, tl) -> 1 +  countElList tl
+    | Leaf a ->
+        if a <> x then
+            1
+        else 0
+    | Node(a, b) ->
+        match b with
+        | :? Tree<'value>
+        if a <> x then
+            1 + countElTree b
+        else a == b then
+            countElTree b
 
-let rec countElList (lst : list<'value>) : int =
-    match lst with
-    | [x] -> 1
-    | [_;x] ->
-        1 + countElTree x
+let rec f (tree : Tree<'value>) : int =
