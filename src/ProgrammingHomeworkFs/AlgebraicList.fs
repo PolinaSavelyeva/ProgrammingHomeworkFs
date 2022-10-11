@@ -16,8 +16,7 @@ let rec oneLine (lst: List<'value>) : List<'value> =
     match lst with
     | Empty -> Empty
     | Construct (_, Empty) -> lst
-    | Construct (hd1, Construct (hd2, tl)) ->
-        Construct(min hd1 hd2, oneLine (Construct(max hd1 hd2, tl)))
+    | Construct (hd1, Construct (hd2, tl)) -> Construct(min hd1 hd2, oneLine (Construct(max hd1 hd2, tl)))
 
 let bubbleSort (lst: List<'value>) : List<'value> =
     let mutable sortedLine: List<'value> = lst
@@ -39,10 +38,11 @@ let rec splitLst (x: 'value) (lst: List<'value>) =
     | Empty -> Empty, Empty
     | Construct (hd, tl) ->
         let sorted = splitLst x tl
+
         if hd <= x then
             Construct(hd, fst sorted), snd sorted
         else
-            fst sorted, Construct(hd,  snd sorted)
+            fst sorted, Construct(hd, snd sorted)
 
 let rec quickSort (lst: List<'value>) : List<'value> =
     match lst with

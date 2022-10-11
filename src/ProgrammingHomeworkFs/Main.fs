@@ -3,5 +3,4 @@ namespace ProgrammingHomeworkFs
 module Main =
 
     [<EntryPoint>]
-    let main (argv: string array) =
-        0
+    let main (argv: string array) = 0
