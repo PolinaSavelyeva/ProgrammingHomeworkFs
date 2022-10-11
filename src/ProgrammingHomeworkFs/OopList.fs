@@ -92,11 +92,11 @@ let rec concat (lst1: IList<'value>) (lst2: IList<'value>) : IList<'value> =
                       Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types.\
                       \n Error in -concatOOP- function."
 
-let rec newLst (x: 'value) (lst: IList<'value>) =
+let rec splitLst (x: 'value) (lst: IList<'value>) =
     match lst with
     | :? EmptyList<'value> -> (EmptyList() :> IList<'value>, EmptyList() :> IList<'value>)
     | :? List<'value> as lst ->
-        let sorted = newLst x lst.Tail
+        let sorted = splitLst x lst.Tail
         if lst.Head <= x then
             List(lst.Head, fst sorted), snd sorted
         else
@@ -109,7 +109,7 @@ let rec quickSort (lst: IList<'value>) : IList<'value> =
     match lst with
     | :? EmptyList<'value> -> EmptyList() :> IList<'value>
     | :? List<'value> as lst ->
-        let sorted = newLst lst.Head lst.Tail
+        let sorted = splitLst lst.Head lst.Tail
         if lst.Tail :? EmptyList<'value> then
             lst
         else
@@ -123,10 +123,11 @@ let rec fromListToOOPList lst : IList<'value> =
     | [] -> EmptyList() :> IList<'value>
     | hd :: tl -> List(hd, fromListToOOPList(tl))
 
-let rec fromOOPListToList (lst : IList<'value>) : list<'value> =
+let rec fromOOPListToList (lst : IList<'value>) =
     match lst with
     | :? EmptyList<'value> -> []
     | :? List<'value> as lst ->  lst.Head :: fromOOPListToList lst.Tail
     | _ -> failwith $"Incorrect type was given : {lst.GetType()}.\
                       Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types.\
                       \n Error in -fromMyOOPListToList- function."
+

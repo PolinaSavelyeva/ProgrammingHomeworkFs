@@ -18,6 +18,7 @@
         <None Include="App.config" />
         <Compile Include="AlgebraicList.fs" />
         <Compile Include="OopList.fs" />
+        <Compile Include="Main.fs" />
     </ItemGroup>
     <ItemGroup>
       <PackageReference Include="Expecto" Version="9.0.4" />
