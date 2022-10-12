@@ -1,40 +1,39 @@
 module OopList
-//open AlgebraicList
 
 // Объявление нового типа IList
 type IList<'value> =
     interface
     end
 
-// Объявление нового типа MyOOPNonEmptyList
+// Объявление нового типа OopList.List
 //[<AllowNullLiteral>]
 type List<'value>(head: 'value, tail: IList<'value>) =
     interface IList<'value>
     member this.Head = head
     member this.Tail = tail
 
-// Объявление нового типа MyOOPEmptyList
+// Объявление нового типа OopList.EmptyList
 type EmptyList<'value>() =
     interface IList<'value>
 
-/// Рекурсивная функция fromMyOOPListToMyList, преобразовывающая MyOOPList -> MyList
-let rec toAlgebraicList (lst: IList<'value>) : AlgebraicList.List<'value> =
+/// Рекурсивная функция algebraicListOfIList, преобразовывающая OopList.List -> AlgebraicList.List
+let rec algebraicListOfIList (lst: IList<'value>) : AlgebraicList.List<'value> =
     match lst with
     | :? EmptyList<'value> -> AlgebraicList.Empty
-    | :? List<'value> as lst -> AlgebraicList.Construct(lst.Head, toAlgebraicList lst.Tail)
+    | :? List<'value> as lst -> AlgebraicList.Construct(lst.Head, algebraicListOfIList lst.Tail)
     | _ ->
         failwith
             $"Incorrect type was given : {lst.GetType()}.\
                       Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types.\
                       \n Error in -fromMyOOPListToMyList- function."
 
-/// Рекурсивная функция fromMyListToMyOOPList, преобразовывающая MyList -> MyOOPList
-let rec toOopList (lst: AlgebraicList.List<'value>) : IList<'value> =
+/// Рекурсивная функция iListOfAlgebraicList, преобразовывающая AlgebraicList.List -> OopList.List
+let rec iListOfAlgebraicList (lst: AlgebraicList.List<'value>) : IList<'value> =
     match lst with
     | AlgebraicList.Empty -> EmptyList<'value>() :> IList<'value>
-    | AlgebraicList.Construct (hd, tl) -> List<'value>(hd, toOopList tl)
+    | AlgebraicList.Construct (hd, tl) -> List<'value>(hd, iListOfAlgebraicList tl)
 
-///  Функция lenMyOOPList возвращает длину IList
+///  Функция len возвращает длину List
 let rec len (lst: IList<'value>) : int =
     match lst with
     | :? EmptyList<'value> -> 0
@@ -45,7 +44,7 @@ let rec len (lst: IList<'value>) : int =
                       Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types.\
                       \n Error in -lenMyOOPList- function."
 
-/// Функция takeOOPHead возвращает this.Head
+/// Функция takeHead возвращает this.Head
 let takeHead (lst: IList<'value>) : 'value =
     match lst with
     | :? List<'value> as lst -> lst.Head
@@ -55,37 +54,34 @@ let takeHead (lst: IList<'value>) : 'value =
                       Expected MyOOPNoneEmptyList<'value> type.\
                       \n Error in -takeOOPHead- function."
 
-/// Функция takeOOPTail возвращает this.Tail
+/// Функция takeTail возвращает this.Tail
 let takeTail (lst: IList<'value>) : IList<'value> =
     match lst with
-    | :? List<'value> as lst ->
-        if lst.Tail :? EmptyList<'value> then
-            EmptyList()
-        else
-            lst.Tail
+    | :? List<'value> as lst -> lst.Tail
     | _ ->
         failwith
             $"Incorrect type was given : {lst.GetType()}, this.Tale member was not found.\
                       The type MyOOPNonEmptyList<'value> which has this.Tale member was expected.\
                       \n Error in -takeOOPTail- function."
 
-let rec oneLine (lst: IList<'value>) : IList<'value> =
-    match lst with
-    | :? EmptyList<'value> -> EmptyList() :> IList<'value>
-    | :? List<'value> as lst ->
-        if lst.Tail :? EmptyList<'value> then
-            lst
-        elif lst.Head > takeHead lst.Tail then
-            List(takeHead lst.Tail, oneLine (List(lst.Head, takeTail lst.Tail)))
-        else
-            List(lst.Head, oneLine lst.Tail)
-    | _ ->
-        failwith
-            $"Incorrect type was given : {lst.GetType()}.\
-                      Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types.\
-                      \n Error in -oneOOPLine- function."
-
 let bubbleSort (lst: IList<'value>) : IList<'value> =
+
+    let rec oneLine (lst: IList<'value>) : IList<'value> =
+        match lst with
+        | :? EmptyList<'value> -> EmptyList() :> IList<'value>
+        | :? List<'value> as lst ->
+            if lst.Tail :? EmptyList<'value> then
+                lst
+            elif lst.Head > takeHead lst.Tail then
+                List(takeHead lst.Tail, oneLine (List(lst.Head, takeTail lst.Tail)))
+            else
+                List(lst.Head, oneLine lst.Tail)
+        | _ ->
+            failwith
+                $"Incorrect type was given : {lst.GetType()}.\
+                          Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types.\
+                          \n Error in -oneOOPLine- function."
+
     let mutable sortedLine: IList<'value> = lst
 
     for i in 1 .. len lst do
@@ -107,12 +103,12 @@ let rec splitLst (x: 'value) (lst: IList<'value>) =
     match lst with
     | :? EmptyList<'value> -> (EmptyList() :> IList<'value>, EmptyList() :> IList<'value>)
     | :? List<'value> as lst ->
-        let sorted = splitLst x lst.Tail
+        let newParts = splitLst x lst.Tail
 
         if lst.Head <= x then
-            List(lst.Head, fst sorted), snd sorted
+            List(lst.Head, fst newParts), snd newParts
         else
-            fst sorted, List(lst.Head, snd sorted)
+            fst newParts, List(lst.Head, snd newParts)
     | _ ->
         failwith
             $"Incorrect type was given : {lst.GetType()}.\
@@ -123,27 +119,27 @@ let rec quickSort (lst: IList<'value>) : IList<'value> =
     match lst with
     | :? EmptyList<'value> -> EmptyList() :> IList<'value>
     | :? List<'value> as lst ->
-        let sorted = splitLst lst.Head lst.Tail
+        let newParts = splitLst lst.Head lst.Tail
 
         if lst.Tail :? EmptyList<'value> then
             lst
         else
-            concat (quickSort (fst sorted)) (List(lst.Head, quickSort (snd sorted)))
+            concat (quickSort (fst newParts)) (List(lst.Head, quickSort (snd newParts)))
     | _ ->
         failwith
             $"Incorrect type was given : {lst.GetType()}.\
                       Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types.\
                       \n Error in -quickOOPSort- function."
 
-let rec fromListToOOPList lst : IList<'value> =
+let rec iListOfList lst : IList<'value> =
     match lst with
     | [] -> EmptyList() :> IList<'value>
-    | hd :: tl -> List(hd, fromListToOOPList (tl))
+    | hd :: tl -> List(hd, iListOfList tl)
 
-let rec fromOOPListToList (lst: IList<'value>) =
+let rec listOfIList (lst: IList<'value>) =
     match lst with
     | :? EmptyList<'value> -> []
-    | :? List<'value> as lst -> lst.Head :: fromOOPListToList lst.Tail
+    | :? List<'value> as lst -> lst.Head :: listOfIList lst.Tail
     | _ ->
         failwith
             $"Incorrect type was given : {lst.GetType()}.\

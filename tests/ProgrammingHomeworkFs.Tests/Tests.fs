@@ -125,7 +125,7 @@ module OopListTests =
                     <| fun _ ->
                         let actualResult =
                             let lst = List(1, List(3, EmptyList()))
-                            toAlgebraicList (bubbleSort lst)
+                            algebraicListOfIList (bubbleSort lst)
 
                         Expect.equal
                             actualResult
@@ -136,7 +136,7 @@ module OopListTests =
                     <| fun _ ->
                         let actualResult =
                             let lst = List("18", List("1", EmptyList()))
-                            toAlgebraicList (bubbleSort lst)
+                            algebraicListOfIList (bubbleSort lst)
 
                         Expect.equal
                             actualResult
@@ -148,7 +148,7 @@ module OopListTests =
                     <| fun _ ->
                         let actualResult =
                             let lst = List(1, List(3, EmptyList()))
-                            toAlgebraicList (quickSort lst)
+                            algebraicListOfIList (quickSort lst)
 
                         Expect.equal
                             actualResult
@@ -159,7 +159,7 @@ module OopListTests =
                     <| fun _ ->
                         let actualResult =
                             let lst = List("18", List("1", EmptyList()))
-                            toAlgebraicList (quickSort lst)
+                            algebraicListOfIList (quickSort lst)
 
                         Expect.equal
                             actualResult
@@ -168,18 +168,10 @@ module OopListTests =
               testList
                   "quickOOPSort MyOOPList property tests"
                   [ testProperty "quickSort test -- MyList<int>"
-                    <| fun (lst: list<int>) ->
-                        Expect.equal
-                        <| List.sort lst
-                        <| fromOOPListToList (bubbleSort (fromListToOOPList lst))
-                        <| "Unexpected result"
+                    <| fun (lst: list<int>) -> Expect.equal <| List.sort lst <| listOfIList (bubbleSort (iListOfList lst)) <| "Unexpected result"
 
                     testProperty "quickSort test -- MyList<string>"
-                    <| fun (lst: list<string>) ->
-                        Expect.equal
-                        <| List.sort lst
-                        <| fromOOPListToList (bubbleSort (fromListToOOPList lst))
-                        <| "Unexpected result" ]
+                    <| fun (lst: list<string>) -> Expect.equal <| List.sort lst <| listOfIList (bubbleSort (iListOfList lst)) <| "Unexpected result" ]
               testList
                   "concatOOP MyOOPList tests"
                   [ testCase "quickOOPSort test -- same string MyOOPLists"
@@ -187,7 +179,7 @@ module OopListTests =
                         let actualResult =
                             let lst1 = List("18", List("1", EmptyList()))
                             let lst2 = List("18", List("1", EmptyList()))
-                            toAlgebraicList (concat lst1 lst2)
+                            algebraicListOfIList (concat lst1 lst2)
 
                         Expect.equal
                             actualResult
@@ -199,6 +191,6 @@ module OopListTests =
                         let actualResult =
                             let lst1 = EmptyList()
                             let lst2 = EmptyList()
-                            toAlgebraicList (concat lst1 lst2)
+                            algebraicListOfIList (concat lst1 lst2)
 
                         Expect.equal actualResult AlgebraicList.Empty "concatOOP EmptyList() and EmptyList() as same as AlgebraicList.Empty" ] ]
