@@ -18,6 +18,16 @@ let tree = Node(1, [Node(2, [Leaf(2)]); Leaf(2); Leaf(2)])
 //находит количество различных элементов, хранящихся в узлах. Использовать рекурсию,
 //не использовать мутабельные переменные.
 
+let rec counter (tree : Tree<'value>) =
+    match tree with
+    | Leaf hd -> 1
+    | Node (hd, body) -> hd <> summaTree leftTree
+    | NodeWithRight (x, rightTree) -> x + summaTree rightTree
+    | FullNode (x, leftTree, rightTree) ->
+        let leftX = summaTree leftTree
+        let rightX = summaTree rightTree
+        x + rightX + leftX
+
 let rec countElTree (x : 'value) (tree : Tree<'value>) : int =
     match tree with
     | Leaf a ->

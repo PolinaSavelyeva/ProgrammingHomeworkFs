@@ -224,9 +224,7 @@ var assemblies = [
   {
     "name": "ProgrammingHomeworkFs",
     "classes": [
-      { "name": "ProgrammingHomeworkFs.AssemblyInfo", "rp": "ProgrammingHomeworkFs_AssemblyInfo.html", "cl": 0, "ucl": 22, "cal": 22, "tl": 100, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "ProgrammingHomeworkFs.Main", "rp": "ProgrammingHomeworkFs_Main.html", "cl": 0, "ucl": 22, "cal": 22, "tl": 100, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 12, "lch": [], "bch": [], "hc": [] },
-      { "name": "ProgrammingHomeworkFs.Say", "rp": "ProgrammingHomeworkFs_Say.html", "cl": 3, "ucl": 4, "cal": 7, "tl": 100, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "ProgrammingHomeworkFs", "rp": "ProgrammingHomeworkFs_ProgrammingHomeworkFs.html", "cl": 31, "ucl": 17, "cal": 48, "tl": 79, "ct": "LineCoverage", "mc": "-", "cb": 31, "tb": 43, "lch": [], "bch": [], "hc": [] },
     ]},
 ];
 
@@ -240,18 +238,18 @@ var riskHotspotMetrics = [
 
 var riskHotspots = [
   {
-    "assembly": "ProgrammingHomeworkFs", "class": "ProgrammingHomeworkFs.Main", "reportPath": "ProgrammingHomeworkFs_Main.html", "methodName": "System.Int32 ProgrammingHomeworkFs.Main::main(System.String[])", "methodShortName": "main(...)", "fileIndex": 0, "line": 77,
+    "assembly": "ProgrammingHomeworkFs", "class": "ProgrammingHomeworkFs", "reportPath": "ProgrammingHomeworkFs_ProgrammingHomeworkFs.html", "methodName": "a ProgrammingHomeworkFs::arrays(value[])", "methodShortName": "arrays(...)", "fileIndex": 0, "line": 51,
     "metrics": [
       { "value": 5, "exceeded": false },
       { "value": 16, "exceeded": false },
       { "value": 30, "exceeded": true },
     ]},
   {
-    "assembly": "ProgrammingHomeworkFs", "class": "ProgrammingHomeworkFs.Main", "reportPath": "ProgrammingHomeworkFs_Main.html", "methodName": "System.String ProgrammingHomeworkFs.Main/CLIArguments::Argu.IArgParserTemplate.get_Usage()", "methodShortName": "Argu.IArgParserTemplate.get_Usage()", "fileIndex": 0, "line": 69,
+    "assembly": "ProgrammingHomeworkFs", "class": "ProgrammingHomeworkFs", "reportPath": "ProgrammingHomeworkFs_ProgrammingHomeworkFs.html", "methodName": "a ProgrammingHomeworkFs::arrays$W(Microsoft.FSharp.Core.FSharpFunc`2<value,Microsoft.FSharp.Core.FSharpFunc`2<value,a>>,value[])", "methodShortName": "arrays$W(...)", "fileIndex": 0, "line": 51,
     "metrics": [
-      { "value": 4, "exceeded": false },
-      { "value": 4, "exceeded": false },
-      { "value": 20, "exceeded": true },
+      { "value": 5, "exceeded": false },
+      { "value": 16, "exceeded": false },
+      { "value": 30, "exceeded": true },
     ]},
 ];
 
