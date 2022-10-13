@@ -1,7 +1,6 @@
-namespace ProgrammingHomeworkFs.Tests
+namespace Tests
 
 open Expecto
-open ProgrammingHomeworkFs
 
 module SayTests =
     [<Tests>]
