@@ -1,45 +1,27 @@
 module Tree
-open AbstractTrees
-// 1. Описать алгебраический тип, задающий дерево,
-// в котором внутренний узел может иметь произвольное количество сыновей.
-// Листья и внутренние узлы хранят некоторые значени произвольного (одинакового для всех) типа.
+
+type IList<'value> =
+    | Cons of hd : 'value * tl : IList<'value>
+    | Empty
 
 type Tree<'value> =
-    | Node of hd : 'value * bdy : list<Tree<'value>>
+    | Node of hd : 'value * tl : list<Tree<'value>>
     | Leaf of 'value
-    //| Leaf of 'value
 
-let tree = Node(1, [Node(2, [Leaf(2)]); Leaf(2); Leaf(2)])
-//   1
-//2  2  2
-//2
+let uniqueValues (tree : Tree<'value>) : int =
+    let rec toSet (tree : Tree<'value>) : Set<'value> =
+     match tree with
+     | Leaf(hd) -> Set.empty.Add(hd)
+     | Node (hd, tl) ->
+         match tl with
+         | [x] ->
+             match x with
+             | Node(hd1, tl1) -> Set.empty.Add(hd) + toSet (Node(hd1, tl1))
+             | Leaf(hd) -> Set.empty.Add(hd)
+         | hd1 :: tl1 -> Set.empty.Add(hd) + toSet hd1 + toSet (Node (hd, tl1))
+         | _ -> failwith "Non correct type"
 
-//2. Реализовать функцию, которая по дереву (тип, описанный выше),
-//находит количество различных элементов, хранящихся в узлах. Использовать рекурсию,
-//не использовать мутабельные переменные.
+    Set.count (toSet tree)
 
-let rec counter (tree : Tree<'value>) =
-    match tree with
-    | Leaf hd -> 1
-    | Node (hd, body) -> hd <> summaTree leftTree
-    | NodeWithRight (x, rightTree) -> x + summaTree rightTree
-    | FullNode (x, leftTree, rightTree) ->
-        let leftX = summaTree leftTree
-        let rightX = summaTree rightTree
-        x + rightX + leftX
-
-let rec countElTree (x : 'value) (tree : Tree<'value>) : int =
-    match tree with
-    | Leaf a ->
-        if a <> x then
-            1
-        else 0
-    | Node(a, b) ->
-        match b with
-        | :? Tree<'value>
-        if a <> x then
-            1 + countElTree b
-        else a == b then
-            countElTree b
-
-let rec f (tree : Tree<'value>) : int =
+let tree1 = Node(1, [Node(1, [Leaf(1)]); Leaf(1); Leaf(1)])
+printf $"%A{uniqueValues tree1}"
