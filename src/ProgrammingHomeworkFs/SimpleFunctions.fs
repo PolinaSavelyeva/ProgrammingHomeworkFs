@@ -3,11 +3,9 @@ module ProgrammingHomeworkFs
 /// Функция  expo возводит указанное число в указанную степень
 let expo (basement: float) (exponent: int) : float =
     if basement = 0.0 && exponent = 0 then
-        failwith
-            "Don't try to raise zero to the power of zero. Expected both non-zero basement and non-zero exponent. \n Error when calling - expo - function."
+        failwith "Don't try to raise zero to the power of zero. Expected both non-zero basement and non-zero exponent. \n Error when calling - expo - function."
     elif basement = 0.0 && exponent < 0 then
-        failwith
-            "Don't try to raise zero to the negative power. Expected zero basement and positive <> 0 exponent. \n Error when calling - expo - function."
+        failwith "Don't try to raise zero to the negative power. Expected zero basement and positive <> 0 exponent. \n Error when calling - expo - function."
     elif basement = 0.0 then
         0.0
     else
@@ -15,10 +13,7 @@ let expo (basement: float) (exponent: int) : float =
         let mutable counter = abs exponent // счетчик для цикла
 
         let product = // product будет многократно умножаться на себя
-            if exponent > 0 then
-                basement
-            else
-                1.0 / basement
+            if exponent > 0 then basement else 1.0 / basement
 
         while counter > 0 do
             ans <- ans * product
@@ -29,11 +24,9 @@ let expo (basement: float) (exponent: int) : float =
 /// Функция fastExpo использует быстрое возведение в степень
 let rec fastExpo (basement: float) (exponent: int) : float = // exponent >= 0
     if basement = 0.0 && exponent = 0 then
-        failwith
-            "Don't try to raise zero to the power of zero. Expected both non-zero basement and non-zero exponent. \n Error when calling - fastExpo - function"
+        failwith "Don't try to raise zero to the power of zero. Expected both non-zero basement and non-zero exponent. \n Error when calling - fastExpo - function"
     elif basement = 0.0 && exponent < 0 then
-        failwith
-            "Don't try to raise zero to the negative power. Expected zero basement and positive <> 0 exponent. \n Error when calling - fastExpo - function."
+        failwith "Don't try to raise zero to the negative power. Expected zero basement and positive <> 0 exponent. \n Error when calling - fastExpo - function."
     elif exponent = 1 then
         basement
     elif exponent = 0 then
@@ -60,8 +53,7 @@ let inline arrays (arr: 'value array) =
 
         maximum - minimum
     else
-        failwith
-            "There is no max and min elements in empty array. Expected at least 1 element in array. \n Error when calling - arrays - function"
+        failwith "There is no max and min elements in empty array. Expected at least 1 element in array. \n Error when calling - arrays - function"
 
 /// Функция odds возвращает массив целый нечетных чисел, лежащих строго между введенными числами
 let odds (x: int) (y: int) =
@@ -69,7 +61,8 @@ let odds (x: int) (y: int) =
     let maxim = if x > y then x else y
 
     let odds_array =
-        [| for i in minim + minim % 2 + 1 .. 2 .. maxim - maxim % 2 do yield i |]
+        [| for i in minim + minim % 2 + 1 .. 2 .. maxim - maxim % 2 do
+               yield i |]
 
     odds_array
 
