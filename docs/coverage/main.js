@@ -224,33 +224,18 @@ var assemblies = [
   {
     "name": "ProgrammingHomeworkFs",
     "classes": [
-      { "name": "ProgrammingHomeworkFs", "rp": "ProgrammingHomeworkFs_ProgrammingHomeworkFs.html", "cl": 28, "ucl": 14, "cal": 42, "tl": 72, "ct": "LineCoverage", "mc": "-", "cb": 31, "tb": 43, "lch": [], "bch": [], "hc": [] },
+      { "name": "AlgebraicList", "rp": "ProgrammingHomeworkFs_AlgebraicList.html", "cl": 24, "ucl": 1, "cal": 25, "tl": 54, "ct": "LineCoverage", "mc": "-", "cb": 19, "tb": 20, "lch": [], "bch": [], "hc": [] },
+      { "name": "OopList", "rp": "ProgrammingHomeworkFs_OopList.html", "cl": 45, "ucl": 40, "cal": 85, "tl": 147, "ct": "LineCoverage", "mc": "-", "cb": 36, "tb": 48, "lch": [], "bch": [], "hc": [] },
+      { "name": "ProgrammingHomeworkFs.Main", "rp": "ProgrammingHomeworkFs_Main.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 6, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
     ]},
 ];
 
 var historicCoverageExecutionTimes = [];
 
 var riskHotspotMetrics = [
-      { "name": "Cyclomatic complexity", "explanationUrl": "https://en.wikipedia.org/wiki/Cyclomatic_complexity" },
-      { "name": "NPath complexity", "explanationUrl": "https://modess.io/npath-complexity-cyclomatic-complexity-explained" },
-      { "name": "Crap Score", "explanationUrl": "https://googletesting.blogspot.de/2011/02/this-code-is-crap.html" },
 ];
 
 var riskHotspots = [
-  {
-    "assembly": "ProgrammingHomeworkFs", "class": "ProgrammingHomeworkFs", "reportPath": "ProgrammingHomeworkFs_ProgrammingHomeworkFs.html", "methodName": "a ProgrammingHomeworkFs::arrays(value[])", "methodShortName": "arrays(...)", "fileIndex": 0, "line": 44,
-    "metrics": [
-      { "value": 5, "exceeded": false },
-      { "value": 16, "exceeded": false },
-      { "value": 30, "exceeded": true },
-    ]},
-  {
-    "assembly": "ProgrammingHomeworkFs", "class": "ProgrammingHomeworkFs", "reportPath": "ProgrammingHomeworkFs_ProgrammingHomeworkFs.html", "methodName": "a ProgrammingHomeworkFs::arrays$W(Microsoft.FSharp.Core.FSharpFunc`2<value,Microsoft.FSharp.Core.FSharpFunc`2<value,a>>,value[])", "methodShortName": "arrays$W(...)", "fileIndex": 0, "line": 44,
-    "metrics": [
-      { "value": 5, "exceeded": false },
-      { "value": 16, "exceeded": false },
-      { "value": 30, "exceeded": true },
-    ]},
 ];
 
 var branchCoverageAvailable = true;
