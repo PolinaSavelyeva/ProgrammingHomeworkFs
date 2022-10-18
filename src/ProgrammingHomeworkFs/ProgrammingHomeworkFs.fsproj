@@ -16,7 +16,12 @@
     <ItemGroup>
         <Compile Include="AssemblyInfo.fs" />
         <None Include="App.config" />
-        <Compile Include="SimpleFunctions.fs" />
+        <Compile Include="AlgebraicList.fs" />
+        <Compile Include="OopList.fs" />
+        <Compile Include="Main.fs" />
+    </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="Expecto.FsCheck" Version="9.0.4" />
     </ItemGroup>
     <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>
