@@ -226,7 +226,7 @@ var assemblies = [
     "classes": [
       { "name": "AlgebraicList", "rp": "ProgrammingHomeworkFs_AlgebraicList.html", "cl": 17, "ucl": 8, "cal": 25, "tl": 54, "ct": "LineCoverage", "mc": "-", "cb": 12, "tb": 20, "lch": [], "bch": [], "hc": [] },
       { "name": "ProgrammingHomeworkFs.Main", "rp": "ProgrammingHomeworkFs_Main.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 6, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "Tree", "rp": "ProgrammingHomeworkFs_Tree.html", "cl": 16, "ucl": 1, "cal": 17, "tl": 35, "ct": "LineCoverage", "mc": "-", "cb": 7, "tb": 8, "lch": [], "bch": [], "hc": [] },
+      { "name": "Tree", "rp": "ProgrammingHomeworkFs_Tree.html", "cl": 9, "ucl": 0, "cal": 9, "tl": 27, "ct": "LineCoverage", "mc": "-", "cb": 2, "tb": 2, "lch": [], "bch": [], "hc": [] },
     ]},
 ];
 
