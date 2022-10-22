@@ -224,18 +224,28 @@ var assemblies = [
   {
     "name": "ProgrammingHomeworkFs",
     "classes": [
-      { "name": "AlgebraicList", "rp": "ProgrammingHomeworkFs_AlgebraicList.html", "cl": 24, "ucl": 1, "cal": 25, "tl": 54, "ct": "LineCoverage", "mc": "-", "cb": 19, "tb": 20, "lch": [], "bch": [], "hc": [] },
-      { "name": "OopList", "rp": "ProgrammingHomeworkFs_OopList.html", "cl": 45, "ucl": 40, "cal": 85, "tl": 147, "ct": "LineCoverage", "mc": "-", "cb": 36, "tb": 48, "lch": [], "bch": [], "hc": [] },
+      { "name": "AlgebraicList", "rp": "ProgrammingHomeworkFs_AlgebraicList.html", "cl": 17, "ucl": 8, "cal": 25, "tl": 54, "ct": "LineCoverage", "mc": "-", "cb": 12, "tb": 20, "lch": [], "bch": [], "hc": [] },
       { "name": "ProgrammingHomeworkFs.Main", "rp": "ProgrammingHomeworkFs_Main.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 6, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "Tree", "rp": "ProgrammingHomeworkFs_Tree.html", "cl": 9, "ucl": 0, "cal": 9, "tl": 27, "ct": "LineCoverage", "mc": "-", "cb": 2, "tb": 2, "lch": [], "bch": [], "hc": [] },
     ]},
 ];
 
 var historicCoverageExecutionTimes = [];
 
 var riskHotspotMetrics = [
+      { "name": "Cyclomatic complexity", "explanationUrl": "https://en.wikipedia.org/wiki/Cyclomatic_complexity" },
+      { "name": "NPath complexity", "explanationUrl": "https://modess.io/npath-complexity-cyclomatic-complexity-explained" },
+      { "name": "Crap Score", "explanationUrl": "https://googletesting.blogspot.de/2011/02/this-code-is-crap.html" },
 ];
 
 var riskHotspots = [
+  {
+    "assembly": "ProgrammingHomeworkFs", "class": "AlgebraicList", "reportPath": "ProgrammingHomeworkFs_AlgebraicList.html", "methodName": "AlgebraicList/List`1<value> AlgebraicList/oneLine@18::Invoke(AlgebraicList/List`1<value>)", "methodShortName": "Invoke(...)", "fileIndex": 0, "line": 18,
+    "metrics": [
+      { "value": 5, "exceeded": false },
+      { "value": 4, "exceeded": false },
+      { "value": 30, "exceeded": true },
+    ]},
 ];
 
 var branchCoverageAvailable = true;
