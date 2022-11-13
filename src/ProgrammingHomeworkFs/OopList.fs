@@ -1,22 +1,18 @@
 module OopList
 
-// Объявление нового типа IList
 type IList<'value> =
     interface
     end
 
-// Объявление нового типа OopList.List
 //[<AllowNullLiteral>]
 type List<'value>(head: 'value, tail: IList<'value>) =
     interface IList<'value>
     member this.Head = head
     member this.Tail = tail
 
-// Объявление нового типа OopList.EmptyList
 type EmptyList<'value>() =
     interface IList<'value>
 
-/// Рекурсивная функция algebraicListOfIList, преобразовывающая OopList.List -> AlgebraicList.List
 let rec algebraicListOfIList (lst: IList<'value>) : AlgebraicList.List<'value> =
     match lst with
     | :? EmptyList<'value> -> AlgebraicList.Empty
@@ -27,13 +23,11 @@ let rec algebraicListOfIList (lst: IList<'value>) : AlgebraicList.List<'value> =
                       Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types.\
                       \n Error in -fromMyOOPListToMyList- function."
 
-/// Рекурсивная функция iListOfAlgebraicList, преобразовывающая AlgebraicList.List -> OopList.List
 let rec iListOfAlgebraicList (lst: AlgebraicList.List<'value>) : IList<'value> =
     match lst with
     | AlgebraicList.Empty -> EmptyList<'value>() :> IList<'value>
     | AlgebraicList.Construct (hd, tl) -> List<'value>(hd, iListOfAlgebraicList tl)
 
-///  Функция len возвращает длину List
 let rec len (lst: IList<'value>) : int =
     match lst with
     | :? EmptyList<'value> -> 0
@@ -44,7 +38,6 @@ let rec len (lst: IList<'value>) : int =
                       Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types.\
                       \n Error in -lenMyOOPList- function."
 
-/// Функция takeHead возвращает this.Head
 let takeHead (lst: IList<'value>) : 'value =
     match lst with
     | :? List<'value> as lst -> lst.Head
@@ -54,7 +47,6 @@ let takeHead (lst: IList<'value>) : 'value =
                       Expected MyOOPNoneEmptyList<'value> type.\
                       \n Error in -takeOOPHead- function."
 
-/// Функция takeTail возвращает this.Tail
 let takeTail (lst: IList<'value>) : IList<'value> =
     match lst with
     | :? List<'value> as lst -> lst.Tail
