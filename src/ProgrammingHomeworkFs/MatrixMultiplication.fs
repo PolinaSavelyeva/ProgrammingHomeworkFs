@@ -4,8 +4,8 @@ open SparseVector
 open SparseMatrix
 
 (*let multiplication fPlus fMultiply (vector: Vector<'value, 'obj>) (matrix: Matrix<'value, 'obj>) =
-    if vector.BLength = matrix.QLength then
-        let m = vector.BLength
+    if vector.SquareLength = matrix.SquareLength then
+        let m = vector.SquareLength
         let v = Array.create m Option.None
 
         for i in 0 .. m - 1 do

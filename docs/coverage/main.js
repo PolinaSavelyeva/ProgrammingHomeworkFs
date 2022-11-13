@@ -224,10 +224,12 @@ var assemblies = [
   {
     "name": "ProgrammingHomeworkFs",
     "classes": [
-      { "name": "AlgebraicList", "rp": "ProgrammingHomeworkFs_AlgebraicList.html", "cl": 17, "ucl": 8, "cal": 25, "tl": 49, "ct": "LineCoverage", "mc": "-", "cb": 12, "tb": 20, "lch": [], "bch": [], "hc": [] },
-      { "name": "OopList", "rp": "ProgrammingHomeworkFs_OopList.html", "cl": 0, "ucl": 85, "cal": 85, "tl": 139, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 48, "lch": [], "bch": [], "hc": [] },
+      { "name": "AlgebraicList", "rp": "ProgrammingHomeworkFs_AlgebraicList.html", "cl": 24, "ucl": 1, "cal": 25, "tl": 49, "ct": "LineCoverage", "mc": "-", "cb": 19, "tb": 20, "lch": [], "bch": [], "hc": [] },
+      { "name": "OopList", "rp": "ProgrammingHomeworkFs_OopList.html", "cl": 45, "ucl": 40, "cal": 85, "tl": 139, "ct": "LineCoverage", "mc": "-", "cb": 36, "tb": 48, "lch": [], "bch": [], "hc": [] },
       { "name": "ProgrammingHomeworkFs.Main", "rp": "ProgrammingHomeworkFs_Main.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 6, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "SimpleFunctions", "rp": "ProgrammingHomeworkFs_SimpleFunctions.html", "cl": 28, "ucl": 13, "cal": 41, "tl": 62, "ct": "LineCoverage", "mc": "-", "cb": 31, "tb": 43, "lch": [], "bch": [], "hc": [] },
+      { "name": "SparseMatrix", "rp": "ProgrammingHomeworkFs_SparseMatrix.html", "cl": 53, "ucl": 0, "cal": 53, "tl": 100, "ct": "LineCoverage", "mc": "-", "cb": 39, "tb": 40, "lch": [], "bch": [], "hc": [] },
+      { "name": "SparseVector", "rp": "ProgrammingHomeworkFs_SparseVector.html", "cl": 39, "ucl": 0, "cal": 39, "tl": 82, "ct": "LineCoverage", "mc": "-", "cb": 18, "tb": 18, "lch": [], "bch": [], "hc": [] },
       { "name": "Tree", "rp": "ProgrammingHomeworkFs_Tree.html", "cl": 9, "ucl": 0, "cal": 9, "tl": 27, "ct": "LineCoverage", "mc": "-", "cb": 2, "tb": 2, "lch": [], "bch": [], "hc": [] },
     ]},
 ];
@@ -242,18 +244,11 @@ var riskHotspotMetrics = [
 
 var riskHotspots = [
   {
-    "assembly": "ProgrammingHomeworkFs", "class": "AlgebraicList", "reportPath": "ProgrammingHomeworkFs_AlgebraicList.html", "methodName": "AlgebraicList/List`1<value> AlgebraicList/oneLine@15::Invoke(AlgebraicList/List`1<value>)", "methodShortName": "Invoke(...)", "fileIndex": 0, "line": 15,
+    "assembly": "ProgrammingHomeworkFs", "class": "SparseMatrix", "reportPath": "ProgrammingHomeworkFs_SparseMatrix.html", "methodName": "Microsoft.FSharp.Core.FSharpOption`1<a> SparseMatrix/whichElement@85-1T::Invoke(System.Int32,System.Int32,System.Int32,SparseMatrix/QuadTree`1<a>)", "methodShortName": "Invoke(...)", "fileIndex": 0, "line": 86,
     "metrics": [
-      { "value": 5, "exceeded": false },
-      { "value": 4, "exceeded": false },
-      { "value": 30, "exceeded": true },
-    ]},
-  {
-    "assembly": "ProgrammingHomeworkFs", "class": "OopList", "reportPath": "ProgrammingHomeworkFs_OopList.html", "methodName": "OopList/IList`1<value> OopList/oneLine@62-1::Invoke(OopList/IList`1<value>)", "methodShortName": "Invoke(...)", "fileIndex": 0, "line": 62,
-    "metrics": [
-      { "value": 5, "exceeded": false },
-      { "value": 16, "exceeded": false },
-      { "value": 30, "exceeded": true },
+      { "value": 9, "exceeded": false },
+      { "value": 256, "exceeded": true },
+      { "value": 9, "exceeded": false },
     ]},
   {
     "assembly": "ProgrammingHomeworkFs", "class": "SimpleFunctions", "reportPath": "ProgrammingHomeworkFs_SimpleFunctions.html", "methodName": "a SimpleFunctions::arrays(value[])", "methodShortName": "arrays(...)", "fileIndex": 0, "line": 40,
@@ -268,20 +263,6 @@ var riskHotspots = [
       { "value": 5, "exceeded": false },
       { "value": 16, "exceeded": false },
       { "value": 30, "exceeded": true },
-    ]},
-  {
-    "assembly": "ProgrammingHomeworkFs", "class": "OopList", "reportPath": "ProgrammingHomeworkFs_OopList.html", "methodName": "System.Tuple`2<OopList/IList`1<value>,OopList/IList`1<value>> OopList::splitLst(value,OopList/IList`1<value>)", "methodShortName": "splitLst(...)", "fileIndex": 0, "line": 95,
-    "metrics": [
-      { "value": 4, "exceeded": false },
-      { "value": 8, "exceeded": false },
-      { "value": 20, "exceeded": true },
-    ]},
-  {
-    "assembly": "ProgrammingHomeworkFs", "class": "OopList", "reportPath": "ProgrammingHomeworkFs_OopList.html", "methodName": "OopList/IList`1<value> OopList::quickSort(OopList/IList`1<value>)", "methodShortName": "quickSort(...)", "fileIndex": 0, "line": 111,
-    "metrics": [
-      { "value": 4, "exceeded": false },
-      { "value": 8, "exceeded": false },
-      { "value": 20, "exceeded": true },
     ]},
 ];
 
