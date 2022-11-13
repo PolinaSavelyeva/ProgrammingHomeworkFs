@@ -1,11 +1,9 @@
 module AlgebraicList
 
-// Алгебраический тип AlgebraicList.List - перемножаем декартово
 type List<'value> =
     | Construct of head: 'value * tail: List<'value>
     | Empty
 
-/// Функция len возвращает длину AlgebraicList.List
 let rec len (lst: List<'value>) : int =
     match lst with
     | Empty -> 0
@@ -13,7 +11,6 @@ let rec len (lst: List<'value>) : int =
 
 let bubbleSort (lst: List<'value>) : List<'value> =
 
-    /// Функция oneLine выполняет "попарную" сортировку за 1 цикл, с нулевого до последнего элемента
     let rec oneLine (lst: List<'value>) : List<'value> =
         match lst with
         | Empty -> Empty
@@ -27,13 +24,11 @@ let bubbleSort (lst: List<'value>) : List<'value> =
 
     sortedLine
 
-/// Функция concat конкатинирует два листа типа AlgebraicList.List
 let rec concat (lst1: List<'value>) (lst2: List<'value>) : List<'value> =
     match lst1 with
     | Empty -> lst2
     | Construct (hd, tl) -> Construct(hd, concat tl lst2)
 
-/// Функция splitList совмещает в себе работу rightLiist и leftList
 let rec splitList (x: 'value) (lst: List<'value>) =
     match lst with
     | Empty -> Empty, Empty
