@@ -1,4 +1,4 @@
-module ProgrammingHomeworkFs
+module SimpleFunctions
 
 let expo (basement: float) (exponent: int) : float =
     if basement = 0.0 && exponent = 0 then
@@ -60,8 +60,3 @@ let odds (x: int) (y: int) =
                yield i |]
 
     odds_array
-
-module Main =
-
-    [<EntryPoint>]
-    let main (argv: string array) = 0

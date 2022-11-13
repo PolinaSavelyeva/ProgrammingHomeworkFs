@@ -1,7 +1,7 @@
 namespace ProgrammingHomeworkFs.Tests
 
 open Expecto
-open ProgrammingHomeworkFs
+open SimpleFunctions
 
 module SayTests =
     [<Tests>]

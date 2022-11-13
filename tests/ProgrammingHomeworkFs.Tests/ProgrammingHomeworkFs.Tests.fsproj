@@ -7,6 +7,7 @@
     </PropertyGroup>
     <ItemGroup>
         <Compile Include="AssemblyInfo.fs" />
+        <Compile Include="SimpleFunctions.fs" />
         <Compile Include="TreeAndAlgebraicList.fs" />
         <Compile Include="Main.fs" />
     </ItemGroup>
