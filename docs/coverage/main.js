@@ -224,9 +224,7 @@ var assemblies = [
   {
     "name": "ProgrammingHomeworkFs",
     "classes": [
-      { "name": "AlgebraicList", "rp": "ProgrammingHomeworkFs_AlgebraicList.html", "cl": 17, "ucl": 8, "cal": 25, "tl": 54, "ct": "LineCoverage", "mc": "-", "cb": 12, "tb": 20, "lch": [], "bch": [], "hc": [] },
-      { "name": "ProgrammingHomeworkFs.Main", "rp": "ProgrammingHomeworkFs_Main.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 6, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "Tree", "rp": "ProgrammingHomeworkFs_Tree.html", "cl": 9, "ucl": 0, "cal": 9, "tl": 27, "ct": "LineCoverage", "mc": "-", "cb": 2, "tb": 2, "lch": [], "bch": [], "hc": [] },
+      { "name": "ProgrammingHomeworkFs", "rp": "ProgrammingHomeworkFs_ProgrammingHomeworkFs.html", "cl": 28, "ucl": 14, "cal": 42, "tl": 67, "ct": "LineCoverage", "mc": "-", "cb": 31, "tb": 43, "lch": [], "bch": [], "hc": [] },
     ]},
 ];
 
@@ -240,10 +238,17 @@ var riskHotspotMetrics = [
 
 var riskHotspots = [
   {
-    "assembly": "ProgrammingHomeworkFs", "class": "AlgebraicList", "reportPath": "ProgrammingHomeworkFs_AlgebraicList.html", "methodName": "AlgebraicList/List`1<value> AlgebraicList/oneLine@18::Invoke(AlgebraicList/List`1<value>)", "methodShortName": "Invoke(...)", "fileIndex": 0, "line": 18,
+    "assembly": "ProgrammingHomeworkFs", "class": "ProgrammingHomeworkFs", "reportPath": "ProgrammingHomeworkFs_ProgrammingHomeworkFs.html", "methodName": "a ProgrammingHomeworkFs::arrays(value[])", "methodShortName": "arrays(...)", "fileIndex": 0, "line": 40,
     "metrics": [
       { "value": 5, "exceeded": false },
-      { "value": 4, "exceeded": false },
+      { "value": 16, "exceeded": false },
+      { "value": 30, "exceeded": true },
+    ]},
+  {
+    "assembly": "ProgrammingHomeworkFs", "class": "ProgrammingHomeworkFs", "reportPath": "ProgrammingHomeworkFs_ProgrammingHomeworkFs.html", "methodName": "a ProgrammingHomeworkFs::arrays$W(Microsoft.FSharp.Core.FSharpFunc`2<value,Microsoft.FSharp.Core.FSharpFunc`2<value,a>>,value[])", "methodShortName": "arrays$W(...)", "fileIndex": 0, "line": 40,
+    "metrics": [
+      { "value": 5, "exceeded": false },
+      { "value": 16, "exceeded": false },
       { "value": 30, "exceeded": true },
     ]},
 ];
