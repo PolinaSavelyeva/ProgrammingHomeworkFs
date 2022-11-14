@@ -7,7 +7,7 @@ type BinTree<'value> =
     | Leaf of 'value
     | Node of BinTree<'value> * BinTree<'value>
 
-let toSquare (arr: array<Option<'value>>) : int =
+let toSquare (arr: array<Option<'value>>) =
     let length = arr.Length
     let log = Math.Log(length, 2)
     if (ceil log) = log then length else int (2.0 ** ceil log)
@@ -24,7 +24,7 @@ type squareArray<'value> =
               Length = length }
     end
 
-let toBinTree (arr: array<Option<'value>>) : BinTree<'value> =
+let toBinTree arr =
 
     let fromOptionToBinTree optionValue : BinTree<'value> =
         match optionValue with
@@ -71,7 +71,7 @@ type Vector<'value when 'value: equality> =
     end
 
 
-let takeElementOfVector (i: int) (vector: Vector<'value>) : Option<'value> =
+let takeElementOfVector i (vector: Vector<'value>) =
 
     let rec whichElement (i: int) (size: int) (tree: BinTree<'value>) : Option<'value> =
         match tree with

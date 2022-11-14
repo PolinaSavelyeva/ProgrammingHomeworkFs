@@ -7,7 +7,7 @@ type QuadTree<'value> =
     | Leaf of 'value
     | Node of QuadTree<'value> * QuadTree<'value> * QuadTree<'value> * QuadTree<'value>
 
-let toSquare (arr: 'value option[,]) : int =
+let toSquare arr =
     let length1 = Array2D.length1 arr
     let length2 = Array2D.length2 arr
     let log1 = Math.Log(length1, 2)
@@ -32,13 +32,13 @@ type squareArray<'value> =
               Length = length }
     end
 
-let toQuadTree (arr: 'value option[,]) : QuadTree<'value> =
-    let fromOptionToQTree optionValue : QuadTree<'value> =
+let toQuadTree arr =
+    let fromOptionToQTree optionValue =
         match optionValue with
         | Option.None -> QuadTree.None
         | Some x -> QuadTree.Leaf(x)
 
-    let rec qTreeFormation (arr: squareArray<'value>) : QuadTree<'value> =
+    let rec qTreeFormation (arr: squareArray<'value>) =
         let memory = arr.Memory
         let hd1 = arr.HeadRow
         let hd2 = arr.HeadColumn
@@ -89,7 +89,7 @@ type Matrix<'value when 'value: equality> =
               SquareLength = toSquare arr }
     end
 
-let takeElementOfMatrix (i: int) (j: int) (matrix: Matrix<'value>) =
+let takeElementOfMatrix i j (matrix: Matrix<'value>) =
 
     let rec whichElement i j size tree =
         match tree with
