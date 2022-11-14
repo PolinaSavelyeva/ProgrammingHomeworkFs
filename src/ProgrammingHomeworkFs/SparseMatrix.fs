@@ -21,14 +21,14 @@ let toSquare (arr: 'value option[,]) : int =
 type squareArray<'value> =
     struct
         val Memory: 'value option[,]
-        val Head1: int
-        val Head2: int
+        val HeadRow: int
+        val HeadColumn: int
         val Length: int
 
-        new(memory, head1, head2, length) =
+        new(memory, headRow, headColumn, length) =
             { Memory = memory
-              Head1 = head1
-              Head2 = head2
+              HeadRow = headRow
+              HeadColumn = headColumn
               Length = length }
     end
 
@@ -36,12 +36,12 @@ let toQuadTree (arr: 'value option[,]) : QuadTree<'value> =
     let fromOptionToQTree optionValue : QuadTree<'value> =
         match optionValue with
         | Option.None -> QuadTree.None
-        | Some (x) -> QuadTree.Leaf(x)
+        | Some x -> QuadTree.Leaf(x)
 
     let rec qTreeFormation (arr: squareArray<'value>) : QuadTree<'value> =
         let memory = arr.Memory
-        let hd1 = arr.Head1
-        let hd2 = arr.Head2
+        let hd1 = arr.HeadRow
+        let hd2 = arr.HeadColumn
         let length = arr.Length
         let realLength1 = Array2D.length1 memory
         let realLength2 = Array2D.length2 memory
@@ -68,19 +68,28 @@ let toQuadTree (arr: 'value option[,]) : QuadTree<'value> =
 
     qTreeFormation (squareArray (arr, 0, 0, toSquare arr))
 
-type Matrix<'value, 'value0 when 'value: equality>(arr: 'value option[,]) =
+type Matrix<'value when 'value: equality> =
+    struct
 
-    let length1 = Array2D.length1 arr
-    let length2 = Array2D.length2 arr
-    let storage = toQuadTree arr
-    let squareLength = toSquare arr
+        val Storage: QuadTree<'value>
+        val Length1: int
+        val Length2: int
+        val SquareLength: int
 
-    member this.Length1 = length1
-    member this.Length2 = length2
-    member this.Storage = storage
-    member this.SquareLength = squareLength
+        new(storage, length1, length2, squareLength) =
+            { Storage = storage
+              Length1 = length1
+              Length2 = length2
+              SquareLength = squareLength }
 
-let takeElementOfMatrix (i: int) (j: int) (matrix: Matrix<'value, 'value0>) =
+        new(arr) =
+            { Storage = toQuadTree arr
+              Length1 = Array2D.length1 arr
+              Length2 = Array2D.length2 arr
+              SquareLength = toSquare arr }
+    end
+
+let takeElementOfMatrix (i: int) (j: int) (matrix: Matrix<'value>) =
 
     let rec whichElement i j size tree =
         match tree with

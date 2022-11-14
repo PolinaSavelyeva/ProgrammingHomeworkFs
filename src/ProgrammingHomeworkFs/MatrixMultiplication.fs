@@ -3,33 +3,40 @@ module MatrixMultiplication
 open SparseVector
 open SparseMatrix
 
-(*let multiplication fPlus fMultiply (vector: Vector<'value, 'obj>) (matrix: Matrix<'value, 'obj>) =
-    if vector.SquareLength = matrix.SquareLength then
-        let m = vector.SquareLength
-        let v = Array.create m Option.None
+let multiplication plusOperation (multiOperation: 'value1 -> 'value2 -> 'value3) (vector: Vector<'value1>) (matrix: Matrix<'value2>) =
 
-        for i in 0 .. m - 1 do
-            for k in 0 .. m - 1 do
-                if v[i] = Option.None then
-                    v[i] <- fMultiply (takeElementOfMatrix k i matrix) (takeElementOfVector k vector)
-                else
-                    v[i] <- fPlus v[i] (fMultiply (takeElementOfMatrix k i matrix) (takeElementOfVector k vector))
-        Vector(v)
+    let rec fPlus a b =
+        match a, b with
+        | BinTree.Leaf (x), BinTree.Leaf (y) -> BinTree.Leaf(plusOperation x y)
+        | BinTree.None, BinTree.Leaf (x)
+        | BinTree.Leaf (x), BinTree.None -> BinTree.Leaf(x)
+        | BinTree.None, BinTree.None -> BinTree.None
+        | BinTree.Node (x, y), BinTree.Node (z, w) -> BinTree.Node(fPlus x z, fPlus y w)
+        | BinTree.Node (x, y), BinTree.Leaf (z)
+        | BinTree.Leaf (z), BinTree.Node (x, y) -> fPlus <| BinTree.Node(x, y) <| BinTree.Node(BinTree.Leaf(z), BinTree.Leaf(z))
+        | BinTree.Node (x, y), BinTree.None
+        | BinTree.None, BinTree.Node (x, y) -> fPlus <| BinTree.Node(x, y) <| BinTree.Node(BinTree.None, BinTree.None)
+
+    let rec multiTrees binTree quadTree =
+        match binTree, quadTree with
+        | BinTree.Leaf (a), QuadTree.Leaf (b) -> BinTree.Leaf(multiOperation a b)
+        | BinTree.None, _
+        | _, QuadTree.None -> BinTree.None
+        | BinTree.Node (left, right), QuadTree.Node (first, second, third, fourth) ->
+            BinTree.Node(fPlus (multiTrees left first) (multiTrees right third), fPlus (multiTrees left second) (multiTrees right fourth))
+        | BinTree.Leaf (a), QuadTree.Node (first, second, third, fourth) ->
+            multiTrees
+            <| BinTree.Node(BinTree.Leaf(a), BinTree.Leaf(a))
+            <| QuadTree.Node(first, second, third, fourth)
+        | BinTree.Node (left, right), QuadTree.Leaf (b) ->
+            multiTrees
+            <| BinTree.Node(left, right)
+            <| QuadTree.Node(QuadTree.Leaf(b), QuadTree.Leaf(b), QuadTree.Leaf(b), QuadTree.Leaf(b))
+
+    if vector.Length = matrix.Length1 then
+        Vector(multiTrees vector.Storage matrix.Storage, vector.Length, vector.SquareLength)
     else
-        failwith $"Cannot multiply matrix and vector because of incompatible dimensions. \n
-                  Expected : {vector.BLength} dimension. But given : {matrix.QLength}. \n
-                  Error in -multiplication- function."
-
-let fPlusOptionNumbers a b =
-    match a, b with
-    | Some(x), Option.None -> Some(x)
-    | Option.None, Some(x) -> Some(x)
-    | Some(x), Some(y) -> Some(x + y)
-    | Option.None, Option.None -> Option.None
-
-let fMultiplyOptionNumbers a b =
-    match a, b with
-    | _, Option.None -> Option.None
-    | Option.None, _ -> Option.None
-    | Some(x), Some(y) -> Some(x * y)
-*)
+        failwith
+            "Multiplication operation is not defined.\n
+         Expected vector.Length = matrix.Length1.\n
+         Error in -multiplication- function. "

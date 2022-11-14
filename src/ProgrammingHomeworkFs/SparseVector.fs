@@ -10,7 +10,7 @@ type BinTree<'value> =
 let toSquare (arr: array<Option<'value>>) : int =
     let length = arr.Length
     let log = Math.Log(length, 2)
-    if (ceil log) = log then length else int (2.0 ** ceil (log))
+    if (ceil log) = log then length else int (2.0 ** ceil log)
 
 type squareArray<'value> =
     struct
@@ -29,7 +29,7 @@ let toBinTree (arr: array<Option<'value>>) : BinTree<'value> =
     let fromOptionToBinTree optionValue : BinTree<'value> =
         match optionValue with
         | Option.None -> BinTree.None
-        | Some (x) -> BinTree.Leaf(x)
+        | Some x -> BinTree.Leaf(x)
 
     let rec binTreeFormation (squareArr: squareArray<'value>) : BinTree<'value> =
         let hd = squareArr.Head
@@ -52,17 +52,26 @@ let toBinTree (arr: array<Option<'value>>) : BinTree<'value> =
 
     binTreeFormation (squareArray (arr, 0, toSquare arr))
 
-type Vector<'value, 'value0 when 'value: equality>(arr: array<Option<'value>>) =
-    let length = arr.Length
-    let storage = toBinTree arr
-    let squareLength = toSquare arr
+type Vector<'value when 'value: equality> =
+    struct
 
-    member this.Length = length
-    member this.Storage = storage
-    member this.SquareLength = squareLength
+        val Storage: BinTree<'value>
+        val Length: int
+        val SquareLength: int
+
+        new(storage, length, squareLength) =
+            { Storage = storage
+              Length = length
+              SquareLength = squareLength }
+
+        new(arr) =
+            { Storage = toBinTree arr
+              Length = arr.Length
+              SquareLength = toSquare arr }
+    end
 
 
-let takeElementOfVector (i: int) (vector: Vector<'value, 'value0>) : Option<'value> =
+let takeElementOfVector (i: int) (vector: Vector<'value>) : Option<'value> =
 
     let rec whichElement (i: int) (size: int) (tree: BinTree<'value>) : Option<'value> =
         match tree with

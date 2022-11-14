@@ -149,3 +149,26 @@ module SparseMatrixTests =
                       Expect.throws (fun _ -> takeElementOfMatrix 152 11 (Matrix(array2D [ []; [] ])) |> ignore) "Index out of the range. Error in -takeElementOfVector- function."
 
                   actualResult ]
+
+module MatrixMultiplicationTests =
+
+    open MatrixMultiplication
+    open SparseVector
+    open SparseMatrix
+
+    [<Tests>]
+    let tests =
+        testList
+            "MatrixMultiplication tests"
+            [ testCase "MatrixMultiplication random vector and matrix"
+              <| fun _ ->
+                  let vec = Vector([| Some(0); Some(1) |])
+                  let mat = Matrix(array2D [ [ Some(1); Some(1) ]; [ Some(1); Some(1) ] ])
+                  let res = multiplication (+) (*) vec mat
+                  Expect.equal res.Storage (BinTree.Node(BinTree.Leaf(1), BinTree.Leaf(1))) "MatrixMultiplication expected : Node (Leaf 1, Leaf 1)"
+              testCase "MatrixMultiplication empty vector and matrix"
+              <| fun _ ->
+                  let vec = Vector([||])
+                  let mat = Matrix(array2D [])
+                  let res = multiplication (+) (*) vec mat
+                  Expect.equal res.Storage BinTree.None "MatrixMultiplication expected : BinTree.None" ]
