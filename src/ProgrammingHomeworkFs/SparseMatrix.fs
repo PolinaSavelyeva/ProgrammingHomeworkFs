@@ -87,23 +87,26 @@ type Matrix<'value when 'value: equality> =
               Length1 = Array2D.length1 arr
               Length2 = Array2D.length2 arr
               SquareLength = toSquare arr }
+
+        member this.Item
+            with get (i, j) =
+                let takeElementOfMatrix i j (matrix: Matrix<'value>) =
+                    let rec whichElement i j size tree =
+                        match tree with
+                        | QuadTree.Leaf x -> Some(x)
+                        | QuadTree.None -> Option.None
+                        | QuadTree.Node (a, b, c, d) ->
+                            let n = size / 2
+
+                            if i < n && j < n then whichElement i j n a
+                            elif i < n && j >= n then whichElement i (j - n) n b
+                            elif i >= n && j < n then whichElement (i - n) j n c
+                            else whichElement (i - n) (j - n) n d
+
+                    if i < matrix.Length1 && j < matrix.Length2 then
+                        whichElement i j matrix.SquareLength matrix.Storage
+                    else
+                        failwith "Index out of the range.  Error in -takeElementOfMatrix- function. "
+
+                takeElementOfMatrix i j this
     end
-
-let takeElementOfMatrix i j (matrix: Matrix<'value>) =
-
-    let rec whichElement i j size tree =
-        match tree with
-        | QuadTree.Leaf x -> Some(x)
-        | QuadTree.None -> Option.None
-        | QuadTree.Node (a, b, c, d) ->
-            let n = size / 2
-
-            if i < n && j < n then whichElement i j n a
-            elif i < n && j >= n then whichElement i (j - n) n b
-            elif i >= n && j < n then whichElement (i - n) j n c
-            else whichElement (i - n) (j - n) n d
-
-    if i < matrix.Length1 && j < matrix.Length2 then
-        whichElement i j matrix.SquareLength matrix.Storage
-    else
-        failwith "Index out of the range.  Error in -takeElementOfMatrix- function. "

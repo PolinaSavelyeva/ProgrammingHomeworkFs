@@ -26,12 +26,12 @@ type squareArray<'value> =
 
 let toBinTree arr =
 
-    let fromOptionToBinTree optionValue : BinTree<'value> =
+    let fromOptionToBinTree optionValue =
         match optionValue with
         | Option.None -> BinTree.None
         | Some x -> BinTree.Leaf(x)
 
-    let rec binTreeFormation (squareArr: squareArray<'value>) : BinTree<'value> =
+    let rec binTreeFormation (squareArr: squareArray<'value>) =
         let hd = squareArr.Head
         let length = squareArr.Length
         let memory = squareArr.Memory
@@ -68,24 +68,26 @@ type Vector<'value when 'value: equality> =
             { Storage = toBinTree arr
               Length = arr.Length
               SquareLength = toSquare arr }
+
+        member this.Item
+            with get i =
+                let takeElementOfVector i (vector: Vector<'value>) =
+                    let rec whichElement i size tree =
+                        match tree with
+                        | BinTree.Leaf x -> Some(x)
+                        | BinTree.None -> Option.None
+                        | BinTree.Node (left, right) ->
+                            let n = size / 2
+
+                            if i < n then
+                                whichElement i n left
+                            else
+                                whichElement (i - n) n right
+
+                    if i < vector.Length then
+                        whichElement i vector.SquareLength vector.Storage
+                    else
+                        failwith "Index out of the range. Error in -takeElementOfVector- function. "
+
+                takeElementOfVector i this
     end
-
-
-let takeElementOfVector i (vector: Vector<'value>) =
-
-    let rec whichElement (i: int) (size: int) (tree: BinTree<'value>) : Option<'value> =
-        match tree with
-        | BinTree.Leaf x -> Some(x)
-        | BinTree.None -> Option.None
-        | BinTree.Node (left, right) ->
-            let n = size / 2
-
-            if i < n then
-                whichElement i n left
-            else
-                whichElement (i - n) n right
-
-    if i < vector.Length then
-        whichElement i vector.SquareLength vector.Storage
-    else
-        failwith "Index out of the range. Error in -takeElementOfVector- function. "
