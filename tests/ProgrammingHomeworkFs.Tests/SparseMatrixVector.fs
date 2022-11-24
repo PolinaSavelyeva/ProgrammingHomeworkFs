@@ -157,109 +157,100 @@ module MatrixMultiplicationTests =
     let tests =
         testList
             "MatrixMultiplication tests"
-            [ (*testCase "binTreeCutter random vector 1"
+            [ testCase "MatrixMultiplication random vector and matrix"
               <| fun _ ->
-                  let vec = Vector([|Some(0); Some(1); Option.None; Option.None|])
-                  let res = binTreeCutter vec.Storage 2 vec.SquareLength
-                  Expect.equal res (BinTree.Node(BinTree.Leaf(0), BinTree.Leaf(1))) " binTreeCutter expected : Node (Leaf 0, Leaf 1)"
-              testCase "binTreeCutter random vector 2"
+                  let vec = Vector([| Some(0); Some(1) |])
+                  let mat = Matrix(array2D [ [ Some(1); Some(1) ]; [ Some(1); Some(1) ] ])
+                  let res = multiplication (+) (*) vec mat
+
+                  Expect.equal res.Storage (BinTree.Node(BinTree.Leaf(1), BinTree.Leaf(1))) "MatrixMultiplication expected : Node (Leaf 1, Leaf 1)"
+              testCase "MatrixMultiplication empty vector and matrix"
               <| fun _ ->
-                  let vec = Vector([|Some(0); Option.None|])
-                  let res = binTreeCutter vec.Storage 1 vec.SquareLength
-                  Expect.equal res (BinTree.Leaf(0)) " binTreeCutter expected : Leaf 0"
-              testCase "binTreeCutter random vector 3"
+                  let vec = Vector([||])
+                  let mat = Matrix(array2D [])
+                  let res = multiplication (+) (*) vec mat
+                  Expect.equal res.Storage BinTree.None "MatrixMultiplication expected : BinTree.None"
+              testCase "MatrixMultiplication None association vector and matrix"
               <| fun _ ->
-                  let vec = Vector([|Some(0); Option.None; Option.None; Option.None; Option.None; Option.None|])
-                  let res = binTreeCutter vec.Storage 1 vec.SquareLength
-                  Expect.equal res (BinTree.Leaf(0)) " binTreeCutter expected : Leaf 0"*) testCase "MatrixMultiplication random vector and matrix"
-                                                                                          <| fun _ ->
-                                                                                              let vec = Vector([| Some(0); Some(1) |])
-                                                                                              let mat = Matrix(array2D [ [ Some(1); Some(1) ]; [ Some(1); Some(1) ] ])
-                                                                                              let res = multiplication (+) (*) vec mat
+                  let vec = Vector([| Some(1); Some(1); Some(1) |])
 
-                                                                                              Expect.equal
-                                                                                                  res.Storage
-                                                                                                  (BinTree.Node(BinTree.Leaf(1), BinTree.Leaf(1)))
-                                                                                                  "MatrixMultiplication expected : Node (Leaf 1, Leaf 1)"
-                                                                                          testCase "MatrixMultiplication empty vector and matrix"
-                                                                                          <| fun _ ->
-                                                                                              let vec = Vector([||])
-                                                                                              let mat = Matrix(array2D [])
-                                                                                              let res = multiplication (+) (*) vec mat
-                                                                                              Expect.equal res.Storage BinTree.None "MatrixMultiplication expected : BinTree.None"
-                                                                                          testCase "MatrixMultiplication None association vector and matrix"
-                                                                                          <| fun _ ->
-                                                                                              let vec = Vector([| Some(1); Some(1); Some(1) |])
+                  let mat =
+                      Matrix(array2D [ [ Option.None; Option.None; Option.None ]; [ Option.None; Option.None; Option.None ]; [ Option.None; Option.None; Option.None ] ])
 
-                                                                                              let mat =
-                                                                                                  Matrix(
-                                                                                                      array2D
-                                                                                                          [ [ Option.None; Option.None; Option.None ]
-                                                                                                            [ Option.None; Option.None; Option.None ]
-                                                                                                            [ Option.None; Option.None; Option.None ] ]
-                                                                                                  )
+                  let res = multiplication (+) (*) vec mat
+                  Expect.equal res.Storage BinTree.None "MatrixMultiplication expected : BinTree.None"
+              testCase "MatrixMultiplication string vector and matrix"
+              <| fun _ ->
+                  let fPlusString (a: string) (b: string) = String.concat a [ b ]
 
-                                                                                              let res = multiplication (+) (*) vec mat
-                                                                                              Expect.equal res.Storage BinTree.None "MatrixMultiplication expected : BinTree.None"
-                                                                                          testCase "MatrixMultiplication string vector and matrix"
-                                                                                          <| fun _ ->
-                                                                                              let fPlusString (a: string) (b: string) = String.concat a [ b ]
+                  let fMultiString (a: string) (b: string) = String.replicate a.Length b
 
-                                                                                              let fMultiString (a: string) (b: string) = String.replicate a.Length b
+                  let vec = Vector([| Some("a"); Some("ab"); Some("abc") |])
 
-                                                                                              let vec = Vector([| Some("a"); Some("ab"); Some("abc") |])
+                  let mat =
+                      Matrix(array2D [ [ Option.None; Some("abcd"); Option.None ]; [ Option.None; Option.None; Some("aa") ]; [ Some("abcsd"); Some("d"); Option.None ] ])
 
-                                                                                              let mat =
-                                                                                                  Matrix(
-                                                                                                      array2D
-                                                                                                          [ [ Option.None; Some("abcd"); Option.None ]
-                                                                                                            [ Option.None; Option.None; Some("aa") ]
-                                                                                                            [ Some("abcsd"); Some("d"); Option.None ] ]
-                                                                                                  )
+                  let res = multiplication fPlusString fMultiString vec mat
 
-                                                                                              let res = multiplication fPlusString fMultiString vec mat
+                  Expect.equal
+                      res.Storage
+                      (BinTree.Node(BinTree.Node(BinTree.Leaf("abcsdabcsdabcsd"), BinTree.Leaf("ddd")), BinTree.Node(BinTree.Leaf("aaaa"), BinTree.None)))
+                      "MatrixMultiplication expected : Node (Node (Leaf 'abcsdabcsdabcsd', Leaf 'ddd'), Node (Leaf 'aaaa', None)) "
+              testProperty "MatrixMultiplication property test"
+              <| fun (x: int) (y: int) ->
 
-                                                                                              Expect.equal
-                                                                                                  res.Storage
-                                                                                                  (BinTree.Node(
-                                                                                                      BinTree.Node(BinTree.Leaf("abcsdabcsdabcsd"), BinTree.Leaf("ddd")),
-                                                                                                      BinTree.Node(BinTree.Leaf("aaaa"), BinTree.None)
-                                                                                                  ))
-                                                                                                  "MatrixMultiplication expected : Node (Node (Leaf 'abcsdabcsdabcsd', Leaf 'ddd'), Node (Leaf 'aaaa', None)) "
-                                                                                          testProperty "MatrixMultiplication property test"
-                                                                                          <| fun (arr: int option[]) (arr2d: int option[,]) ->
+                  let length1 = (abs x) + 1
+                  let length2 = (abs y) + 1
 
-                                                                                              let naiveMulti (arr: int option[]) (arr2d: int option[,]) =
-                                                                                                  let fPlus opt1 opt2 =
-                                                                                                      match opt1, opt2 with
-                                                                                                      | Option.Some (a), Option.Some (b) -> Option.Some(a + b)
-                                                                                                      | Option.Some (a), Option.None
-                                                                                                      | Option.None, Option.Some (a) -> Option.Some(a)
-                                                                                                      | Option.None, Option.None -> Option.None
+                  let rnd = System.Random()
+                  let arr = Array.init length1 (fun _ -> rnd.Next(100))
+                  let arrSome = arr |> Array.map (fun n -> if n % 2 = 0 then Some n else Option.None)
 
-                                                                                                  let fMulti opt1 opt2 =
-                                                                                                      match opt1, opt2 with
-                                                                                                      | Option.Some (a), Option.Some (b) -> Option.Some(a * b)
-                                                                                                      | _, Option.None
-                                                                                                      | Option.None, _ -> Option.None
+                  let arr2d = Array2D.init length1 length2 (fun _ _ -> rnd.Next(100))
+
+                  let arr2dSome =
+                      arr2d |> Array2D.map (fun n -> if n % 2 = 0 then Some n else Option.None)
+
+                  let vector = Vector(arrSome)
+                  let matrix = Matrix(arr2dSome)
+
+                  let naiveMulti (arr: int option[]) (arr2d: int option[,]) =
+                      let fPlus opt1 opt2 =
+                          match opt1, opt2 with
+                          | Option.Some a, Option.Some b -> Option.Some(a + b)
+                          | Option.Some a, Option.None
+                          | Option.None, Option.Some a -> Option.Some(a)
+                          | Option.None, Option.None -> Option.None
+
+                      let fMulti opt1 opt2 =
+                          match opt1, opt2 with
+                          | Option.Some a, Option.Some b -> Option.Some(a * b)
+                          | _, Option.None
+                          | Option.None, _ -> Option.None
 
 
-                                                                                                  let rows = arr.Length
-                                                                                                  let columns = Array2D.length2 arr2d
-                                                                                                  let mutable result = Array.zeroCreate columns
+                      let rows = arr.Length
+                      let columns = Array2D.length2 arr2d
+                      let mutable result = Array.zeroCreate columns
 
-                                                                                                  for j = 0 to columns - 1 do
-                                                                                                      for i = 0 to rows - 1 do
-                                                                                                          result[j] <- fPlus result[j] (fMulti arr[i] arr2d[i, j])
+                      for j = 0 to columns - 1 do
+                          for i = 0 to rows - 1 do
+                              result[j] <- fPlus result[j] (fMulti arr[i] arr2d[i, j])
 
-                                                                                                  result
+                      result
 
-                                                                                              let vec = Vector(arr)
-                                                                                              let matrix = Matrix(arr2d)
+                  let expectedResult = Vector(naiveMulti arrSome arr2dSome)
+                  let actualResult = multiplication (+) (*) vector matrix
 
-                                                                                              Expect.equal
-                                                                                              <| toBinTree (naiveMulti arr arr2d)
-                                                                                              <| (multiplication (+) (*) vec matrix).Storage
-                                                                                              <| "Unexpected result"
 
-                                                                                          ]
+                  Expect.equal
+                      actualResult.Storage
+                      expectedResult.Storage
+                      $"\n Array : %A{arrSome}\n
+                        \n Array2d : %A{arr2dSome}\n
+                        \n Array tree : %A{vector.Storage}\n
+                        \n Matrix tree : %A{matrix.Storage}\n. "
+
+                  Expect.equal actualResult.Length matrix.Length1 "Expected actualResult.Length = matrix.Length1. "
+
+              ]

@@ -225,12 +225,12 @@ var assemblies = [
     "name": "ProgrammingHomeworkFs",
     "classes": [
       { "name": "AlgebraicList", "rp": "ProgrammingHomeworkFs_AlgebraicList.html", "cl": 24, "ucl": 1, "cal": 25, "tl": 49, "ct": "LineCoverage", "mc": "-", "cb": 19, "tb": 20, "lch": [], "bch": [], "hc": [] },
-      { "name": "MatrixMultiplication", "rp": "ProgrammingHomeworkFs_MatrixMultiplication.html", "cl": 8, "ucl": 15, "cal": 23, "tl": 42, "ct": "LineCoverage", "mc": "-", "cb": 8, "tb": 24, "lch": [], "bch": [], "hc": [] },
+      { "name": "MatrixMultiplication", "rp": "ProgrammingHomeworkFs_MatrixMultiplication.html", "cl": 27, "ucl": 11, "cal": 38, "tl": 70, "ct": "LineCoverage", "mc": "-", "cb": 31, "tb": 36, "lch": [], "bch": [], "hc": [] },
       { "name": "OopList", "rp": "ProgrammingHomeworkFs_OopList.html", "cl": 45, "ucl": 40, "cal": 85, "tl": 139, "ct": "LineCoverage", "mc": "-", "cb": 36, "tb": 48, "lch": [], "bch": [], "hc": [] },
       { "name": "ProgrammingHomeworkFs.Main", "rp": "ProgrammingHomeworkFs_Main.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 6, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "SimpleFunctions", "rp": "ProgrammingHomeworkFs_SimpleFunctions.html", "cl": 28, "ucl": 13, "cal": 41, "tl": 62, "ct": "LineCoverage", "mc": "-", "cb": 31, "tb": 43, "lch": [], "bch": [], "hc": [] },
-      { "name": "SparseMatrix", "rp": "ProgrammingHomeworkFs_SparseMatrix.html", "cl": 49, "ucl": 4, "cal": 53, "tl": 109, "ct": "LineCoverage", "mc": "-", "cb": 39, "tb": 40, "lch": [], "bch": [], "hc": [] },
-      { "name": "SparseVector", "rp": "ProgrammingHomeworkFs_SparseVector.html", "cl": 39, "ucl": 0, "cal": 39, "tl": 91, "ct": "LineCoverage", "mc": "-", "cb": 18, "tb": 18, "lch": [], "bch": [], "hc": [] },
+      { "name": "SparseMatrix", "rp": "ProgrammingHomeworkFs_SparseMatrix.html", "cl": 50, "ucl": 4, "cal": 54, "tl": 112, "ct": "LineCoverage", "mc": "-", "cb": 39, "tb": 40, "lch": [], "bch": [], "hc": [] },
+      { "name": "SparseVector", "rp": "ProgrammingHomeworkFs_SparseVector.html", "cl": 40, "ucl": 0, "cal": 40, "tl": 93, "ct": "LineCoverage", "mc": "-", "cb": 18, "tb": 18, "lch": [], "bch": [], "hc": [] },
       { "name": "Tree", "rp": "ProgrammingHomeworkFs_Tree.html", "cl": 9, "ucl": 0, "cal": 9, "tl": 27, "ct": "LineCoverage", "mc": "-", "cb": 2, "tb": 2, "lch": [], "bch": [], "hc": [] },
     ]},
 ];
@@ -250,13 +250,6 @@ var riskHotspots = [
       { "value": 9, "exceeded": false },
       { "value": 256, "exceeded": true },
       { "value": 9, "exceeded": false },
-    ]},
-  {
-    "assembly": "ProgrammingHomeworkFs", "class": "MatrixMultiplication", "reportPath": "ProgrammingHomeworkFs_MatrixMultiplication.html", "methodName": "SparseVector/BinTree`1<value3> MatrixMultiplication/fPlus@9::Invoke(SparseVector/BinTree`1<value3>,SparseVector/BinTree`1<value3>)", "methodShortName": "Invoke(...)", "fileIndex": 0, "line": 9,
-    "metrics": [
-      { "value": 9, "exceeded": false },
-      { "value": 12, "exceeded": false },
-      { "value": 38.52, "exceeded": true },
     ]},
   {
     "assembly": "ProgrammingHomeworkFs", "class": "SimpleFunctions", "reportPath": "ProgrammingHomeworkFs_SimpleFunctions.html", "methodName": "a SimpleFunctions::arrays(value[])", "methodShortName": "arrays(...)", "fileIndex": 0, "line": 40,
