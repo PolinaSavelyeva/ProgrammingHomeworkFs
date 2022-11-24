@@ -37,10 +37,16 @@ let multiplication plusOperation (multiOperation: 'value1 -> 'value2 -> 'value3)
             <| QuadTree.Node(QuadTree.Leaf(b), QuadTree.Leaf(b), QuadTree.Leaf(b), QuadTree.Leaf(b))
 
     let rec binTreeCutter (tree: BinTree<'value>) expectedSize currentSize =
-        match tree with
-        | BinTree.Node (first, _) when expectedSize <> currentSize -> binTreeCutter first expectedSize (currentSize / 2)
-        | tree when expectedSize = currentSize -> tree
-        | _ -> failwith "Expected expectedSize or currentSize to be a power of two. "
+        if expectedSize <> currentSize then
+            match tree with
+            | BinTree.Node(first, _) -> binTreeCutter first expectedSize (currentSize / 2)
+            | _ -> tree
+        else
+            tree
+        // match tree with
+        // | BinTree.Node (first, _) when expectedSize <> currentSize -> binTreeCutter first expectedSize (currentSize / 2)
+        // | tree when expectedSize = currentSize -> tree
+        // | _ -> failwith "Expected expectedSize or currentSize to be a power of two. "
 
     let rec binTreeGrower (tree: BinTree<'value>) expectedSize currentSize =
         if expectedSize <> currentSize then
@@ -49,14 +55,28 @@ let multiplication plusOperation (multiOperation: 'value1 -> 'value2 -> 'value3)
             tree
 
     if vector.Length = matrix.Length1 then
-        if vector.SquareLength <> matrix.SquareLength then
+       // Здесь нужно добавить, потому что вектор меньше,чем результирующие столбцы.
+       if vector.SquareLength < matrix.SquareLength then
             let growTree =
                 multiTrees (binTreeGrower vector.Storage matrix.SquareLength vector.SquareLength) matrix.Storage
 
-            let cutTree = binTreeCutter growTree vector.SquareLength matrix.SquareLength
-            Vector(cutTree, vector.Length, vector.SquareLength)
-        else
+            Vector(growTree, vector.Length, vector.SquareLength)
+
+        // Здесь вообще ничего можно не делать.
+        elif vector.SquareLength = matrix.SquareLength then
+            // let cutTree =
+                // binTreeCutter (multiTrees vector.Storage matrix.Storage) matrix.SquareLength vector.SquareLength
+
             Vector(multiTrees vector.Storage matrix.Storage, vector.Length, vector.SquareLength)
+
+        // А здесь нужно отрезать. Но ты, кажется, режешь не ту разницу.
+        // Нужно резать разницу между степенью двойки вектора и степенью двойки столбцов,
+        // а у тебя получается, что длина вектора = количеству строк матрицы, она же и максимальна (твой toSquare возвращает max, если я правильно понял), поэтому ничего не режется.
+        else
+            let cutTree =
+                binTreeCutter (multiTrees vector.Storage matrix.Storage) matrix.SquareLength vector.SquareLength
+
+            Vector(cutTree, vector.Length, vector.SquareLength)
     else
         failwith
             "Multiplication operation is not defined.\n
