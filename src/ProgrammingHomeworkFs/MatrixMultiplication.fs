@@ -20,13 +20,13 @@ let multiplication plusOperation (multiOperation: 'value1 -> 'value2 -> 'value3)
         | BinTree.None, _
         | _, QuadTree.None -> BinTree.None
         | BinTree.Node (left, right), QuadTree.Node (first, second, third, fourth) ->
-            if
-                (first = QuadTree.None && second = QuadTree.None && third = QuadTree.None && fourth = QuadTree.None)
-                && (left = BinTree.None && right = BinTree.None)
-            then
-                BinTree.None
-            else
-                BinTree.Node(fPlus (multiTrees left first) (multiTrees right third), fPlus (multiTrees left second) (multiTrees right fourth))
+            // if
+            //     (first = QuadTree.None && second = QuadTree.None && third = QuadTree.None && fourth = QuadTree.None)
+            //     && (left = BinTree.None && right = BinTree.None)
+            // then
+            //     BinTree.None
+            // else
+            BinTree.Node(fPlus (multiTrees left first) (multiTrees right third), fPlus (multiTrees left second) (multiTrees right fourth))
         | BinTree.Leaf a, QuadTree.Node (first, second, third, fourth) ->
             multiTrees
             <| BinTree.Node(BinTree.Leaf(a), BinTree.Leaf(a))
