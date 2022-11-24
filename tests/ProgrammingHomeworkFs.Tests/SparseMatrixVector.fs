@@ -171,7 +171,10 @@ module MatrixMultiplicationTests =
               <| fun _ ->
                   let vec = Vector([|Some(0); Option.None; Option.None; Option.None; Option.None; Option.None|])
                   let res = binTreeCutter vec.Storage 1 vec.SquareLength
-                  Expect.equal res (BinTree.Leaf(0)) " binTreeCutter expected : Leaf 0"*) testCase "MatrixMultiplication random vector and matrix"
+                  Expect.equal res (BinTree.Leaf(0)) " binTreeCutter expected : Leaf 0"*)
+                  (* --------------------------------------------------------------------------------------------------------------------------
+                  Я такое форматирование не делал, так было.
+                                                                                          testCase "MatrixMultiplication random vector and matrix"
                                                                                           <| fun _ ->
                                                                                               let vec = Vector([| Some(0); Some(1) |])
                                                                                               let mat = Matrix(array2D [ [ Some(1); Some(1) ]; [ Some(1); Some(1) ] ])
@@ -232,14 +235,14 @@ module MatrixMultiplicationTests =
                                                                                               let naiveMulti (arr: int option[]) (arr2d: int option[,]) =
                                                                                                   let fPlus opt1 opt2 =
                                                                                                       match opt1, opt2 with
-                                                                                                      | Option.Some (a), Option.Some (b) -> Option.Some(a + b)
-                                                                                                      | Option.Some (a), Option.None
-                                                                                                      | Option.None, Option.Some (a) -> Option.Some(a)
+                                                                                                      | Option.Some a, Option.Some b -> Option.Some(a + b)
+                                                                                                      | Option.Some a, Option.None
+                                                                                                      | Option.None, Option.Some a -> Option.Some(a)
                                                                                                       | Option.None, Option.None -> Option.None
 
                                                                                                   let fMulti opt1 opt2 =
                                                                                                       match opt1, opt2 with
-                                                                                                      | Option.Some (a), Option.Some (b) -> Option.Some(a * b)
+                                                                                                      | Option.Some a, Option.Some b -> Option.Some(a * b)
                                                                                                       | _, Option.None
                                                                                                       | Option.None, _ -> Option.None
 
@@ -261,5 +264,48 @@ module MatrixMultiplicationTests =
                                                                                               <| toBinTree (naiveMulti arr arr2d)
                                                                                               <| (multiplication (+) (*) vec matrix).Storage
                                                                                               <| "Unexpected result"
+*)
+              testProperty "Vector x Matrix"
+              // Это мой адаптированный тест под твои функции.
+              // Генерируй не таблицы и массивы, а значения для их размерностей. Вероятно, FsCheck какую-то дичь посылает.
+              // Тебе придется случайными числами заполнять свои масссивы и матрицы.
+              <| fun (x: int) (y: int) ->
+                  if x <> 0 && y <> 0 then
+                      let length = abs x
+                      let rows = length
+                      let columns = abs y
 
+                      // Здесь нужно менять на рандомные значения в функции-инициализаторе.
+                      let arr = Array.init length (fun i -> i + 1) // эта переменная для наивного умножения
+                      let arrSome = arr |> Array.map Some // это для перевода в дерево
+
+                      let table = Array2D.init rows columns (fun i j -> i + j) // аналогично
+
+                      let tableSome = table |> Array2D.map Some // аналогично
+
+                      let vec = Vector(arrSome)
+                      let mtx = Matrix(tableSome)
+
+                      let naiveVecByMtx (arr: array<int>) (table: int[,]) =
+                            let rows = arr.Length
+                            let columns = Array2D.length2 table
+                            let mutable result = Array.zeroCreate columns
+
+                            for j = 0 to columns - 1 do
+                                for i = 0 to rows - 1 do
+                                    result[j] <- result[j] + arr[i] * table[i, j]
+
+                            result
+
+                      let expectedResult = Vector(naiveVecByMtx arr table |> Array.map Some)
+
+                      let actualResult = multiplication (+) (*) vec mtx
+
+
+                      Expect.equal
+                          actualResult.Storage
+                          expectedResult.Storage
+                          $"\nПолучили массив: %A{arrSome}\n--------------\nПолучили матрицу %A{tableSome}\n----------------\nДерево из массива: %A{vec.Storage}\n----------------\nДерево из матрицы: %A{mtx.Storage}"
+
+                      Expect.equal actualResult.Length mtx.Length1 ""
                                                                                           ]
