@@ -225,9 +225,9 @@ var assemblies = [
     "name": "ProgrammingHomeworkFs",
     "classes": [
       { "name": "AlgebraicList", "rp": "ProgrammingHomeworkFs_AlgebraicList.html", "cl": 24, "ucl": 1, "cal": 25, "tl": 49, "ct": "LineCoverage", "mc": "-", "cb": 19, "tb": 20, "lch": [], "bch": [], "hc": [] },
-      { "name": "MatrixMultiplication", "rp": "ProgrammingHomeworkFs_MatrixMultiplication.html", "cl": 27, "ucl": 11, "cal": 38, "tl": 70, "ct": "LineCoverage", "mc": "-", "cb": 31, "tb": 36, "lch": [], "bch": [], "hc": [] },
+      { "name": "MatrixMultiplication", "rp": "ProgrammingHomeworkFs_MatrixMultiplication.html", "cl": 31, "ucl": 13, "cal": 44, "tl": 80, "ct": "LineCoverage", "mc": "-", "cb": 33, "tb": 40, "lch": [], "bch": [], "hc": [] },
       { "name": "OopList", "rp": "ProgrammingHomeworkFs_OopList.html", "cl": 45, "ucl": 40, "cal": 85, "tl": 139, "ct": "LineCoverage", "mc": "-", "cb": 36, "tb": 48, "lch": [], "bch": [], "hc": [] },
-      { "name": "ProgrammingHomeworkFs.Main", "rp": "ProgrammingHomeworkFs_Main.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 6, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "ProgrammingHomeworkFs.Main", "rp": "ProgrammingHomeworkFs_Main.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 10, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "SimpleFunctions", "rp": "ProgrammingHomeworkFs_SimpleFunctions.html", "cl": 28, "ucl": 13, "cal": 41, "tl": 62, "ct": "LineCoverage", "mc": "-", "cb": 31, "tb": 43, "lch": [], "bch": [], "hc": [] },
       { "name": "SparseMatrix", "rp": "ProgrammingHomeworkFs_SparseMatrix.html", "cl": 50, "ucl": 4, "cal": 54, "tl": 112, "ct": "LineCoverage", "mc": "-", "cb": 39, "tb": 40, "lch": [], "bch": [], "hc": [] },
       { "name": "SparseVector", "rp": "ProgrammingHomeworkFs_SparseVector.html", "cl": 40, "ucl": 0, "cal": 40, "tl": 93, "ct": "LineCoverage", "mc": "-", "cb": 18, "tb": 18, "lch": [], "bch": [], "hc": [] },

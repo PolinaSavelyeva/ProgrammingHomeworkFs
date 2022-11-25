@@ -82,7 +82,7 @@ type Matrix<'value when 'value: equality> =
               Length2 = length2
               SquareLength = squareLength }
 
-        new(arr) =
+        new(arr: 'value option[,]) =
             { Storage = toQuadTree arr
               Length1 = Array2D.length1 arr
               Length2 = Array2D.length2 arr

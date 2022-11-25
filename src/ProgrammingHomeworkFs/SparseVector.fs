@@ -7,14 +7,14 @@ type BinTree<'value> =
     | Leaf of 'value
     | Node of BinTree<'value> * BinTree<'value>
 
-let toSquare (arr: array<Option<'value>>) =
+let toSquare (arr: 'value option[]) =
     let length = arr.Length
     let log = Math.Log(length, 2)
     if (ceil log) = log then length else int (2.0 ** ceil log)
 
 type squareArray<'value> =
     struct
-        val Memory: array<Option<'value>>
+        val Memory: 'value option[]
         val Head: int
         val Length: int
 
@@ -64,7 +64,7 @@ type Vector<'value when 'value: equality> =
               Length = length
               SquareLength = squareLength }
 
-        new(arr) =
+        new(arr: 'value option[]) =
             { Storage = toBinTree arr
               Length = arr.Length
               SquareLength = toSquare arr }

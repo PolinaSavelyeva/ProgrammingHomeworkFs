@@ -153,6 +153,19 @@ module MatrixMultiplicationTests =
     open SparseVector
     open SparseMatrix
 
+    let fPlusInt a b =
+        match a, b with
+        | Some x, Some y -> Some(x + y)
+        | Option.None, Some x
+        | Some x, Option.None -> Some x
+        | Option.None, Option.None -> Option.None
+
+    let fMultiInt a b =
+        match a, b with
+        | Some x, Some y -> Some(x * y)
+        | Option.None, _
+        | _, Option.None -> Option.None
+
     [<Tests>]
     let tests =
         testList
@@ -161,14 +174,14 @@ module MatrixMultiplicationTests =
               <| fun _ ->
                   let vec = Vector([| Some(0); Some(1) |])
                   let mat = Matrix(array2D [ [ Some(1); Some(1) ]; [ Some(1); Some(1) ] ])
-                  let res = multiplication (+) (*) vec mat
+                  let res = multiplication fPlusInt fMultiInt vec mat
 
                   Expect.equal res.Storage (BinTree.Node(BinTree.Leaf(1), BinTree.Leaf(1))) "MatrixMultiplication expected : Node (Leaf 1, Leaf 1)"
               testCase "MatrixMultiplication empty vector and matrix"
               <| fun _ ->
                   let vec = Vector([||])
                   let mat = Matrix(array2D [])
-                  let res = multiplication (+) (*) vec mat
+                  let res = multiplication fPlusInt fMultiInt vec mat
                   Expect.equal res.Storage BinTree.None "MatrixMultiplication expected : BinTree.None"
               testCase "MatrixMultiplication None association vector and matrix"
               <| fun _ ->
@@ -177,13 +190,22 @@ module MatrixMultiplicationTests =
                   let mat =
                       Matrix(array2D [ [ Option.None; Option.None; Option.None ]; [ Option.None; Option.None; Option.None ]; [ Option.None; Option.None; Option.None ] ])
 
-                  let res = multiplication (+) (*) vec mat
+                  let res = multiplication fPlusInt fMultiInt vec mat
                   Expect.equal res.Storage BinTree.None "MatrixMultiplication expected : BinTree.None"
               testCase "MatrixMultiplication string vector and matrix"
               <| fun _ ->
-                  let fPlusString (a: string) (b: string) = String.concat a [ b ]
+                  let fPlusString (a: string option) (b: string option) =
+                      match a, b with
+                      | Some x, Some y -> Some(String.concat x [ y ])
+                      | Some x, Option.None
+                      | Option.None, Some x -> Some x
+                      | Option.None, Option.None -> Option.None
 
-                  let fMultiString (a: string) (b: string) = String.replicate a.Length b
+                  let fMultiString (a: string option) (b: string option) =
+                      match a, b with
+                      | Some x, Some y -> Some(String.replicate x.Length y)
+                      | Option.None, _
+                      | _, Option.None -> Option.None
 
                   let vec = Vector([| Some("a"); Some("ab"); Some("abc") |])
 
@@ -240,7 +262,7 @@ module MatrixMultiplicationTests =
                       result
 
                   let expectedResult = Vector(naiveMulti arrSome arr2dSome)
-                  let actualResult = multiplication (+) (*) vector matrix
+                  let actualResult = multiplication fPlusInt fMultiInt vector matrix
 
 
                   Expect.equal
