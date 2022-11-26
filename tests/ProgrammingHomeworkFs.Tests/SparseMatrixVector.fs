@@ -301,22 +301,12 @@ module MatrixMultiplicationTests =
 
                       result
 
-                  let isNoneReduce tree =
-                      let mutable flag = true
-
-                      let rec f tree =
-                          match tree with
-                          | BinTree.Node (BinTree.None, BinTree.None) ->
-                              flag <- false
-                              flag
-                          | BinTree.Node (x, y) ->
-                              f x |> ignore
-                              f y |> ignore
-                              flag
-                          | BinTree.Leaf _ -> flag
-                          | BinTree.None -> flag
-
-                      f tree
+                  let rec isNoneReduce tree =
+                      match tree with
+                      | BinTree.Node (BinTree.None, BinTree.None) -> 0
+                      | BinTree.Node (x, y) -> isNoneReduce x * isNoneReduce y
+                      | BinTree.Leaf _ -> 1
+                      | BinTree.None -> 1
 
                   let expectedResult = Vector(naiveMulti arrSome arr2dSome)
                   let actualResult = multiplication fPlusInt fMultiInt vector matrix
@@ -332,4 +322,4 @@ module MatrixMultiplicationTests =
 
                   Expect.equal actualResult.Length matrix.Length1 "Expected actualResult.Length = matrix.Length1. "
 
-                  Expect.isTrue actualResult' "Tree is not reduced. " ]
+                  Expect.equal actualResult' 1 "Tree is not reduced. " ]
