@@ -6,24 +6,10 @@ open System
 
 let multiplication plusOperation (multiOperation: 'value1 option -> 'value2 option -> 'value3 option) (vector: Vector<'value1>) (matrix: Matrix<'value2>) : Vector<'value3> =
 
-    let rec fPlus a b =
-        match a, b with
-        | BinTree.Leaf x, BinTree.Leaf y ->
-            let z = plusOperation (Some x) (Some y)
-
-            match z with
-            | Option.None -> BinTree.None
-            | Some z -> BinTree.Leaf z
-        | BinTree.None, x
-        | x, BinTree.None -> x
-        | BinTree.Node (x, y), BinTree.Node (z, w) -> BinTree.Node(fPlus x z, fPlus y w)
-        | BinTree.Node (x, y), BinTree.Leaf z
-        | BinTree.Leaf z, BinTree.Node (x, y) -> fPlus <| BinTree.Node(x, y) <| BinTree.Node(BinTree.Leaf z, BinTree.Leaf z)
-
     let rec multiTrees binTree quadTree =
         match binTree, quadTree with
-        | BinTree.Leaf a, QuadTree.Leaf b ->
-            let z = multiOperation (Some a) (Some b)
+        | BinTree.Leaf x, QuadTree.Leaf y ->
+            let z = multiOperation (Some x) (Some y)
 
             match z with
             | Option.None -> BinTree.None
@@ -31,21 +17,33 @@ let multiplication plusOperation (multiOperation: 'value1 option -> 'value2 opti
         | BinTree.None, _
         | _, QuadTree.None -> BinTree.None
         | BinTree.Node (left, right), QuadTree.Node (first, second, third, fourth) ->
-            let first = fPlus (multiTrees left first) (multiTrees right third)
-            let second = fPlus (multiTrees left second) (multiTrees right fourth)
+
+            let first =
+                (vectorAddition
+                 <| plusOperation
+                 <| Vector(multiTrees left first, vector.Length, vector.SquareLength)
+                 <| Vector(multiTrees right third, vector.Length, vector.SquareLength))
+                    .Storage
+
+            let second =
+                (vectorAddition
+                 <| plusOperation
+                 <| Vector(multiTrees left second, vector.Length, vector.SquareLength)
+                 <| Vector(multiTrees right fourth, vector.Length, vector.SquareLength))
+                    .Storage
 
             if first = BinTree.None && second = BinTree.None then
                 BinTree.None
             else
                 BinTree.Node(first, second)
-        | BinTree.Leaf a, QuadTree.Node (first, second, third, fourth) ->
+        | BinTree.Leaf x, QuadTree.Node (first, second, third, fourth) ->
             multiTrees
-            <| BinTree.Node(BinTree.Leaf a, BinTree.Leaf a)
+            <| BinTree.Node(BinTree.Leaf x, BinTree.Leaf x)
             <| QuadTree.Node(first, second, third, fourth)
-        | BinTree.Node (left, right), QuadTree.Leaf b ->
+        | BinTree.Node (left, right), QuadTree.Leaf x ->
             multiTrees
             <| BinTree.Node(left, right)
-            <| QuadTree.Node(QuadTree.Leaf b, QuadTree.Leaf b, QuadTree.Leaf b, QuadTree.Leaf b)
+            <| QuadTree.Node(QuadTree.Leaf x, QuadTree.Leaf x, QuadTree.Leaf x, QuadTree.Leaf x)
 
     let rec binTreeCutter (tree: BinTree<'value>) expectedSize currentSize =
         match tree with

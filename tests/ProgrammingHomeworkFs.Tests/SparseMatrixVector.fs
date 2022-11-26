@@ -64,7 +64,47 @@ module SparseVectorTests =
                   let actualResult =
                       Expect.throws (fun _ -> Vector([||])[152] |> ignore) "Index out of the range. Error in -takeElementOfVector- function."
 
-                  actualResult ]
+                  actualResult
+              testProperty "vectorAddition property test"
+              <| fun (x: int) ->
+
+                  let length1 = (abs x) + 1
+
+                  let rnd = System.Random()
+                  let arr1 = Array.init length1 (fun _ -> rnd.Next(100))
+
+                  let arr1Some =
+                      arr1 |> Array.map (fun n -> if n % 2 = 0 then Some n else Option.None)
+
+                  let arr2 = Array.init length1 (fun _ -> rnd.Next(100))
+
+                  let arr2Some =
+                      arr2 |> Array.map (fun n -> if n % 2 = 0 then Some n else Option.None)
+
+                  let vector1 = Vector(arr1Some)
+                  let vector2 = Vector(arr2Some)
+
+                  let fPlus opt1 opt2 =
+                      match opt1, opt2 with
+                      | Option.Some a, Option.Some b -> Option.Some(a + b)
+                      | Option.Some a, Option.None
+                      | Option.None, Option.Some a -> Option.Some(a)
+                      | Option.None, Option.None -> Option.None
+
+                  let naiveAddition (arr1: int option[]) (arr2: int option[]) =
+
+                      let length = arr1.Length
+                      let mutable result = Array.zeroCreate length
+
+                      for i in 0 .. length - 1 do
+                          result[i] <- fPlus arr1[i] arr2[i]
+
+                      result
+
+                  let expectedResult = Vector(naiveAddition arr1Some arr2Some)
+                  let actualResult = vectorAddition fPlus vector1 vector2
+
+                  Expect.equal actualResult.Storage expectedResult.Storage "Undefined result. " ]
 
 module SparseMatrixTests =
     open SparseMatrix
@@ -255,15 +295,32 @@ module MatrixMultiplicationTests =
                       let columns = Array2D.length2 arr2d
                       let mutable result = Array.zeroCreate columns
 
-                      for j = 0 to columns - 1 do
-                          for i = 0 to rows - 1 do
+                      for j in 0 .. columns - 1 do
+                          for i in 0 .. rows - 1 do
                               result[j] <- fPlus result[j] (fMulti arr[i] arr2d[i, j])
 
                       result
 
+                  let isNoneReduce tree =
+                      let mutable flag = true
+
+                      let rec f tree =
+                          match tree with
+                          | BinTree.Node (BinTree.None, BinTree.None) ->
+                              flag <- false
+                              flag
+                          | BinTree.Node (x, y) ->
+                              f x |> ignore
+                              f y |> ignore
+                              flag
+                          | BinTree.Leaf _ -> flag
+                          | BinTree.None -> flag
+
+                      f tree
+
                   let expectedResult = Vector(naiveMulti arrSome arr2dSome)
                   let actualResult = multiplication fPlusInt fMultiInt vector matrix
-
+                  let actualResult' = isNoneReduce actualResult.Storage
 
                   Expect.equal
                       actualResult.Storage
@@ -275,4 +332,4 @@ module MatrixMultiplicationTests =
 
                   Expect.equal actualResult.Length matrix.Length1 "Expected actualResult.Length = matrix.Length1. "
 
-              ]
+                  Expect.isTrue actualResult' "Tree is not reduced. " ]

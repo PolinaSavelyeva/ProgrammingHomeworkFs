@@ -91,3 +91,44 @@ type Vector<'value when 'value: equality> =
 
                 takeElementOfVector i this
     end
+
+let vectorAddition (plusOperation: 'value1 option -> 'value2 option -> 'value3 option) (vector1: Vector<'value1>) (vector2: Vector<'value2>) : Vector<'value3> =
+
+    let f x y =
+        let z = plusOperation x y
+
+        match z with
+        | Option.None -> BinTree.None
+        | Some z -> BinTree.Leaf z
+
+    let rec treesAddition tree1 tree2 =
+        match tree1, tree2 with
+        | BinTree.Leaf x, BinTree.Leaf y -> f (Some x) (Some y)
+
+        | BinTree.None, x ->
+            match x with
+            | Leaf a -> f Option.None (Some a)
+            | BinTree.None -> BinTree.None
+            | BinTree.Node (a, b) -> treesAddition (BinTree.Node(BinTree.None, BinTree.None)) (BinTree.Node(a, b))
+
+        | x, BinTree.None ->
+            match x with
+            | Leaf a -> f (Some a) Option.None
+            | BinTree.None -> BinTree.None
+            | BinTree.Node (a, b) -> treesAddition (BinTree.Node(a, b)) (BinTree.Node(BinTree.None, BinTree.None))
+
+        | BinTree.Node (x, y), BinTree.Node (z, w) ->
+            let left = treesAddition x z
+            let right = treesAddition y w
+
+            if left = BinTree.None && right = BinTree.None then
+                BinTree.None
+            else
+                BinTree.Node(left, right)
+        | BinTree.Node (x, y), BinTree.Leaf z -> treesAddition <| BinTree.Node(x, y) <| BinTree.Node(BinTree.Leaf z, BinTree.Leaf z)
+        | BinTree.Leaf z, BinTree.Node (x, y) -> treesAddition <| BinTree.Node(BinTree.Leaf z, BinTree.Leaf z) <| BinTree.Node(x, y)
+
+    if vector1.Length = vector2.Length then
+        Vector(treesAddition vector1.Storage vector2.Storage, vector1.Length, vector1.SquareLength)
+    else
+        failwith "Cannot add two vector. Expected vector1.Length = vector2.Length. "
