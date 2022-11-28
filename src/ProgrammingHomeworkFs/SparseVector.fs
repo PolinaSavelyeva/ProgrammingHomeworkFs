@@ -14,7 +14,7 @@ let toSquare (arr: 'value option[]) =
 
 type squareArray<'value> =
     struct
-        val Memory: 'value option[]
+        val Memory: array<Option<'value>>
         val Head: int
         val Length: int
 
@@ -64,7 +64,7 @@ type Vector<'value when 'value: equality> =
               Length = length
               SquareLength = squareLength }
 
-        new(arr: 'value option[]) =
+        new(arr: array<Option<'value>>) =
             { Storage = toBinTree arr
               Length = arr.Length
               SquareLength = toSquare arr }

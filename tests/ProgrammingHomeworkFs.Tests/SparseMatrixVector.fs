@@ -24,7 +24,7 @@ module SparseVectorTests =
                   let arr = toSquare [||]
                   Expect.equal arr 0 "toSquare expected : 0"
               testProperty "toSquare property test array"
-              <| fun (arr: int option[]) ->
+              <| fun (arr: array<Option<int>>) ->
                   Expect.isLessThanOrEqual
                   <| arr.Length
                   <| toSquare arr
@@ -51,7 +51,7 @@ module SparseVectorTests =
                       (Node(Node(Node(Node(Leaf 1, Leaf 1), None), Node(Node(Leaf 1, Leaf 1), None)), Node(Node(Node(Leaf 1, Leaf 1), None), None)))
                       "toBinTree expected : (Node (Node (Node (Node (Leaf 1, Leaf 1), None), Node (Node (Leaf 1, Leaf 1), None)), Node (Node (Node (Leaf 1, Leaf 1), None), None)))"
               testProperty "takeElementOfVector property test"
-              <| fun (arr: int option[]) (i: uint) ->
+              <| fun (arr: array<Option<int>>) (i: uint) ->
                   let arr' = Array.append arr [| Some(1) |]
                   let i' = int i % arr'.Length
 
@@ -91,7 +91,7 @@ module SparseVectorTests =
                       | Option.None, Option.Some a -> Option.Some(a)
                       | Option.None, Option.None -> Option.None
 
-                  let naiveAddition (arr1: int option[]) (arr2: int option[]) =
+                  let naiveAddition (arr1: array<Option<int>>) (arr2: array<Option<int>>) =
 
                       let length = arr1.Length
                       let mutable result = Array.zeroCreate length
@@ -303,10 +303,10 @@ module MatrixMultiplicationTests =
 
                   let rec isNoneReduce tree =
                       match tree with
-                      | BinTree.Node (BinTree.None, BinTree.None) -> 0
-                      | BinTree.Node (x, y) -> isNoneReduce x * isNoneReduce y
-                      | BinTree.Leaf _ -> 1
-                      | BinTree.None -> 1
+                      | BinTree.Node (BinTree.None, BinTree.None) -> false
+                      | BinTree.Node (x, y) -> isNoneReduce x && isNoneReduce y
+                      | BinTree.Leaf _ -> true
+                      | BinTree.None -> true
 
                   let expectedResult = Vector(naiveMulti arrSome arr2dSome)
                   let actualResult = multiplication fPlusInt fMultiInt vector matrix
@@ -322,4 +322,4 @@ module MatrixMultiplicationTests =
 
                   Expect.equal actualResult.Length matrix.Length1 "Expected actualResult.Length = matrix.Length1. "
 
-                  Expect.equal actualResult' 1 "Tree is not reduced. " ]
+                  Expect.equal actualResult' true "Tree is not reduced. " ]
