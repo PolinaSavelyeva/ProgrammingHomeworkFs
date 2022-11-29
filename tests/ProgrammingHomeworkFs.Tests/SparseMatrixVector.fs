@@ -1,4 +1,4 @@
-module SparseMatrixVector
+module SparseMatrixVectorTests
 
 open Expecto
 

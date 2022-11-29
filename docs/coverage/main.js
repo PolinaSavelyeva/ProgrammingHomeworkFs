@@ -225,6 +225,7 @@ var assemblies = [
     "name": "ProgrammingHomeworkFs",
     "classes": [
       { "name": "AlgebraicList", "rp": "ProgrammingHomeworkFs_AlgebraicList.html", "cl": 24, "ucl": 1, "cal": 25, "tl": 49, "ct": "LineCoverage", "mc": "-", "cb": 19, "tb": 20, "lch": [], "bch": [], "hc": [] },
+      { "name": "BreadthFirstSearch", "rp": "ProgrammingHomeworkFs_BreadthFirstSearch.html", "cl": 36, "ucl": 5, "cal": 41, "tl": 137, "ct": "LineCoverage", "mc": "-", "cb": 25, "tb": 28, "lch": [], "bch": [], "hc": [] },
       { "name": "MatrixMultiplication", "rp": "ProgrammingHomeworkFs_MatrixMultiplication.html", "cl": 35, "ucl": 11, "cal": 46, "tl": 78, "ct": "LineCoverage", "mc": "-", "cb": 24, "tb": 28, "lch": [], "bch": [], "hc": [] },
       { "name": "OopList", "rp": "ProgrammingHomeworkFs_OopList.html", "cl": 45, "ucl": 40, "cal": 85, "tl": 139, "ct": "LineCoverage", "mc": "-", "cb": 36, "tb": 48, "lch": [], "bch": [], "hc": [] },
       { "name": "ProgrammingHomeworkFs.Main", "rp": "ProgrammingHomeworkFs_Main.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 10, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
