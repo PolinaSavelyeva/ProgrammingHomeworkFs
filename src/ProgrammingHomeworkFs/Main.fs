@@ -1,6 +1,10 @@
 namespace ProgrammingHomeworkFs
 
+open SparseMatrix
+open SparseVector
+open MatrixMultiplication
+
 module Main =
 
     [<EntryPoint>]
-    let main (argv: string array) = 0
+    let main _ = 0

@@ -10,6 +10,7 @@
         <Compile Include="SimpleFunctions.fs" />
         <Compile Include="TreeAndAlgebraicList.fs" />
         <Compile Include="TypesAndFunctions.fs" />
+        <Compile Include="SparseMatrixVector.fs" />
         <Compile Include="Main.fs" />
     </ItemGroup>
     <ItemGroup>
