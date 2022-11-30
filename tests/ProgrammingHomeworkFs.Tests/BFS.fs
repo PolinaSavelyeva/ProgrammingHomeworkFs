@@ -3,6 +3,7 @@ module BreadthFirstSearchTests
 open Expecto
 open BreadthFirstSearch
 open SparseMatrix
+open SparseVector
 
 module TreeTests =
     [<Tests>]
@@ -23,14 +24,19 @@ module TreeTests =
                         let expectedResult =
                             QuadTree.Node(
                                 QuadTree.Node(
-                                    QuadTree.Node(None, QuadTree.Node(None, None, None, Leaf 2), None, None),
-                                    QuadTree.Node(QuadTree.Node(None, None, Leaf 2, None), None, None, None),
-                                    QuadTree.Node(None, QuadTree.Node(None, Leaf 3, None, None), None, None),
-                                    QuadTree.Node(None, QuadTree.Node(None, None, None, Leaf 5), None, None)
+                                    QuadTree.Node(QuadTree.None, QuadTree.Node(QuadTree.None, QuadTree.None, QuadTree.None, QuadTree.Leaf 2), QuadTree.None, QuadTree.None),
+                                    QuadTree.Node(QuadTree.Node(QuadTree.None, QuadTree.None, QuadTree.Leaf 2, QuadTree.None), QuadTree.None, QuadTree.None, QuadTree.None),
+                                    QuadTree.Node(QuadTree.None, QuadTree.Node(QuadTree.None, QuadTree.Leaf 3, QuadTree.None, QuadTree.None), QuadTree.None, QuadTree.None),
+                                    QuadTree.Node(QuadTree.None, QuadTree.Node(QuadTree.None, QuadTree.None, QuadTree.None, QuadTree.Leaf 5), QuadTree.None, QuadTree.None)
                                 ),
-                                None,
-                                None,
-                                QuadTree.Node(QuadTree.Node(QuadTree.Node(None, None, None, Leaf 9), None, None, None), None, None, None)
+                                QuadTree.None,
+                                QuadTree.None,
+                                QuadTree.Node(
+                                    QuadTree.Node(QuadTree.Node(QuadTree.None, QuadTree.None, QuadTree.None, QuadTree.Leaf 9), QuadTree.None, QuadTree.None, QuadTree.None),
+                                    QuadTree.None,
+                                    QuadTree.None,
+                                    QuadTree.None
+                                )
                             )
 
                         Expect.equal actualResult expectedResult "Unexpected result. "
@@ -45,10 +51,10 @@ module TreeTests =
 
                         let expectedResult =
                             QuadTree.Node(
-                                QuadTree.Node(None, None, None, Leaf 9),
-                                QuadTree.Node(None, None, Leaf 2, Leaf 3),
-                                QuadTree.Node(None, None, None, Leaf 5),
-                                QuadTree.Node(Leaf 2, None, None, None)
+                                QuadTree.Node(QuadTree.None, QuadTree.None, QuadTree.None, QuadTree.Leaf 9),
+                                QuadTree.Node(QuadTree.None, QuadTree.None, QuadTree.Leaf 2, QuadTree.Leaf 3),
+                                QuadTree.Node(QuadTree.None, QuadTree.None, QuadTree.None, QuadTree.Leaf 5),
+                                QuadTree.Node(QuadTree.Leaf 2, QuadTree.None, QuadTree.None, QuadTree.None)
                             )
 
                         Expect.equal actualResult expectedResult "Unexpected result. "
@@ -68,4 +74,33 @@ module TreeTests =
                         let actualResult = toQuadTreeFromCOO lst size size
                         let expectedResult = QuadTree.Leaf 1
 
-                        Expect.equal actualResult expectedResult "Unexpected result. " ] ]
+                        Expect.equal actualResult expectedResult "Unexpected result. "
+
+                    testCase "BFS random"
+                    <| fun _ ->
+                        let size = 16
+                        let list = [ (1, Some 3, 3); (1, Some 2, 2); (3, Some 5, 5); (1, Some 9, 4) ]
+                        let gMatrix = Matrix(toQuadTreeFromCOO list size size, size, size, size)
+                        let start = [ 1 ]
+                        let actualResult = BFS start gMatrix
+
+                        let expectedResult =
+                            [| Option.None
+                               Some 0
+                               Some 1
+                               Some 1
+                               Some 1
+                               Some 2
+                               Option.None
+                               Option.None
+                               Option.None
+                               Option.None
+                               Option.None
+                               Option.None
+                               Option.None
+                               Option.None
+                               Option.None
+                               Option.None |]
+
+
+                        Expect.equal actualResult.Storage (toBinTree expectedResult) "Unexpected result. " ] ]

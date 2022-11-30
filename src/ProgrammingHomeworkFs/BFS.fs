@@ -2,6 +2,8 @@ module BreadthFirstSearch
 
 open System
 open SparseMatrix
+open SparseVector
+open MatrixMultiplication
 
 let first (x, _, _) = x
 let second (_, x, _) = x
@@ -76,62 +78,121 @@ let toQuadTreeFromCOO (tripleList: (int * 'value option * int) list) (length1: i
         let one, two, three, four = toQuads tripleList (squareLength / 2)
         QuadTree.Node(nodeOrganization one (squareLength / 2), nodeOrganization two (squareLength / 2), nodeOrganization three (squareLength / 2), nodeOrganization four (squareLength / 2))
 
+let toBinTreeFromCOO (tupleList: (int * 'value option) list) (length: int) =
+
+    let toSides (tupleList: (int * 'value option) list) (size: int) =
+        let left tuple = fst tuple < size
+
+        let right tuple = fst tuple >= size
+
+        let leftList = List.filter left tupleList
+
+        let rightList = List.filter right tupleList
+        let rightList' = List.map (fun (x, y) -> (x - size, y)) rightList
+
+        leftList, rightList'
 
 
+    let leafFormation a =
+        match a with
+        | [] -> BinTree.None
+        | [ _, Option.None ] -> BinTree.None
+        | [ _, Some x ] -> BinTree.Leaf x
+        | _ ->
+            failwith
+                "Expected a.Length = 1.\n
+                          Error in -toBinTreeFromCOO- function. "
 
-// 2. Реализовать алгоритм обхода в ширину, используя матрично-векторные операции.
-// Не забыть про то, что алгоритм обхода в ширину —- это алгоритм обхода графа,
-// а не просто набор операций над матрицами и векторами.
+    let rec sideOrganization (side: (int * 'value option) list) size =
+        if size = 1 then
+            leafFormation side
+        else
+            let one, two = toSides side (size / 2)
 
-// 3. Добавить тесты как на отдельные операции, так и на обход в ширину целиком.
+            let one' = sideOrganization one (size / 2)
+            let two' = sideOrganization two (size / 2)
 
-// [(4, 3, 3)
-//  (1, 2, 3)
-//  (1, 2, 4)
-//  (5, 5 ,7)
-//  (9, 9, 9)]
-
-//0 1 2 3 4 5 6 7 8| 9 10 11 .. 16
-//1     * *       |
-//2
-//3
-//4       *
-//5             * |
-//6
-//7
-//8
-//-------------------
-//9               | *
-(* Node
-  (
-   Node(Node (None, Leaf 2, None, None),
-        Node (None, Leaf 2, None, None),
-        Node (None, None, None, Leaf 3),
-        Node (None, None, None, Leaf 5)),
-
-   Node (None, None, None, None),
-
-   Node (None, None, None, None),
-
-   Node (None,
-         None,
-         None,
-         Node (None, None, None, Leaf 9)))
-   )
+            if one' = BinTree.None && two' = BinTree.None then
+                BinTree.None
+            else
+                BinTree.Node(one', two')
 
 
+    if tupleList.Length = 1 then
+        leafFormation tupleList
+    elif tupleList.Length = 0 then
+        BinTree.None
+    else
+        let squareLength = int (2.0 ** ceil (Math.Log(length, 2)))
 
-   Node
-  (
-  Node
-     (Node (Leaf 2, None, None, None),
-      Node (Leaf 2, None, None, None),
-      Node (Leaf 3, None, None, None),
-      Node (Leaf 5, None, None, None)),
+        let one, two = toSides tupleList (squareLength / 2)
+        BinTree.Node(sideOrganization one (squareLength / 2), sideOrganization two (squareLength / 2))
 
-   Node (None, None, None, None),
+let BFS (start: list<int>) (gMatrix: Matrix<'value>) =
+    //TODO fPlus fMulti
 
-   ode (None, None, None, None),
+    let rec toTriples (list: list<int>) weight =
+        match list with
+        | [] -> []
+        | [ x ] -> [ (x, weight) ]
+        | hd :: tl -> (hd, weight) :: toTriples tl weight
 
-   Node (None, None, None, Node (Leaf 9, None, None, None)))
-*)
+    let fPlus (a: Option<bool>) (b: Option<bool>) : Option<bool> = // bool + value = bool
+        match a, b with
+        | Some true, _ -> Some true
+        | Option.None, Option.None -> Option.None //?
+        | Option.None, _ -> Some true
+        | _ -> failwith "Lol1"
+
+    let fMulti (a: Option<bool>) (b: Option<'value>) : Option<bool> =
+        match a, b with
+        | Some true, Some _ -> Some true
+        | Option.None, _
+        | _, Option.None -> Option.None //?
+        | _ -> failwith "Lol2"
+
+    let rec innerBFS (visited: Vector<int>) (front: Vector<bool>) (current: int) =
+        let front' = multiplication fPlus fMulti front gMatrix
+
+        if front'.Storage = BinTree.None then
+            visited
+        else
+            let rec reverse tree =
+                match tree with
+                | BinTree.None -> BinTree.Leaf true
+                | BinTree.Leaf _ -> BinTree.None
+                | BinTree.Node (left, right) ->
+                    let left' = reverse left
+                    let right' = reverse right
+
+                    if left' = BinTree.None && right' = BinTree.None then
+                        BinTree.None
+                    else
+                        BinTree.Node(reverse left, reverse right)
+
+            let reverseVisited =
+                Vector(reverse visited.Storage, visited.Length, visited.SquareLength) //[| N 2 1 0 N 1 N |]
+
+            let ans = Array.create visited.Length Option.None
+
+            for i in 0 .. visited.Length - 1 do
+                if front'[i] = Some true && reverseVisited[i] = Some true then
+                    ans[i] <- Some current
+                elif front'[i] = Option.None && reverseVisited[i] = Some true then
+                    ans[i] <- visited[i]
+                elif front'[i] = Some true && reverseVisited[i] = Option.None then
+                    ans[i] <- visited[i]
+                else
+                    ans[i] <- Option.None
+
+            let visited' = Vector(toBinTree ans, visited.Length, visited.SquareLength)
+
+            innerBFS visited' front' (current + 1)
+
+    let front =
+        Vector(toBinTreeFromCOO (toTriples start (Some true)) gMatrix.Length1, gMatrix.SquareLength, gMatrix.SquareLength)
+
+    let visited =
+        Vector(toBinTreeFromCOO (toTriples start (Some 0)) gMatrix.Length1, gMatrix.SquareLength, gMatrix.SquareLength)
+
+    innerBFS visited front 1
