@@ -58,7 +58,7 @@ let toQuadTreeFromCOO (tripleList: (int * int * 'value option) list) (rows: int)
                         f tl (hd :: one) two three four
                     else
                         f tl one ((first hd, second hd - length / 2, third hd) :: two) three four
-                else if second hd < length / 2 then
+                elif second hd < length / 2 then
                     f tl one two ((first hd - length / 2, second hd, third hd) :: three) four
                 else
                     f tl one two three ((first hd - length / 2, second hd - length / 2, third hd) :: four)
