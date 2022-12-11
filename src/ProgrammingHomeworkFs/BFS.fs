@@ -9,35 +9,36 @@ let first (x, _, _) = x
 let second (_, x, _) = x
 let third (_, _, x) = x
 
-let toBinTreeFromCOO (vertexList: list<int>) (length : int) =
+let toBinTreeFromCOO (vertexList: list<int>) (length: int) =
 
-    let partition (list : list<int>) (length : int)=
+    let partition (list: list<int>) (length: int) =
         let rec f list left right =
             match list with
-            | []  -> left, right
+            | [] -> left, right
             | hd :: tl ->
-                if hd < length/2 then
+                if hd < length / 2 then
                     f tl (hd :: left) right
                 else
-                    f tl left ((hd - length/2) :: right)
+                    f tl left ((hd - length / 2) :: right)
+
         f list [] []
 
-    let rec binTreeFormation (list : list<int>) (length : int) =
-       if length = 1 then
-           if List.length list = 0 then
-               BinTree.None
-           else
-               BinTree.Leaf(true)
-       else
-           let left, right = partition list length
+    let rec binTreeFormation (list: list<int>) (length: int) =
+        if length = 1 then
+            if List.length list = 0 then
+                BinTree.None
+            else
+                BinTree.Leaf(true)
+        else
+            let left, right = partition list length
 
-           let left' = binTreeFormation left (length/2)
-           let right' = binTreeFormation right (length/2)
+            let left' = binTreeFormation left (length / 2)
+            let right' = binTreeFormation right (length / 2)
 
-           if left' = BinTree.None && right' = BinTree.None then
-               BinTree.None
-           else
-               BinTree.Node(left', right')
+            if left' = BinTree.None && right' = BinTree.None then
+                BinTree.None
+            else
+                BinTree.Node(left', right')
 
     if length = 0 then
         Vector(BinTree.None, length, length)
@@ -45,48 +46,50 @@ let toBinTreeFromCOO (vertexList: list<int>) (length : int) =
         let squareLength = int (2.0 ** ceil (Math.Log(length, 2)))
         Vector(binTreeFormation vertexList squareLength, length, squareLength)
 
-let toQuadTreeFromCOO (tripleList : (int * int * 'value option) list) (rows: int) (columns: int) (length : int) =
+let toQuadTreeFromCOO (tripleList: (int * int * 'value option) list) (rows: int) (columns: int) (length: int) =
 
-    let partition (list : (int * int * 'value option) list) (length : int) =
+    let partition (list: (int * int * 'value option) list) (length: int) =
         let rec f list one two three four =
             match list with
-            | []  -> one, two, three, four
+            | [] -> one, two, three, four
             | hd :: tl ->
-                if first hd < length/2 then
-                    if second hd < length/2 then
+                if first hd < length / 2 then
+                    if second hd < length / 2 then
                         f tl (hd :: one) two three four
                     else
-                        f tl one ((first hd, second hd - length/2, third hd) :: two) three four
+                        f tl one ((first hd, second hd - length / 2, third hd) :: two) three four
+                else if second hd < length / 2 then
+                    f tl one two ((first hd - length / 2, second hd, third hd) :: three) four
                 else
-                    if second hd < length/2 then
-                        f tl one two ((first hd - length/2, second hd, third hd):: three) four
-                    else
-                        f tl one two three ((first hd - length/2, second hd - length/2, third hd) :: four)
+                    f tl one two three ((first hd - length / 2, second hd - length / 2, third hd) :: four)
+
         f list [] [] [] []
 
-    let rec quadTreeFormation (list : (int * int * 'value option) list) (length : int) =
-       if length = 1 then
-           if List.length list = 0 then
-               QuadTree.None
-           else
-               QuadTree.Leaf(third list[0])
-       else
-           let one, two, three, four = partition list length
+    let rec quadTreeFormation (list: (int * int * 'value option) list) (length: int) =
+        if length = 1 then
+            if List.length list = 0 then
+                QuadTree.None
+            else
+                QuadTree.Leaf(third list[0])
+        else
+            let one, two, three, four = partition list length
 
-           let one' = quadTreeFormation one (length/2)
-           let two' = quadTreeFormation two (length/2)
-           let three' = quadTreeFormation three (length/2)
-           let four' = quadTreeFormation four (length/2)
+            let one' = quadTreeFormation one (length / 2)
+            let two' = quadTreeFormation two (length / 2)
+            let three' = quadTreeFormation three (length / 2)
+            let four' = quadTreeFormation four (length / 2)
 
-           if one' = QuadTree.None && two' = QuadTree.None && three' = QuadTree.None && four' = QuadTree.None then
-               QuadTree.None
-           else
-               QuadTree.Node(one', two', three', four')
+            if one' = QuadTree.None && two' = QuadTree.None && three' = QuadTree.None && four' = QuadTree.None then
+                QuadTree.None
+            else
+                QuadTree.Node(one', two', three', four')
 
     if length = 0 then
         Matrix(QuadTree.None, length, length, length)
     else
-        let squareLength = int (2.0 ** ceil (max (Math.Log(rows, 2)) (Math.Log(columns, 2))))
+        let squareLength =
+            int (2.0 ** ceil (max (Math.Log(rows, 2)) (Math.Log(columns, 2))))
+
         Matrix(quadTreeFormation tripleList squareLength, rows, columns, squareLength)
 
 (*let toQuadTree (tripleList : (int * int * 'value option) list) (rows: int) (columns: int) (length : int) =
