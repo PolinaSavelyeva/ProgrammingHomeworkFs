@@ -73,6 +73,6 @@ let multiplication plusOperation (multiOperation: 'value1 option -> 'value2 opti
         Vector(cutTree, vector.Length, vector.SquareLength)
     else
         failwith
-            "Multiplication operation is not defined.\n
-         Expected vector.Length = matrix.Length1.\n
+            $"Multiplication operation is not defined.\n
+         Expected %A{vector.Length} = %A{matrix.Length1}.\n
          Error in -multiplication- function. "
