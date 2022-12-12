@@ -4,7 +4,7 @@ open SparseVector
 open SparseMatrix
 open System
 
-let multiplication plusOperation (multiOperation: 'value1 option -> 'value2 option -> 'value3 option) (vector: Vector<'value1>) (matrix: Matrix<'value2>) : Vector<'value3> =
+let multiplication plusOperation (multiOperation: Option<'value1> -> Option<'value2> -> Option<'value3>) (vector: Vector<'value1>) (matrix: Matrix<'value2>) : Vector<'value3> =
 
     let rec multiTrees binTree quadTree =
         match binTree, quadTree with

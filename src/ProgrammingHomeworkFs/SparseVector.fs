@@ -90,6 +90,8 @@ type Vector<'value when 'value: equality> =
                         failwith "Index out of the range. Error in -takeElementOfVector- function. "
 
                 takeElementOfVector i this
+
+        member this.IsEmpty = this.Storage = BinTree.None
     end
 
 let vectorAddition (plusOperation: 'value1 option -> 'value2 option -> 'value3 option) (vector1: Vector<'value1>) (vector2: Vector<'value2>) : Vector<'value3> =

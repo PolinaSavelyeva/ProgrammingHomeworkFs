@@ -1,8 +1,5 @@
 namespace ProgrammingHomeworkFs
 
-open BreadthFirstSearch
-open SparseMatrix
-
 module Main =
 
     [<EntryPoint>]

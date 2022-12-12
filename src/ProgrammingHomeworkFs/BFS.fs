@@ -9,7 +9,7 @@ let first (x, _, _) = x
 let second (_, x, _) = x
 let third (_, _, x) = x
 
-let frontFormation (vertexList: list<int>) (length: int) =
+let vectorFormation (list: list<int>) (length: int) (weight: 'value) =
 
     let partition (list: list<int>) (length: int) =
         let rec f list left right =
@@ -28,7 +28,7 @@ let frontFormation (vertexList: list<int>) (length: int) =
             if List.length list = 0 then
                 BinTree.None
             else
-                BinTree.Leaf(true)
+                BinTree.Leaf(weight)
         else
             let left, right = partition list length
 
@@ -44,20 +44,11 @@ let frontFormation (vertexList: list<int>) (length: int) =
         Vector(BinTree.None, length, length)
     else
         let squareLength = int (2.0 ** ceil (Math.Log(length, 2)))
-        Vector(binTreeFormation vertexList squareLength, length, squareLength)
+        Vector(binTreeFormation list squareLength, length, squareLength)
 
-let visitedFormation (vector: Vector<'value>) (number: int) =
-    let rec f (tree: BinTree<'value>) =
-        match tree with
-        | Leaf _ -> Leaf number
-        | BinTree.None -> BinTree.None
-        | Node (left, right) -> Node(f left, f right)
+let matrixFormation (tripleList: list<int * int * Option<'value>>) (rows: int) (columns: int) (length: int) =
 
-    Vector(f vector.Storage, vector.Length, vector.SquareLength)
-
-let matrixFormation (tripleList: (int * int * 'value option) list) (rows: int) (columns: int) (length: int) =
-
-    let partition (list: (int * int * 'value option) list) (length: int) =
+    let partition (list: list<int * int * Option<'value>>) (length: int) =
         let rec f list one two three four =
             match list with
             | [] -> one, two, three, four
@@ -74,7 +65,7 @@ let matrixFormation (tripleList: (int * int * 'value option) list) (rows: int) (
 
         f list [] [] [] []
 
-    let rec quadTreeFormation (list: (int * int * 'value option) list) (length: int) =
+    let rec quadTreeFormation (list: list<int * int * Option<'value>>) (length: int) =
         if length = 1 then
             if List.length list = 0 then
                 QuadTree.None
@@ -128,33 +119,34 @@ let fMulti (a: Option<bool>) (b: Option<'value>) : Option<bool> =
     | _, Option.None -> Option.None
     | _ -> Some true
 
-let fPlusMask (a: Option<bool>) (b: Option<bool>) =
+let fPlusMask (a: Option<bool>) (b: Option<int>) =
     match a, b with
-    | Some true, Some true -> Some true
+    | Some true, Option.None -> Some true
     | _ -> Option.None
 
-let fPlusVisited (a: Option<int>) (b: Option<int>) =
-    match a, b with
-    | Option.None, Some x
-    | Some x, Option.None -> Some x
-    | _ -> Option.None
+let fPlusVisited number =
+    let f (a: Option<int>) (b: Option<bool>) =
+        match a, b with
+        | Option.None, Some true -> Some number
+        | Some x, Option.None -> Some x
+        | _ -> Option.None
+
+    f
 
 let BFS (startVertexList: list<int>) (graphMatrix: Matrix<'value>) =
 
     let rec innerBFS (front: Vector<bool>) (visited: Vector<int>) (iterationNumber: int) =
-        if front.Storage = BinTree.None then
+        if front.IsEmpty then
             visited
         else
             let newFront = multiplication fPlus fMulti front graphMatrix
-            let reverseVisited = reverseVisited visited
 
-            let front = vectorAddition fPlusMask newFront reverseVisited
+            let front = vectorAddition fPlusMask newFront visited
 
-            let visited =
-                vectorAddition fPlusVisited visited (visitedFormation front iterationNumber)
+            let visited = vectorAddition (fPlusVisited iterationNumber) visited front
 
             innerBFS front visited (iterationNumber + 1)
 
-    let front = frontFormation startVertexList graphMatrix.Length1
-    let visited = visitedFormation front 0
+    let front = vectorFormation startVertexList graphMatrix.Length1 true
+    let visited = vectorFormation startVertexList graphMatrix.Length1 0
     innerBFS front visited 1
