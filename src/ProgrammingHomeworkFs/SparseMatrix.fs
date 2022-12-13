@@ -2,6 +2,10 @@ module SparseMatrix
 
 open System
 
+let first (x, _, _) = x
+let second (_, x, _) = x
+let third (_, _, x) = x
+
 type QuadTree<'value> =
     | None
     | Leaf of 'value
@@ -10,6 +14,15 @@ type QuadTree<'value> =
 let toSquare arr =
     let length1 = Array2D.length1 arr
     let length2 = Array2D.length2 arr
+    let log1 = Math.Log(length1, 2)
+    let log2 = Math.Log(length2, 2)
+
+    if ceil log1 = log1 && ceil log2 = log2 && log1 = log2 then
+        length1
+    else
+        int (2.0 ** ceil (max log1 log2))
+
+let toSquareValue (length1: int) (length2: int) =
     let log1 = Math.Log(length1, 2)
     let log2 = Math.Log(length2, 2)
 
@@ -68,6 +81,53 @@ let toQuadTree arr =
 
     qTreeFormation (squareArray (arr, 0, 0, toSquare arr))
 
+
+let toQuadTreeFromCOO (tripleList: list<int * int * Option<'value>>) (rows: int) (columns: int) (length: int) =
+
+    let partition (list: list<int * int * Option<'value>>) (length: int) =
+        let rec f list one two three four =
+            match list with
+            | [] -> one, two, three, four
+            | hd :: tl ->
+                if first hd < length / 2 then
+                    if second hd < length / 2 then
+                        f tl (hd :: one) two three four
+                    else
+                        f tl one ((first hd, second hd - length / 2, third hd) :: two) three four
+                elif second hd < length / 2 then
+                    f tl one two ((first hd - length / 2, second hd, third hd) :: three) four
+                else
+                    f tl one two three ((first hd - length / 2, second hd - length / 2, third hd) :: four)
+
+        f list [] [] [] []
+
+    let rec quadTreeFormation (list: list<int * int * Option<'value>>) (length: int) =
+        if length = 1 then
+            if List.length list = 0 then
+                QuadTree.None
+            else
+                match third list[0] with
+                | Option.None -> QuadTree.None
+                | Some x -> QuadTree.Leaf x
+        else
+            let one, two, three, four = partition list length
+
+            let one' = quadTreeFormation one (length / 2)
+            let two' = quadTreeFormation two (length / 2)
+            let three' = quadTreeFormation three (length / 2)
+            let four' = quadTreeFormation four (length / 2)
+
+            if one' = QuadTree.None && two' = QuadTree.None && three' = QuadTree.None && four' = QuadTree.None then
+                QuadTree.None
+            else
+                QuadTree.Node(one', two', three', four')
+
+    if length = 0 then
+        QuadTree.None
+    else
+        let squareLength = toSquareValue rows columns
+        quadTreeFormation tripleList squareLength
+
 type Matrix<'value when 'value: equality> =
     struct
 
@@ -87,6 +147,12 @@ type Matrix<'value when 'value: equality> =
               Length1 = Array2D.length1 arr
               Length2 = Array2D.length2 arr
               SquareLength = toSquare arr }
+
+        new(tripleList, rows, columns, length) =
+            { Storage = toQuadTreeFromCOO tripleList rows columns length
+              Length1 = rows
+              Length2 = columns
+              SquareLength = toSquareValue rows columns }
 
         member this.Item
             with get (i, j) =
@@ -109,4 +175,6 @@ type Matrix<'value when 'value: equality> =
                         failwith "Index out of the range.  Error in -takeElementOfMatrix- function. "
 
                 takeElementOfMatrix i j this
+
+        member this.IsEmpty = this.Storage = QuadTree.None
     end

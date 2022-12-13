@@ -225,13 +225,13 @@ var assemblies = [
     "name": "ProgrammingHomeworkFs",
     "classes": [
       { "name": "AlgebraicList", "rp": "ProgrammingHomeworkFs_AlgebraicList.html", "cl": 24, "ucl": 1, "cal": 25, "tl": 49, "ct": "LineCoverage", "mc": "-", "cb": 19, "tb": 20, "lch": [], "bch": [], "hc": [] },
-      { "name": "BreadthFirstSearch", "rp": "ProgrammingHomeworkFs_BreadthFirstSearch.html", "cl": 70, "ucl": 12, "cal": 82, "tl": 152, "ct": "LineCoverage", "mc": "-", "cb": 51, "tb": 66, "lch": [], "bch": [], "hc": [] },
+      { "name": "BreadthFirstSearch", "rp": "ProgrammingHomeworkFs_BreadthFirstSearch.html", "cl": 34, "ucl": 3, "cal": 37, "tl": 64, "ct": "LineCoverage", "mc": "-", "cb": 19, "tb": 26, "lch": [], "bch": [], "hc": [] },
       { "name": "MatrixMultiplication", "rp": "ProgrammingHomeworkFs_MatrixMultiplication.html", "cl": 35, "ucl": 11, "cal": 46, "tl": 78, "ct": "LineCoverage", "mc": "-", "cb": 24, "tb": 28, "lch": [], "bch": [], "hc": [] },
       { "name": "OopList", "rp": "ProgrammingHomeworkFs_OopList.html", "cl": 45, "ucl": 40, "cal": 85, "tl": 139, "ct": "LineCoverage", "mc": "-", "cb": 36, "tb": 48, "lch": [], "bch": [], "hc": [] },
       { "name": "ProgrammingHomeworkFs.Main", "rp": "ProgrammingHomeworkFs_Main.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 6, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "SimpleFunctions", "rp": "ProgrammingHomeworkFs_SimpleFunctions.html", "cl": 28, "ucl": 13, "cal": 41, "tl": 62, "ct": "LineCoverage", "mc": "-", "cb": 31, "tb": 43, "lch": [], "bch": [], "hc": [] },
-      { "name": "SparseMatrix", "rp": "ProgrammingHomeworkFs_SparseMatrix.html", "cl": 54, "ucl": 0, "cal": 54, "tl": 112, "ct": "LineCoverage", "mc": "-", "cb": 39, "tb": 40, "lch": [], "bch": [], "hc": [] },
-      { "name": "SparseVector", "rp": "ProgrammingHomeworkFs_SparseVector.html", "cl": 61, "ucl": 4, "cal": 65, "tl": 136, "ct": "LineCoverage", "mc": "-", "cb": 40, "tb": 44, "lch": [], "bch": [], "hc": [] },
+      { "name": "SparseMatrix", "rp": "ProgrammingHomeworkFs_SparseMatrix.html", "cl": 89, "ucl": 6, "cal": 95, "tl": 180, "ct": "LineCoverage", "mc": "-", "cb": 67, "tb": 68, "lch": [], "bch": [], "hc": [] },
+      { "name": "SparseVector", "rp": "ProgrammingHomeworkFs_SparseVector.html", "cl": 61, "ucl": 6, "cal": 67, "tl": 140, "ct": "LineCoverage", "mc": "-", "cb": 40, "tb": 46, "lch": [], "bch": [], "hc": [] },
       { "name": "Tree", "rp": "ProgrammingHomeworkFs_Tree.html", "cl": 9, "ucl": 0, "cal": 9, "tl": 27, "ct": "LineCoverage", "mc": "-", "cb": 2, "tb": 2, "lch": [], "bch": [], "hc": [] },
     ]},
 ];
@@ -246,25 +246,18 @@ var riskHotspotMetrics = [
 
 var riskHotspots = [
   {
-    "assembly": "ProgrammingHomeworkFs", "class": "SparseVector", "reportPath": "ProgrammingHomeworkFs_SparseVector.html", "methodName": "SparseVector/BinTree`1<value3> SparseVector/treesAddition@107::Invoke(SparseVector/BinTree`1<value1>,SparseVector/BinTree`1<value2>)", "methodShortName": "Invoke(...)", "fileIndex": 0, "line": 107,
+    "assembly": "ProgrammingHomeworkFs", "class": "SparseVector", "reportPath": "ProgrammingHomeworkFs_SparseVector.html", "methodName": "SparseVector/BinTree`1<value3> SparseVector/treesAddition@111::Invoke(SparseVector/BinTree`1<value1>,SparseVector/BinTree`1<value2>)", "methodShortName": "Invoke(...)", "fileIndex": 0, "line": 111,
     "metrics": [
       { "value": 13, "exceeded": false },
       { "value": 640, "exceeded": true },
       { "value": 13.67, "exceeded": false },
     ]},
   {
-    "assembly": "ProgrammingHomeworkFs", "class": "SparseMatrix", "reportPath": "ProgrammingHomeworkFs_SparseMatrix.html", "methodName": "Microsoft.FSharp.Core.FSharpOption`1<a> SparseMatrix/whichElement@94-1T::Invoke(System.Int32,System.Int32,System.Int32,SparseMatrix/QuadTree`1<a>)", "methodShortName": "Invoke(...)", "fileIndex": 0, "line": 95,
+    "assembly": "ProgrammingHomeworkFs", "class": "SparseMatrix", "reportPath": "ProgrammingHomeworkFs_SparseMatrix.html", "methodName": "Microsoft.FSharp.Core.FSharpOption`1<a> SparseMatrix/whichElement@160-1T::Invoke(System.Int32,System.Int32,System.Int32,SparseMatrix/QuadTree`1<a>)", "methodShortName": "Invoke(...)", "fileIndex": 0, "line": 161,
     "metrics": [
       { "value": 9, "exceeded": false },
       { "value": 256, "exceeded": true },
       { "value": 9, "exceeded": false },
-    ]},
-  {
-    "assembly": "ProgrammingHomeworkFs", "class": "BreadthFirstSearch", "reportPath": "ProgrammingHomeworkFs_BreadthFirstSearch.html", "methodName": "SparseVector/BinTree`1<System.Boolean> BreadthFirstSearch/f@97-5::Invoke(SparseVector/BinTree`1<value>)", "methodShortName": "Invoke(...)", "fileIndex": 0, "line": 97,
-    "metrics": [
-      { "value": 5, "exceeded": false },
-      { "value": 16, "exceeded": false },
-      { "value": 30, "exceeded": true },
     ]},
   {
     "assembly": "ProgrammingHomeworkFs", "class": "SimpleFunctions", "reportPath": "ProgrammingHomeworkFs_SimpleFunctions.html", "methodName": "a SimpleFunctions::arrays(value[])", "methodShortName": "arrays(...)", "fileIndex": 0, "line": 40,

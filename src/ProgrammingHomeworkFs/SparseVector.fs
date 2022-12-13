@@ -12,6 +12,10 @@ let toSquare (arr: 'value option[]) =
     let log = Math.Log(length, 2)
     if (ceil log) = log then length else int (2.0 ** ceil log)
 
+let toSquareVal (length: int) =
+    let log = Math.Log(length, 2)
+    if (ceil log) = log then length else int (2.0 ** ceil log)
+
 type squareArray<'value> =
     struct
         val Memory: array<Option<'value>>
@@ -133,4 +137,4 @@ let vectorAddition (plusOperation: 'value1 option -> 'value2 option -> 'value3 o
     if vector1.Length = vector2.Length then
         Vector(treesAddition vector1.Storage vector2.Storage, vector1.Length, vector1.SquareLength)
     else
-        failwith "Cannot add two vector. Expected vector1.Length = vector2.Length. "
+        failwith $"Cannot add vector. Expected vector1.Length : %A{vector1.Length} = vector2.Length : %A{vector2.Length}. "

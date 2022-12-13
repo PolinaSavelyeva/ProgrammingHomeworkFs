@@ -3,87 +3,14 @@ module BreadthFirstSearchTests
 open Expecto
 open SparseVector
 
-
-module VectorTests =
-    open SparseVector
-    open BreadthFirstSearch
-
-    [<Tests>]
-    let tests =
-        testList
-            "Vector operations tests"
-            [ testCase "vectorFormation random list test"
-              <| fun _ ->
-                  let length = 5
-                  let list = [ 2; 4 ]
-
-                  let actualResult = (vectorFormation list length true).Storage
-
-                  let expectedResult =
-                      Node(Node(None, Node(Leaf true, None)), Node(Node(Leaf true, None), None))
-
-                  Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
-
-              testCase "vectorFormation empty list test"
-              <| fun _ ->
-
-                  let length = 5
-                  let list = []
-
-                  let actualResult = (vectorFormation list length true).Storage
-                  let expectedResult = BinTree.None
-
-                  Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
-
-              testProperty "vectorFormation property test"
-              <| fun (list: list<int>) (length: int) ->
-
-                  let length' = abs length + 1
-                  let list' = List.distinct (list |> List.map (fun n -> (abs n) % length'))
-
-                  let naiveFormation list length =
-                      let newArray = Array.create length Option.None
-
-                      for i in 0 .. List.length list - 1 do
-                          newArray[list[i]] <- Some true
-
-                      newArray
-
-                  let actualResult = (vectorFormation list' length' true).Storage
-                  let expectedResult = toBinTree (naiveFormation list' length')
-
-                  Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
-
-              testProperty "vectorFormation 2 property test"
-              <| fun (list: list<int>) (length: int) ->
-
-                  let length' = abs length + 1
-                  let list' = List.distinct (list |> List.map (fun n -> (abs n) % length'))
-
-                  let naiveFormation list length =
-                      let newArray = Array.create length Option.None
-
-                      for i in 0 .. List.length list - 1 do
-                          newArray[list[i]] <- Some 0
-
-                      newArray
-
-                  let actualResult = (vectorFormation list' length' 0).Storage
-                  let expectedResult = toBinTree (naiveFormation list' length')
-
-                  Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
-
-              ]
-
 module MatrixTests =
     open SparseMatrix
-    open BreadthFirstSearch
 
     [<Tests>]
     let tests =
         testList
             "Matrix operations tests"
-            [ testCase "matrixFormation random list test"
+            [ testCase "toQuadTreeFromCOO random list test"
               <| fun _ ->
 
                   let rows = 4
@@ -93,15 +20,15 @@ module MatrixTests =
                   let list =
                       [ (0, 0, Some 9); (1, 3, Some 10); (1, 1, Some 0); (2, 2, Some -9); (3, 3, Some 10) ]
 
-                  let actualResult = (matrixFormation list rows columns length).Storage
+                  let actualResult = toQuadTreeFromCOO list rows columns length
 
                   let expectedResult =
-                      Node(Node(Leaf(Some 9), None, None, Leaf(Some 0)), Node(None, None, None, Leaf(Some 10)), None, Node(Leaf(Some -9), None, None, Leaf(Some 10)))
+                      Node(Node(Leaf 9, None, None, Leaf 0), Node(None, None, None, Leaf 10), None, Node(Leaf -9, None, None, Leaf 10))
 
                   Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
 
 
-              testProperty "matrixFormation property test"
+              testProperty "toQuadTreeFromCOO property test"
               <| fun (list: (int * int) list) (length: int) ->
 
                   let length' = abs length + 1
@@ -114,18 +41,17 @@ module MatrixTests =
                       let new2DArray = Array2D.create length length Option.None
 
                       for i in 0 .. List.length list - 1 do
-                          new2DArray[first list[i], second list[i]] <- Some(third list[i])
+                          new2DArray[first list[i], second list[i]] <- third list[i]
 
                       new2DArray
 
-                  let actualResult = (matrixFormation list' length' length' length').Storage
+                  let actualResult = toQuadTreeFromCOO list' length' length' length'
                   let expectedResult = naiveFormation list' length' |> toQuadTree
 
                   Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. " ]
 
 module BFSTests =
     open SparseMatrix
-    open SparseVector
     open BreadthFirstSearch
 
     [<Tests>]
@@ -137,7 +63,7 @@ module BFSTests =
 
                   let length = 16
                   let tripleList = [ (1, 3, Some 3); (1, 2, Some 2); (3, 5, Some 5); (1, 4, Some 9) ]
-                  let gMatrix = matrixFormation tripleList length length length
+                  let gMatrix = Matrix(tripleList, length, length, length)
                   let startVertexList = [ 1 ]
 
                   let actualResult = (BFS startVertexList gMatrix).Storage
@@ -168,7 +94,7 @@ module BFSTests =
 
                   let length = 14
                   let tripleList = [ (1, 1, Some 3); (11, 2, Some 2); (0, 5, Some 5); (0, 4, Some 9) ]
-                  let gMatrix = matrixFormation tripleList length length length
+                  let gMatrix = Matrix(tripleList, length, length, length)
                   let startVertexList = []
 
                   let actualResult = (BFS startVertexList gMatrix).Storage
@@ -182,12 +108,13 @@ module BFSTests =
 
                   let length = 4
                   let tripleList = [ (0, 1, Some 3); (1, 2, Some 2); (0, 0, Some 5); (1, 1, Some 9) ]
-                  let gMatrix = matrixFormation tripleList length length length
+                  let gMatrix = Matrix(tripleList, length, length, length)
                   let startVertexList = [ 0; 1; 2; 3 ]
 
                   let actualResult = (BFS startVertexList gMatrix).Storage
 
-                  let expectedResult = Node(Node(Leaf 0, Leaf 0), Node(Leaf 0, Leaf 0))
+                  let expectedResult =
+                      BinTree.Node(BinTree.Node(BinTree.Leaf 0, BinTree.Leaf 0), BinTree.Node(BinTree.Leaf 0, BinTree.Leaf 0))
 
                   Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
 
@@ -196,7 +123,7 @@ module BFSTests =
 
                   let length = 0
                   let tripleList = []
-                  let gMatrix = matrixFormation tripleList length length length
+                  let gMatrix = Matrix(tripleList, length, length, length)
                   let startVertexList = []
 
                   let actualResult = (BFS startVertexList gMatrix).Storage
@@ -205,7 +132,7 @@ module BFSTests =
 
                   Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
 
-              testProperty "BFS property test 1"
+              testProperty "BFS property test graph with only loops"
               <| fun (tripleList: (int * int) list) (vertexList: list<int>) (length: int) ->
 
                   let length' = abs length + 1
@@ -217,15 +144,17 @@ module BFSTests =
                   let vertexList' =
                       List.distinct (vertexList |> List.map (fun n -> (abs n) % length'))
 
-                  let graphMatrix = matrixFormation tripleList' length' length' length'
+                  let graphMatrix = Matrix(tripleList', length', length', length')
 
                   let actualResult = (graphMatrix |> BFS vertexList').Storage
 
-                  let expectedResult = (vectorFormation vertexList' length' 0).Storage
+                  let expectedResult =
+                      Array.init graphMatrix.Length1 (fun n -> if List.contains n vertexList' then Some 0 else Option.None)
+                      |> toBinTree
 
                   Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
 
-              testProperty "BFS property test 2"
+              testProperty "BFS property test naive bfs"
               <| fun (tripleList: (int * int) list) (vertexList: list<int>) (length: int) ->
 
                   let length' = abs length + 1
@@ -237,7 +166,7 @@ module BFSTests =
                   let vertexList' =
                       List.distinct (vertexList |> List.map (fun n -> (abs n) % length'))
 
-                  let graphMatrix = matrixFormation tripleList' length' length' length'
+                  let graphMatrix = Matrix(tripleList', length', length', length')
 
                   let naiveBFS (vertexList: list<int>) (graphMatrix: Matrix<'value>) =
 
