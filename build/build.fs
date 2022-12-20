@@ -214,6 +214,8 @@ module dotnet =
 
     let fantomas args = DotNet.exec id "fantomas" args
 
+    let fsharplint args = DotNet.exec id "fsharplint lint --file-type solution" args
+
 module FSharpAnalyzers =
     type Arguments =
         | Project of string
@@ -555,6 +557,13 @@ let checkFormatCode _ =
     else
         Trace.logf "Errors while formatting: %A" result.Errors
 
+let fSharpLint _ =
+     let result = sln |> dotnet.fsharplint
+     if result.OK then
+         Trace.log "No files need formatting"
+     else
+         failwith "Some files need formatting, please check output for more info"
+
 let initTargets () =
     BuildServer.install [ GitHubActions.Installer ]
     /// Defines a dependency - y is dependent on x
@@ -587,6 +596,7 @@ let initTargets () =
     Target.create "GitHubRelease" githubRelease
     Target.create "FormatCode" formatCode
     Target.create "CheckFormatCode" checkFormatCode
+    Target.create "FSharpLint" fSharpLint
     Target.create "Release" ignore
 
     //-----------------------------------------------------------------------------
@@ -612,6 +622,7 @@ let initTargets () =
 
     "DotnetRestore"
     ==> "CheckFormatCode"
+    ==> "FsharpLint"
     ==> "DotnetBuild"
     // ==> "FSharpAnalyzers"
     ==> "DotnetTest"
