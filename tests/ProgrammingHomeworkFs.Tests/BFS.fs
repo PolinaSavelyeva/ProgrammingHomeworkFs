@@ -29,14 +29,14 @@ module MatrixTests =
                   Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
 
 
-              testProperty "toQuadTreeFromCOO property test"
-              <| fun (list: list<uint * uint>) (length: uint) ->
+              testProperty "toQuadTreeFromCOO property test without empty lists"
+              <| fun (tupleList: list<uint * uint>) ->
 
-                  let length' = length + 1u
+                  let tripleList =
+                      List.append tupleList [ (0u, 0u) ] |> List.distinct |> List.map (fun (x, y) -> (x, y, Some 100))
 
-                  let list' =
-                      List.distinct (list |> List.map (fun (x, y) -> (x % length', y % length')))
-                      |> List.map (fun (x, y) -> (x, y, Some 100))
+                  let triple = List.maxBy (fun z -> first z + second z) tripleList
+                  let length = first triple + second triple + 1u
 
                   let naiveFormation list length =
                       let new2DArray = Array2D.create (toInt length) (toInt length) Option.None
@@ -46,8 +46,8 @@ module MatrixTests =
 
                       new2DArray
 
-                  let actualResult = toQuadTreeFromCOO list' length' length'
-                  let expectedResult = naiveFormation list' length' |> toQuadTree
+                  let actualResult = toQuadTreeFromCOO tripleList length length
+                  let expectedResult = naiveFormation tripleList length |> toQuadTree
 
                   Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. " ]
 
@@ -101,11 +101,11 @@ module BFSTests =
                   let tripleList =
                       [ (1u, 1u, Some 3); (11u, 2u, Some 2); (0u, 5u, Some 5); (0u, 4u, Some 9) ]
 
-                  let gMatrix = Matrix(tripleList, length, length)
                   let startVertexList = []
 
-                  let actualResult = (BFS startVertexList gMatrix).Storage
+                  let gMatrix = Matrix(tripleList, length, length)
 
+                  let actualResult = (BFS startVertexList gMatrix).Storage
                   let expectedResult = BinTree.None
 
                   Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
@@ -118,8 +118,9 @@ module BFSTests =
                   let tripleList =
                       [ (0u, 1u, Some 3); (1u, 2u, Some 2); (0u, 0u, Some 5); (1u, 1u, Some 9) ]
 
-                  let gMatrix = Matrix(tripleList, length, length)
                   let startVertexList = [ 0u; 1u; 2u; 3u ]
+
+                  let gMatrix = Matrix(tripleList, length, length)
 
                   let actualResult = (BFS startVertexList gMatrix).Storage
 
@@ -132,34 +133,35 @@ module BFSTests =
               <| fun _ ->
 
                   let length = 0u
+
                   let tripleList = []
-                  let gMatrix = Matrix(tripleList, length, length)
                   let startVertexList = []
 
-                  let actualResult = (BFS startVertexList gMatrix).Storage
+                  let gMatrix = Matrix(tripleList, length, length)
 
+                  let actualResult = (BFS startVertexList gMatrix).Storage
                   let expectedResult = BinTree.None
 
                   Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
 
-              testProperty "BFS property test graph with only loops"
-              <| fun (tripleList: list<uint * uint>) (vertexList: list<uint>) (length: uint) ->
+              testProperty "BFS property test graph with only loops without empty lists"
+              <| fun (tupleList: list<uint * uint>) (vertexList: list<uint>) ->
 
-                  let length' = length + 1u
+                  let newVertexList = List.append vertexList [ 0u ] |> List.distinct
 
-                  let tripleList' =
-                      List.distinct (tripleList |> List.map (fun (x, _) -> (x % length', x % length')))
-                      |> List.map (fun (x, _) -> (x, x, Some 100))
+                  let tripleList =
+                      List.append tupleList [ (0u, 0u) ] |> List.distinct |> List.map (fun (x, _) -> (x, x, Some 100))
 
-                  let vertexList' = List.distinct (vertexList |> List.map (fun n -> n % length'))
+                  let triple = List.maxBy (fun z -> first z + second z) tripleList
+                  let length = max (first triple + second triple) (List.max newVertexList) + 1u
 
-                  let graphMatrix = Matrix(tripleList', length', length')
+                  let graphMatrix = Matrix(tripleList, length, length)
 
-                  let actualResult = (graphMatrix |> BFS vertexList').Storage
+                  let actualResult = (graphMatrix |> BFS newVertexList).Storage
 
                   let expectedResult =
-                      Array.init (toInt graphMatrix.Length1) (fun n ->
-                          if List.contains (uint n) vertexList' then
+                      Array.init (toInt length) (fun n ->
+                          if List.contains (uint n) newVertexList then
                               Some 0u
                           else
                               Option.None)
@@ -167,18 +169,18 @@ module BFSTests =
 
                   Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
 
-              testProperty "BFS property test naive bfs"
-              <| fun (tripleList: list<uint * uint>) (vertexList: list<uint>) (length: uint) ->
+              testProperty "BFS property test naive bfs without empty lists"
+              <| fun (tupleList: list<uint * uint>) (vertexList: list<uint>) ->
 
-                  let length' = length + 1u
+                  let newVertexList = List.append vertexList [ 0u ] |> List.distinct
 
-                  let tripleList' =
-                      List.distinct (tripleList |> List.map (fun (x, _) -> (x % length', x % length')))
-                      |> List.map (fun (x, _) -> (x, x, Some 100))
+                  let tripleList =
+                      List.append tupleList [ (0u, 0u) ] |> List.distinct |> List.map (fun (x, _) -> (x, x, Some 100))
 
-                  let vertexList' = List.distinct (vertexList |> List.map (fun n -> n % length'))
+                  let triple = List.maxBy (fun z -> first z + second z) tripleList
+                  let length = max (first triple + second triple) (List.max newVertexList) + 1u
 
-                  let graphMatrix = Matrix(tripleList', length', length')
+                  let graphMatrix = Matrix(tripleList, length, length)
 
                   let naiveBFS (vertexList: list<uint>) (graphMatrix: Matrix<'value>) =
 
@@ -207,8 +209,7 @@ module BFSTests =
 
                       answerFormation queue ans 1u
 
-                  let actualResult = (graphMatrix |> BFS vertexList').Storage
-
-                  let expectedResult = naiveBFS vertexList' graphMatrix |> toBinTree
+                  let actualResult = (graphMatrix |> BFS newVertexList).Storage
+                  let expectedResult = naiveBFS newVertexList graphMatrix |> toBinTree
 
                   Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. " ]

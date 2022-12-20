@@ -16,13 +16,13 @@ let fMulti a b =
 
 let fPlusMask a b =
     match a, b with
-    | Some (), Option.None -> Some()
+    | Some _, Option.None -> Some()
     | _ -> Option.None
 
 let fPlusVisited number =
     let f a b =
         match a, b with
-        | Option.None, Some () -> Some number
+        | Option.None, Some _ -> Some number
         | Some x, Option.None -> Some x
         | _ -> Option.None
 
