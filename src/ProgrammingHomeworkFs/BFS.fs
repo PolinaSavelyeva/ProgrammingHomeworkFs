@@ -30,7 +30,7 @@ let fPlusVisited number =
 
 let BFS startVertexList graphMatrix =
 
-    let rec innerBFS (front: Vector<unit>) visited iterationNumber =
+    let rec inner (front: Vector<unit>) visited iterationNumber =
         if front.IsEmpty then
             visited
         else
@@ -40,9 +40,9 @@ let BFS startVertexList graphMatrix =
 
             let visited = vectorAddition (fPlusVisited iterationNumber) visited front
 
-            innerBFS front visited (iterationNumber + 1u)
+            inner front visited (iterationNumber + 1u)
 
     let front = Vector(startVertexList, graphMatrix.Length1, ())
     let visited = Vector(startVertexList, graphMatrix.Length1, 0u)
 
-    innerBFS front visited 1u
+    inner front visited 1u
