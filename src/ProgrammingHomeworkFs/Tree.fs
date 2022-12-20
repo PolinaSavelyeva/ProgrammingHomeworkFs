@@ -3,7 +3,7 @@ module Tree
 open AlgebraicList
 open System.Collections.Generic
 
-type Tree<'value> = Node of vl: 'value * bdy: list<Tree<'value>>
+type Tree<'Value> = Node of vl: 'Value * bdy: list<Tree<'Value>>
 
 let rec toType f acc tree =
     match tree with
@@ -11,9 +11,9 @@ let rec toType f acc tree =
     | Node (vl, bdy) -> List.fold (toType f) (f acc vl) bdy
 
 let uniqueValues tree =
-    let acc = HashSet<'value>()
+    let acc = HashSet<'Value>()
 
-    let f (acc: HashSet<'value>) a =
+    let f (acc: HashSet<'Value>) a =
         acc.Add a |> ignore
         acc
 

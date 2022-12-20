@@ -219,9 +219,9 @@ module dotnet =
 module FSharpAnalyzers =
     type Arguments =
         | Project of string
-        | Analyzers_Path of string
-        | Fail_On_Warnings of string list
-        | Ignore_Files of string list
+        | AnalyzersPath of string
+        | FailOnWarnings of string list
+        | IgnoreFiles of string list
         | Verbose
 
         interface IArgParserTemplate with
@@ -374,9 +374,9 @@ let fsharpAnalyzers _ =
     !!srcGlob
     |> Seq.iter (fun proj ->
         let args =
-            [ FSharpAnalyzers.Analyzers_Path(__SOURCE_DIRECTORY__ </> ".." </> "packages/analyzers")
+            [ FSharpAnalyzers.AnalyzersPath(__SOURCE_DIRECTORY__ </> ".." </> "packages/analyzers")
               FSharpAnalyzers.Arguments.Project proj
-              FSharpAnalyzers.Arguments.Fail_On_Warnings [ "BDH0002" ]
+              FSharpAnalyzers.Arguments.FailOnWarnings [ "BDH0002" ]
               FSharpAnalyzers.Verbose ]
             |> argParser.PrintCommandLineArgumentsFlat
 

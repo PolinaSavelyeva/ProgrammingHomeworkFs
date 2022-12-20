@@ -3,12 +3,12 @@ module SparseVector
 open System
 open Converters
 
-type BinTree<'value> =
+type BinTree<'Value> =
     | None
-    | Leaf of 'value
-    | Node of BinTree<'value> * BinTree<'value>
+    | Leaf of 'Value
+    | Node of BinTree<'Value> * BinTree<'Value>
 
-let toSquare (arr: 'value option[]) =
+let toSquare (arr: 'Value option[]) =
     let length = arr.Length
     let log = Math.Log(length, 2)
 
@@ -21,9 +21,9 @@ let toSquareValue (length: uint) =
     let log = Math.Log(toDouble length, 2)
     if (ceil log) = log then length else uint (2.0 ** ceil log)
 
-type squareArray<'value> =
+type SquareArray<'Value> =
     struct
-        val Memory: array<Option<'value>>
+        val Memory: array<Option<'Value>>
         val Head: uint
         val Length: uint
 
@@ -40,7 +40,7 @@ let toBinTree arr =
         | Option.None -> BinTree.None
         | Some x -> BinTree.Leaf(x)
 
-    let rec binTreeFormation (squareArr: squareArray<'value>) =
+    let rec binTreeFormation (squareArr: SquareArray<'Value>) =
         let hd = squareArr.Head
         let length = squareArr.Length
         let memory = squareArr.Memory
@@ -51,15 +51,15 @@ let toBinTree arr =
         elif length = 1u then
             fromOptionToBinTree memory[toInt hd]
         else
-            let left = binTreeFormation (squareArray (memory, hd, length / 2u))
-            let right = binTreeFormation (squareArray (memory, hd + length / 2u, length / 2u))
+            let left = binTreeFormation (SquareArray(memory, hd, length / 2u))
+            let right = binTreeFormation (SquareArray(memory, hd + length / 2u, length / 2u))
 
             if left = BinTree.None && right = BinTree.None then
                 BinTree.None
             else
                 Node(left, right)
 
-    binTreeFormation (squareArray (arr, 0u, toSquare arr))
+    binTreeFormation (SquareArray(arr, 0u, toSquare arr))
 
 let toBinTreeFromCOO list realLength weight =
 
@@ -77,7 +77,7 @@ let toBinTreeFromCOO list realLength weight =
 
     let rec binTreeFormation list length =
         if length = 1u then
-            if List.length list = 0 then
+            if List.isEmpty list then
                 BinTree.None
             else
                 BinTree.Leaf(weight)
@@ -98,10 +98,10 @@ let toBinTreeFromCOO list realLength weight =
         let squareLength = uint (2.0 ** ceil (Math.Log(toDouble realLength, 2)))
         binTreeFormation list squareLength
 
-type Vector<'value when 'value: equality> =
+type Vector<'Value when 'Value: equality> =
     struct
 
-        val Storage: BinTree<'value>
+        val Storage: BinTree<'Value>
         val Length: uint
         val SquareLength: uint
 
@@ -122,7 +122,7 @@ type Vector<'value when 'value: equality> =
 
         member this.Item
             with get i =
-                let takeElementOfVector i (vector: Vector<'value>) =
+                let takeElementOfVector i (vector: Vector<'Value>) =
                     let rec whichElement i size tree =
                         match tree with
                         | BinTree.Leaf x -> Some(x)
@@ -145,7 +145,7 @@ type Vector<'value when 'value: equality> =
         member this.IsEmpty = this.Storage = BinTree.None
     end
 
-let vectorAddition (plusOperation: 'value1 option -> 'value2 option -> 'value3 option) (vector1: Vector<'value1>) (vector2: Vector<'value2>) : Vector<'value3> =
+let vectorAddition (plusOperation: 'Value1 option -> 'Value2 option -> 'Value3 option) (vector1: Vector<'Value1>) (vector2: Vector<'Value2>) : Vector<'Value3> =
 
     let f x y =
         let z = plusOperation x y

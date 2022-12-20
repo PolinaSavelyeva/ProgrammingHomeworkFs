@@ -1,7 +1,7 @@
 module AlgebraicList
 
-type List<'value> =
-    | Construct of head: 'value * tail: List<'value>
+type List<'Value> =
+    | Construct of head: 'Value * tail: List<'Value>
     | Empty
 
 let rec len lst =
@@ -17,7 +17,7 @@ let bubbleSort lst =
         | Construct (_, Empty) -> lst
         | Construct (hd1, Construct (hd2, tl)) -> Construct(min hd1 hd2, oneLine (Construct(max hd1 hd2, tl)))
 
-    let mutable sortedLine: List<'value> = lst
+    let mutable sortedLine: List<'Value> = lst
 
     for i in 1 .. len lst do
         sortedLine <- oneLine sortedLine

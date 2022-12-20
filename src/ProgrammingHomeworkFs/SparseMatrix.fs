@@ -7,10 +7,10 @@ let first (x, _, _) = x
 let second (_, x, _) = x
 let third (_, _, x) = x
 
-type QuadTree<'value> =
+type QuadTree<'Value> =
     | None
-    | Leaf of 'value
-    | Node of QuadTree<'value> * QuadTree<'value> * QuadTree<'value> * QuadTree<'value>
+    | Leaf of 'Value
+    | Node of QuadTree<'Value> * QuadTree<'Value> * QuadTree<'Value> * QuadTree<'Value>
 
 let toSquare arr =
     let length1 = Array2D.length1 arr
@@ -32,9 +32,9 @@ let toSquareValue length1 length2 =
     else
         uint (2.0 ** ceil (max log1 log2))
 
-type squareArray<'value> =
+type SquareArray<'Value> =
     struct
-        val Memory: 'value option[,]
+        val Memory: 'Value option[,]
         val HeadRow: uint
         val HeadColumn: uint
         val Length: uint
@@ -52,7 +52,7 @@ let toQuadTree arr =
         | Option.None -> QuadTree.None
         | Some x -> QuadTree.Leaf x
 
-    let rec qTreeFormation (arr: squareArray<'value>) =
+    let rec qTreeFormation (arr: SquareArray<'Value>) =
         let memory = arr.Memory
         let hd1 = arr.HeadRow
         let hd2 = arr.HeadColumn
@@ -65,26 +65,26 @@ let toQuadTree arr =
         elif length = 1u then
             fromOptionToQTree memory[toInt hd1, toInt hd2]
         else
-            let first = qTreeFormation (squareArray (memory, hd1, hd2, length / 2u))
+            let first = qTreeFormation (SquareArray(memory, hd1, hd2, length / 2u))
 
             let second =
-                qTreeFormation (squareArray (memory, hd1, hd2 + length / 2u, length / 2u))
+                qTreeFormation (SquareArray(memory, hd1, hd2 + length / 2u, length / 2u))
 
             let third =
-                qTreeFormation (squareArray (memory, hd1 + length / 2u, hd2, length / 2u))
+                qTreeFormation (SquareArray(memory, hd1 + length / 2u, hd2, length / 2u))
 
             let fourth =
-                qTreeFormation (squareArray (memory, hd1 + length / 2u, hd2 + length / 2u, length / 2u))
+                qTreeFormation (SquareArray(memory, hd1 + length / 2u, hd2 + length / 2u, length / 2u))
 
             if first = QuadTree.None && second = QuadTree.None && third = QuadTree.None && fourth = QuadTree.None then
                 QuadTree.None
             else
                 Node(first, second, third, fourth)
 
-    qTreeFormation (squareArray (arr, 0u, 0u, toSquare arr))
+    qTreeFormation (SquareArray(arr, 0u, 0u, toSquare arr))
 
 
-let toQuadTreeFromCOO (tripleList: list<uint * uint * Option<'value>>) rows columns =
+let toQuadTreeFromCOO (tripleList: list<uint * uint * Option<'Value>>) rows columns =
 
     let partition list length =
         let rec f list one two three four =
@@ -105,7 +105,7 @@ let toQuadTreeFromCOO (tripleList: list<uint * uint * Option<'value>>) rows colu
 
     let rec quadTreeFormation list length =
         if length = 1u then
-            if List.length list = 0 then
+            if List.isEmpty list then
                 QuadTree.None
             else
                 match third list[0] with
@@ -130,10 +130,10 @@ let toQuadTreeFromCOO (tripleList: list<uint * uint * Option<'value>>) rows colu
         let squareLength = toSquareValue rows columns
         quadTreeFormation tripleList squareLength
 
-type Matrix<'value when 'value: equality> =
+type Matrix<'Value when 'Value: equality> =
     struct
 
-        val Storage: QuadTree<'value>
+        val Storage: QuadTree<'Value>
         val Length1: uint
         val Length2: uint
         val SquareLength: uint
@@ -144,7 +144,7 @@ type Matrix<'value when 'value: equality> =
               Length2 = length2
               SquareLength = squareLength }
 
-        new(arr: 'value option[,]) =
+        new(arr: 'Value option[,]) =
             { Storage = toQuadTree arr
               Length1 = Array2D.length1 arr |> uint
               Length2 = Array2D.length2 arr |> uint
@@ -158,7 +158,7 @@ type Matrix<'value when 'value: equality> =
 
         member this.Item
             with get (i, j) =
-                let takeElementOfMatrix i j (matrix: Matrix<'value>) =
+                let takeElementOfMatrix i j (matrix: Matrix<'Value>) =
                     let rec whichElement i j size tree =
                         match tree with
                         | QuadTree.Leaf x -> Some(x)
