@@ -4,14 +4,14 @@ type List<'value> =
     | Construct of head: 'value * tail: List<'value>
     | Empty
 
-let rec len (lst: List<'value>) : int =
+let rec len lst =
     match lst with
     | Empty -> 0
     | Construct (_, tl) -> len tl + 1
 
-let bubbleSort (lst: List<'value>) : List<'value> =
+let bubbleSort lst =
 
-    let rec oneLine (lst: List<'value>) : List<'value> =
+    let rec oneLine lst =
         match lst with
         | Empty -> Empty
         | Construct (_, Empty) -> lst
@@ -24,12 +24,12 @@ let bubbleSort (lst: List<'value>) : List<'value> =
 
     sortedLine
 
-let rec concat (lst1: List<'value>) (lst2: List<'value>) : List<'value> =
+let rec concat lst1 lst2 =
     match lst1 with
     | Empty -> lst2
     | Construct (hd, tl) -> Construct(hd, concat tl lst2)
 
-let rec splitList (x: 'value) (lst: List<'value>) =
+let rec splitList x lst =
     match lst with
     | Empty -> Empty, Empty
     | Construct (hd, tl) ->
@@ -40,7 +40,7 @@ let rec splitList (x: 'value) (lst: List<'value>) =
         else
             fst sorted, Construct(hd, snd sorted)
 
-let rec quickSort (lst: List<'value>) : List<'value> =
+let rec quickSort lst =
     match lst with
     | Empty -> Empty
     | Construct (hd, Empty) -> Construct(hd, Empty)

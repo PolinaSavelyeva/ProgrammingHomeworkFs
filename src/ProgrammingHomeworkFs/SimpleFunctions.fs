@@ -1,6 +1,6 @@
 module SimpleFunctions
 
-let expo (basement: float) (exponent: int) : float =
+let expo basement exponent =
     if basement = 0.0 && exponent = 0 then
         failwith "Don't try to raise zero to the power of zero. Expected both non-zero basement and non-zero exponent. \n Error when calling - expo - function."
     elif basement = 0.0 && exponent < 0 then

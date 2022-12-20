@@ -138,7 +138,7 @@ type Vector<'value when 'value: equality> =
                     if i < vector.Length then
                         whichElement i vector.SquareLength vector.Storage
                     else
-                        failwith "Index out of the range. Error in -takeElementOfVector- function. "
+                        failwith "Index out of the range. Error in -takeElementOfVector- function"
 
                 takeElementOfVector i this
 
@@ -184,4 +184,4 @@ let vectorAddition (plusOperation: 'value1 option -> 'value2 option -> 'value3 o
     if vector1.Length = vector2.Length then
         Vector(treesAddition vector1.Storage vector2.Storage, vector1.Length, vector1.SquareLength)
     else
-        failwith $"Cannot add vector. Expected vector1.Length : %A{vector1.Length} = vector2.Length : %A{vector2.Length}. "
+        failwith $"Expected vector1.Length : %A{vector1.Length} = vector2.Length : %A{vector2.Length}"

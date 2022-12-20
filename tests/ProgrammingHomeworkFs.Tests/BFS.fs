@@ -26,7 +26,7 @@ module MatrixTests =
                   let expectedResult =
                       Node(Node(Leaf 9, None, None, Leaf 0), Node(None, None, None, Leaf 10), None, Node(Leaf -9, None, None, Leaf 10))
 
-                  Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
+                  Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}"
 
 
               testProperty "toQuadTreeFromCOO property test"
@@ -49,7 +49,7 @@ module MatrixTests =
                   let actualResult = toQuadTreeFromCOO list' length' length'
                   let expectedResult = naiveFormation list' length' |> toQuadTree
 
-                  Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. " ]
+                  Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}" ]
 
 module BFSTests =
     open SparseMatrix
@@ -91,7 +91,7 @@ module BFSTests =
                          Option.None |]
                       |> toBinTree
 
-                  Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
+                  Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}"
 
               testCase "BFS empty list test"
               <| fun _ ->
@@ -108,7 +108,7 @@ module BFSTests =
 
                   let expectedResult = BinTree.None
 
-                  Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
+                  Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}"
 
               testCase "BFS all vertexes list test"
               <| fun _ ->
@@ -126,7 +126,7 @@ module BFSTests =
                   let expectedResult =
                       BinTree.Node(BinTree.Node(BinTree.Leaf 0u, BinTree.Leaf 0u), BinTree.Node(BinTree.Leaf 0u, BinTree.Leaf 0u))
 
-                  Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
+                  Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}"
 
               testCase "BFS empty graph test"
               <| fun _ ->
@@ -140,7 +140,7 @@ module BFSTests =
 
                   let expectedResult = BinTree.None
 
-                  Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
+                  Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}"
 
               testProperty "BFS property test graph with only loops"
               <| fun (tripleList: list<uint * uint>) (vertexList: list<uint>) (length: uint) ->
@@ -165,7 +165,7 @@ module BFSTests =
                               Option.None)
                       |> toBinTree
 
-                  Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
+                  Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}"
 
               testProperty "BFS property test naive bfs"
               <| fun (tripleList: list<uint * uint>) (vertexList: list<uint>) (length: uint) ->
@@ -182,7 +182,7 @@ module BFSTests =
 
                   let naiveBFS (vertexList: list<uint>) (graphMatrix: Matrix<'value>) =
 
-                      let rec answerFormation (queue: Queue<uint>) (ans: array<Option<uint>>) (current: uint) =
+                      let rec inner (queue: Queue<uint>) (ans: array<Option<uint>>) (current: uint) =
                           if queue.Count = 0 then
                               ans
                           else
@@ -194,7 +194,7 @@ module BFSTests =
                                           queue.Enqueue(uint j)
                                           ans[j] <- Some current
 
-                              answerFormation queue ans (current + 1u)
+                              inner queue ans (current + 1u)
 
                       let queue = Queue(vertexList)
 
@@ -205,10 +205,10 @@ module BFSTests =
                               else
                                   Option.None)
 
-                      answerFormation queue ans 1u
+                      inner queue ans 1u
 
                   let actualResult = (graphMatrix |> BFS vertexList').Storage
 
                   let expectedResult = naiveBFS vertexList' graphMatrix |> toBinTree
 
-                  Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. " ]
+                  Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}" ]

@@ -174,7 +174,7 @@ type Matrix<'value when 'value: equality> =
                     if i < matrix.Length1 && j < matrix.Length2 then
                         whichElement i j matrix.SquareLength matrix.Storage
                     else
-                        failwith "Index out of the range.  Error in -takeElementOfMatrix- function. "
+                        failwith "Index out of the range.  Error in -takeElementOfMatrix- function"
 
                 takeElementOfMatrix i j this
 

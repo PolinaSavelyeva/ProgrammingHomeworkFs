@@ -4,7 +4,6 @@ type IList<'value> =
     interface
     end
 
-//[<AllowNullLiteral>]
 type List<'value>(head: 'value, tail: IList<'value>) =
     interface IList<'value>
     member this.Head = head
@@ -13,52 +12,52 @@ type List<'value>(head: 'value, tail: IList<'value>) =
 type EmptyList<'value>() =
     interface IList<'value>
 
-let rec algebraicListOfIList (lst: IList<'value>) : AlgebraicList.List<'value> =
+let rec algebraicListOfIList (lst: IList<'value>) =
     match lst with
     | :? EmptyList<'value> -> AlgebraicList.Empty
     | :? List<'value> as lst -> AlgebraicList.Construct(lst.Head, algebraicListOfIList lst.Tail)
     | _ ->
         failwith
-            $"Incorrect type was given : {lst.GetType()}.\
-                      Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types.\
-                      \n Error in -fromMyOOPListToMyList- function."
+            $"Incorrect type was given : {lst.GetType()}.\n
+            Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types.\n
+            Error in -fromMyOOPListToMyList- function"
 
-let rec iListOfAlgebraicList (lst: AlgebraicList.List<'value>) : IList<'value> =
+let rec iListOfAlgebraicList lst =
     match lst with
     | AlgebraicList.Empty -> EmptyList<'value>() :> IList<'value>
     | AlgebraicList.Construct (hd, tl) -> List<'value>(hd, iListOfAlgebraicList tl)
 
-let rec len (lst: IList<'value>) : int =
+let rec len (lst: IList<'value>) =
     match lst with
     | :? EmptyList<'value> -> 0
     | :? List<'value> as lst -> len lst.Tail + 1
     | _ ->
         failwith
-            $"Incorrect type was given : {lst.GetType()}.\
-                      Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types.\
-                      \n Error in -lenMyOOPList- function."
+            $"Incorrect type was given : {lst.GetType()}.\n
+            Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types.\n
+            Error in -lenMyOOPList- function"
 
-let takeHead (lst: IList<'value>) : 'value =
+let takeHead (lst: IList<'value>) =
     match lst with
     | :? List<'value> as lst -> lst.Head
     | _ ->
         failwith
-            $"Incorrect type was given : {lst.GetType()}.\
-                      Expected MyOOPNoneEmptyList<'value> type.\
-                      \n Error in -takeOOPHead- function."
+            $"Incorrect type was given : {lst.GetType()}.\n
+             Expected MyOOPNoneEmptyList<'value> type.\n
+             Error in -takeOOPHead- function"
 
-let takeTail (lst: IList<'value>) : IList<'value> =
+let takeTail (lst: IList<'value>) =
     match lst with
     | :? List<'value> as lst -> lst.Tail
     | _ ->
         failwith
-            $"Incorrect type was given : {lst.GetType()}, this.Tale member was not found.\
-                      The type MyOOPNonEmptyList<'value> which has this.Tale member was expected.\
-                      \n Error in -takeOOPTail- function."
+            $"Incorrect type was given : {lst.GetType()}, this.Tale member was not found.\n
+            The type MyOOPNonEmptyList<'value> which has this.Tale member was expected.\n
+            Error in -takeOOPTail- function"
 
-let bubbleSort (lst: IList<'value>) : IList<'value> =
+let bubbleSort lst =
 
-    let rec oneLine (lst: IList<'value>) : IList<'value> =
+    let rec oneLine (lst: IList<'value>) =
         match lst with
         | :? EmptyList<'value> -> EmptyList() :> IList<'value>
         | :? List<'value> as lst ->
@@ -70,9 +69,9 @@ let bubbleSort (lst: IList<'value>) : IList<'value> =
                 List(lst.Head, oneLine lst.Tail)
         | _ ->
             failwith
-                $"Incorrect type was given : {lst.GetType()}.\
-                          Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types.\
-                          \n Error in -oneOOPLine- function."
+                $"Incorrect type was given : {lst.GetType()}.\n
+                Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types.\n
+                Error in -oneOOPLine- function"
 
     let mutable sortedLine: IList<'value> = lst
 
@@ -81,17 +80,17 @@ let bubbleSort (lst: IList<'value>) : IList<'value> =
 
     sortedLine
 
-let rec concat (lst1: IList<'value>) (lst2: IList<'value>) : IList<'value> =
+let rec concat (lst1: IList<'value>) (lst2: IList<'value>) =
     match lst1 with
     | :? EmptyList<'value> -> lst2
     | :? List<'value> as lst1 -> List(lst1.Head, concat lst1.Tail lst2) :> IList<'value>
     | _ ->
         failwith
-            $"Incorrect types was given : {lst1.GetType()}, or {lst2.GetType()}.\
-                      Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types.\
-                      \n Error in -concatOOP- function."
+            $"Incorrect types was given : {lst1.GetType()}, or {lst2.GetType()}.\n
+            Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types.\n
+            Error in -concatOOP- function"
 
-let rec splitLst (x: 'value) (lst: IList<'value>) =
+let rec splitLst x (lst: IList<'value>) =
     match lst with
     | :? EmptyList<'value> -> (EmptyList() :> IList<'value>, EmptyList() :> IList<'value>)
     | :? List<'value> as lst ->
@@ -103,11 +102,11 @@ let rec splitLst (x: 'value) (lst: IList<'value>) =
             fst newParts, List(lst.Head, snd newParts)
     | _ ->
         failwith
-            $"Incorrect type was given : {lst.GetType()}.\
-                      Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types.\
-                      \n Error in -leftOOPLst- function."
+            $"Incorrect type was given : {lst.GetType()}.\n
+            Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types.\n
+            Error in -leftOOPLst- function"
 
-let rec quickSort (lst: IList<'value>) : IList<'value> =
+let rec quickSort (lst: IList<'value>) =
     match lst with
     | :? EmptyList<'value> -> EmptyList() :> IList<'value>
     | :? List<'value> as lst ->
@@ -119,11 +118,11 @@ let rec quickSort (lst: IList<'value>) : IList<'value> =
             concat (quickSort (fst newParts)) (List(lst.Head, quickSort (snd newParts)))
     | _ ->
         failwith
-            $"Incorrect type was given : {lst.GetType()}.\
-                      Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types.\
-                      \n Error in -quickOOPSort- function."
+            $"Incorrect type was given : {lst.GetType()}.\n
+            Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types.\n
+            Error in -quickOOPSort- function"
 
-let rec iListOfList lst : IList<'value> =
+let rec iListOfList lst =
     match lst with
     | [] -> EmptyList() :> IList<'value>
     | hd :: tl -> List(hd, iListOfList tl)
@@ -134,6 +133,6 @@ let rec listOfIList (lst: IList<'value>) =
     | :? List<'value> as lst -> lst.Head :: listOfIList lst.Tail
     | _ ->
         failwith
-            $"Incorrect type was given : {lst.GetType()}.\
-                      Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types.\
-                      \n Error in -fromMyOOPListToList- function."
+            $"Incorrect type was given : {lst.GetType()}.\n
+            Expected MyOOPEmptyList<'value> or MyOOPNonEmptyList<'value> types.\n
+            Error in -fromMyOOPListToList- function"

@@ -5,12 +5,12 @@ open System.Collections.Generic
 
 type Tree<'value> = Node of vl: 'value * bdy: list<Tree<'value>>
 
-let rec toType f acc (tree: Tree<'value>) =
+let rec toType f acc tree =
     match tree with
     | Node (vl, []) -> f acc vl
     | Node (vl, bdy) -> List.fold (toType f) (f acc vl) bdy
 
-let uniqueValues (tree: Tree<'value>) : int =
+let uniqueValues tree =
     let acc = HashSet<'value>()
 
     let f (acc: HashSet<'value>) a =
@@ -19,7 +19,7 @@ let uniqueValues (tree: Tree<'value>) : int =
 
     (toType f acc tree).Count
 
-let toList (tree: Tree<'value>) : AlgebraicList.List<'value> =
+let toList tree =
     let acc = Empty
 
     let f acc a = Construct(a, acc)
