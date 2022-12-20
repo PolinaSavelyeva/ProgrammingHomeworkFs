@@ -1,37 +1,36 @@
 module BreadthFirstSearch
 
-open SparseMatrix
 open SparseVector
 open MatrixMultiplication
 
-let fPlus (a: Option<bool>) (b: Option<bool>) : Option<bool> =
+let fPlus a b =
     match a, b with
     | Option.None, Option.None -> Option.None
-    | _ -> Some true
+    | _ -> Some()
 
-let fMulti (a: Option<bool>) (b: Option<'value>) : Option<bool> =
+let fMulti a b =
     match a, b with
     | Option.None, _
     | _, Option.None -> Option.None
-    | _ -> Some true
+    | _ -> Some()
 
-let fPlusMask (a: Option<bool>) (b: Option<int>) =
+let fPlusMask a b =
     match a, b with
-    | Some true, Option.None -> Some true
+    | Some (), Option.None -> Some()
     | _ -> Option.None
 
 let fPlusVisited number =
-    let f (a: Option<int>) (b: Option<bool>) =
+    let f a b =
         match a, b with
-        | Option.None, Some true -> Some number
+        | Option.None, Some () -> Some number
         | Some x, Option.None -> Some x
         | _ -> Option.None
 
     f
 
-let BFS (startVertexList: list<int>) (graphMatrix: Matrix<'value>) =
+let BFS startVertexList graphMatrix =
 
-    let rec innerBFS (front: Vector<bool>) (visited: Vector<int>) (iterationNumber: int) =
+    let rec innerBFS (front: Vector<unit>) visited iterationNumber =
         if front.IsEmpty then
             visited
         else
@@ -41,24 +40,9 @@ let BFS (startVertexList: list<int>) (graphMatrix: Matrix<'value>) =
 
             let visited = vectorAddition (fPlusVisited iterationNumber) visited front
 
-            innerBFS front visited (iterationNumber + 1)
+            innerBFS front visited (iterationNumber + 1u)
 
-    let front =
-        Vector(
-            Array.init graphMatrix.Length1 (fun n ->
-                if List.contains n startVertexList then
-                    Some true
-                else
-                    Option.None)
-        )
+    let front = Vector(startVertexList, graphMatrix.Length1, ())
+    let visited = Vector(startVertexList, graphMatrix.Length1, 0u)
 
-    let visited =
-        Vector(
-            Array.init graphMatrix.Length1 (fun n ->
-                if List.contains n startVertexList then
-                    Some 0
-                else
-                    Option.None)
-        )
-
-    innerBFS front visited 1
+    innerBFS front visited 1u

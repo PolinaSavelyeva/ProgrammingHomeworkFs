@@ -1,7 +1,9 @@
 module BreadthFirstSearchTests
 
-open Expecto
 open SparseVector
+open Converters
+open System.Collections.Generic
+open Expecto
 
 module MatrixTests =
     open SparseMatrix
@@ -13,14 +15,13 @@ module MatrixTests =
             [ testCase "toQuadTreeFromCOO random list test"
               <| fun _ ->
 
-                  let rows = 4
-                  let columns = 4
-                  let length = 5
+                  let rows = 4u
+                  let columns = 4u
 
                   let list =
-                      [ (0, 0, Some 9); (1, 3, Some 10); (1, 1, Some 0); (2, 2, Some -9); (3, 3, Some 10) ]
+                      [ (0u, 0u, Some 9); (1u, 3u, Some 10); (1u, 1u, Some 0); (2u, 2u, Some -9); (3u, 3u, Some 10) ]
 
-                  let actualResult = toQuadTreeFromCOO list rows columns length
+                  let actualResult = toQuadTreeFromCOO list rows columns
 
                   let expectedResult =
                       Node(Node(Leaf 9, None, None, Leaf 0), Node(None, None, None, Leaf 10), None, Node(Leaf -9, None, None, Leaf 10))
@@ -29,23 +30,23 @@ module MatrixTests =
 
 
               testProperty "toQuadTreeFromCOO property test"
-              <| fun (list: (int * int) list) (length: int) ->
+              <| fun (list: list<uint * uint>) (length: uint) ->
 
-                  let length' = abs length + 1
+                  let length' = length + 1u
 
                   let list' =
-                      List.distinct (list |> List.map (fun (x, y) -> ((abs x) % length', (abs y) % length')))
+                      List.distinct (list |> List.map (fun (x, y) -> (x % length', y % length')))
                       |> List.map (fun (x, y) -> (x, y, Some 100))
 
                   let naiveFormation list length =
-                      let new2DArray = Array2D.create length length Option.None
+                      let new2DArray = Array2D.create (toInt length) (toInt length) Option.None
 
                       for i in 0 .. List.length list - 1 do
-                          new2DArray[first list[i], second list[i]] <- third list[i]
+                          new2DArray[first list[i] |> toInt, second list[i] |> toInt] <- third list[i]
 
                       new2DArray
 
-                  let actualResult = toQuadTreeFromCOO list' length' length' length'
+                  let actualResult = toQuadTreeFromCOO list' length' length'
                   let expectedResult = naiveFormation list' length' |> toQuadTree
 
                   Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. " ]
@@ -61,20 +62,23 @@ module BFSTests =
             [ testCase "BFS random test"
               <| fun _ ->
 
-                  let length = 16
-                  let tripleList = [ (1, 3, Some 3); (1, 2, Some 2); (3, 5, Some 5); (1, 4, Some 9) ]
-                  let gMatrix = Matrix(tripleList, length, length, length)
-                  let startVertexList = [ 1 ]
+                  let length = 16u
+
+                  let tripleList =
+                      [ (1u, 3u, Some 3); (1u, 2u, Some 2); (3u, 5u, Some 5); (1u, 4u, Some 9) ]
+
+                  let gMatrix = Matrix(tripleList, length, length)
+                  let startVertexList = [ 1u ]
 
                   let actualResult = (BFS startVertexList gMatrix).Storage
 
                   let expectedResult =
                       [| Option.None
-                         Some 0
-                         Some 1
-                         Some 1
-                         Some 1
-                         Some 2
+                         Some 0u
+                         Some 1u
+                         Some 1u
+                         Some 1u
+                         Some 2u
                          Option.None
                          Option.None
                          Option.None
@@ -92,9 +96,12 @@ module BFSTests =
               testCase "BFS empty list test"
               <| fun _ ->
 
-                  let length = 14
-                  let tripleList = [ (1, 1, Some 3); (11, 2, Some 2); (0, 5, Some 5); (0, 4, Some 9) ]
-                  let gMatrix = Matrix(tripleList, length, length, length)
+                  let length = 14u
+
+                  let tripleList =
+                      [ (1u, 1u, Some 3); (11u, 2u, Some 2); (0u, 5u, Some 5); (0u, 4u, Some 9) ]
+
+                  let gMatrix = Matrix(tripleList, length, length)
                   let startVertexList = []
 
                   let actualResult = (BFS startVertexList gMatrix).Storage
@@ -106,24 +113,27 @@ module BFSTests =
               testCase "BFS all vertexes list test"
               <| fun _ ->
 
-                  let length = 4
-                  let tripleList = [ (0, 1, Some 3); (1, 2, Some 2); (0, 0, Some 5); (1, 1, Some 9) ]
-                  let gMatrix = Matrix(tripleList, length, length, length)
-                  let startVertexList = [ 0; 1; 2; 3 ]
+                  let length = 4u
+
+                  let tripleList =
+                      [ (0u, 1u, Some 3); (1u, 2u, Some 2); (0u, 0u, Some 5); (1u, 1u, Some 9) ]
+
+                  let gMatrix = Matrix(tripleList, length, length)
+                  let startVertexList = [ 0u; 1u; 2u; 3u ]
 
                   let actualResult = (BFS startVertexList gMatrix).Storage
 
                   let expectedResult =
-                      BinTree.Node(BinTree.Node(BinTree.Leaf 0, BinTree.Leaf 0), BinTree.Node(BinTree.Leaf 0, BinTree.Leaf 0))
+                      BinTree.Node(BinTree.Node(BinTree.Leaf 0u, BinTree.Leaf 0u), BinTree.Node(BinTree.Leaf 0u, BinTree.Leaf 0u))
 
                   Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
 
               testCase "BFS empty graph test"
               <| fun _ ->
 
-                  let length = 0
+                  let length = 0u
                   let tripleList = []
-                  let gMatrix = Matrix(tripleList, length, length, length)
+                  let gMatrix = Matrix(tripleList, length, length)
                   let startVertexList = []
 
                   let actualResult = (BFS startVertexList gMatrix).Storage
@@ -133,78 +143,72 @@ module BFSTests =
                   Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
 
               testProperty "BFS property test graph with only loops"
-              <| fun (tripleList: (int * int) list) (vertexList: list<int>) (length: int) ->
+              <| fun (tripleList: list<uint * uint>) (vertexList: list<uint>) (length: uint) ->
 
-                  let length' = abs length + 1
+                  let length' = length + 1u
 
                   let tripleList' =
-                      List.distinct (tripleList |> List.map (fun (x, _) -> ((abs x) % length', (abs x) % length')))
+                      List.distinct (tripleList |> List.map (fun (x, _) -> (x % length', x % length')))
                       |> List.map (fun (x, _) -> (x, x, Some 100))
 
-                  let vertexList' =
-                      List.distinct (vertexList |> List.map (fun n -> (abs n) % length'))
+                  let vertexList' = List.distinct (vertexList |> List.map (fun n -> n % length'))
 
-                  let graphMatrix = Matrix(tripleList', length', length', length')
+                  let graphMatrix = Matrix(tripleList', length', length')
 
                   let actualResult = (graphMatrix |> BFS vertexList').Storage
 
                   let expectedResult =
-                      Array.init graphMatrix.Length1 (fun n -> if List.contains n vertexList' then Some 0 else Option.None)
+                      Array.init (toInt graphMatrix.Length1) (fun n ->
+                          if List.contains (uint n) vertexList' then
+                              Some 0u
+                          else
+                              Option.None)
                       |> toBinTree
 
                   Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
 
               testProperty "BFS property test naive bfs"
-              <| fun (tripleList: (int * int) list) (vertexList: list<int>) (length: int) ->
+              <| fun (tripleList: list<uint * uint>) (vertexList: list<uint>) (length: uint) ->
 
-                  let length' = abs length + 1
+                  let length' = length + 1u
 
                   let tripleList' =
-                      List.distinct (tripleList |> List.map (fun (x, _) -> ((abs x) % length', (abs x) % length')))
+                      List.distinct (tripleList |> List.map (fun (x, _) -> (x % length', x % length')))
                       |> List.map (fun (x, _) -> (x, x, Some 100))
 
-                  let vertexList' =
-                      List.distinct (vertexList |> List.map (fun n -> (abs n) % length'))
+                  let vertexList' = List.distinct (vertexList |> List.map (fun n -> n % length'))
 
-                  let graphMatrix = Matrix(tripleList', length', length', length')
+                  let graphMatrix = Matrix(tripleList', length', length')
 
-                  let naiveBFS (vertexList: list<int>) (graphMatrix: Matrix<'value>) =
+                  let naiveBFS (vertexList: list<uint>) (graphMatrix: Matrix<'value>) =
 
-                      let addToQueue queue vertex iterationNumber =
-                          let rec inner list counter =
-                              if counter < 0 then
-                                  list
-                              else if graphMatrix[vertex, counter] = Option.None then
-                                  inner list (counter - 1)
+                      let rec answerFormation (queue: Queue<uint>) (ans: array<Option<uint>>) (current: uint) =
+                          if queue.Count = 0 then
+                              ans
+                          else
+                              let vertex = queue.Dequeue()
+
+                              for j in 0 .. toInt graphMatrix.Length2 - 1 do
+                                  if graphMatrix[vertex, uint j] <> Option.None then
+                                      if ans[j] = Option.None then
+                                          queue.Enqueue(uint j)
+                                          ans[j] <- Some current
+
+                              answerFormation queue ans (current + 1u)
+
+                      let queue = Queue(vertexList)
+
+                      let ans =
+                          Array.init (toInt graphMatrix.Length1) (fun n ->
+                              if List.contains (uint n) vertexList then
+                                  Some 0u
                               else
-                                  inner (list @ [ counter, iterationNumber ]) (counter - 1)
+                                  Option.None)
 
-                          inner queue (graphMatrix.Length2 - 1)
-
-                      let rec inner queue result visited =
-                          match queue with
-                          | [] -> result
-                          | vertex, iter as hd :: tl ->
-                              if List.contains vertex visited then
-                                  inner tl result visited
-                              else
-                                  let visited = vertex :: visited
-                                  let newQ = addToQueue tl vertex (iter + 1)
-                                  inner newQ (result @ [ hd ]) visited
-
-                      let queue = vertexList |> List.map (fun x -> (x, 0))
-                      if queue.IsEmpty then [] else inner queue [] []
-
-                  let toArray (list: (int * int) list) length =
-                      let ans = Array.create length Option.None
-
-                      for i in 0 .. list.Length - 1 do
-                          ans[fst list[i]] <- Some(snd list[i])
-
-                      ans
+                      answerFormation queue ans 1u
 
                   let actualResult = (graphMatrix |> BFS vertexList').Storage
 
-                  let expectedResult = toArray (naiveBFS vertexList' graphMatrix) length' |> toBinTree
+                  let expectedResult = naiveBFS vertexList' graphMatrix |> toBinTree
 
                   Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. " ]
