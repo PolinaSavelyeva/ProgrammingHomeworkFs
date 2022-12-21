@@ -1,10 +1,14 @@
 module SimpleFunctions
 
-let expo (basement: float) (exponent: int) : float =
+let expo basement exponent =
     if basement = 0.0 && exponent = 0 then
-        failwith "Don't try to raise zero to the power of zero. Expected both non-zero basement and non-zero exponent. \n Error when calling - expo - function."
+        failwith
+            $"Expected non-zero basement and non-zero exponent, but given basement : %A{basement} and exponent : %A{exponent}. \n
+                 Error in -expo- function. "
     elif basement = 0.0 && exponent < 0 then
-        failwith "Don't try to raise zero to the negative power. Expected zero basement and positive <> 0 exponent. \n Error when calling - expo - function."
+        failwith
+            $"Expected zero basement and non-negative exponent, but given basement : %A{basement} and exponent : %A{exponent}. \n
+                 Error in -expo- function. "
     elif basement = 0.0 then
         0.0
     else
@@ -19,11 +23,15 @@ let expo (basement: float) (exponent: int) : float =
 
         ans
 
-let rec fastExpo (basement: float) (exponent: int) : float =
+let rec fastExpo basement exponent =
     if basement = 0.0 && exponent = 0 then
-        failwith "Don't try to raise zero to the power of zero. Expected both non-zero basement and non-zero exponent. \n Error when calling - fastExpo - function"
+        failwith
+            "Expected both non-zero basement and non-zero exponent.\n
+                  Error in -fastExpo- function. "
     elif basement = 0.0 && exponent < 0 then
-        failwith "Don't try to raise zero to the negative power. Expected zero basement and positive <> 0 exponent. \n Error when calling - fastExpo - function."
+        failwith
+            "Expected zero basement and non-negative exponent.\n
+                  Error in -fastExpo- function. "
     elif exponent = 1 then
         basement
     elif exponent = 0 then
@@ -36,7 +44,7 @@ let rec fastExpo (basement: float) (exponent: int) : float =
         else
             body * body * basement
 
-let inline arrays (arr: 'value array) =
+let inline maxMinOfArray (arr: array<'Value>) =
     if arr.Length > 0 then
         let mutable maximum = arr[0]
         let mutable minimum = arr[0]
@@ -49,14 +57,16 @@ let inline arrays (arr: 'value array) =
 
         maximum - minimum
     else
-        failwith "There is no max and min elements in empty array. Expected at least 1 element in array. \n Error when calling - arrays - function"
+        failwith
+            "Expected at least 1 element in array.\n
+                  Error in -maxMinOfArray- function. "
 
-let odds (x: int) (y: int) =
-    let minim = if x < y then x else y
-    let maxim = if x > y then x else y
+let arrayOfOdds x y =
+    let minimum = if x < y then x else y
+    let maximum = if x > y then x else y
 
-    let odds_array =
-        [| for i in minim + minim % 2 + 1 .. 2 .. maxim - maxim % 2 do
+    let oddsArray =
+        [| for i in minimum + minimum % 2 + 1 .. 2 .. maximum - maximum % 2 do
                yield i |]
 
-    odds_array
+    oddsArray
