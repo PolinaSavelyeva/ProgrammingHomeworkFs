@@ -175,7 +175,7 @@ module BFSTests =
                   let newVertexList = List.append vertexList [ 0u ] |> List.distinct
 
                   let tripleList =
-                      List.append tupleList [ (0u, 0u) ] |> List.distinct |> List.map (fun (x, _) -> (x, x, Some 100))
+                      List.append tupleList [ (0u, 0u) ] |> List.distinct |> List.map (fun (x, y) -> (x, y, Some 100))
 
                   let triple = List.maxBy (fun z -> first z + second z) tripleList
                   let length = max (first triple + second triple) (List.max newVertexList) + 1u
@@ -188,13 +188,16 @@ module BFSTests =
                           if queue.Count = 0 then
                               ans
                           else
-                              let vertex = queue.Dequeue()
+                              let size = queue.Count
 
-                              for j in 0 .. toInt graphMatrix.Length2 - 1 do
-                                  if graphMatrix[vertex, uint j] <> Option.None then
-                                      if ans[j] = Option.None then
-                                          queue.Enqueue(uint j)
-                                          ans[j] <- Some current
+                              for i in 0 .. size - 1 do
+                                  let vertex = queue.Dequeue()
+
+                                  for j in 0 .. toInt graphMatrix.Length2 - 1 do
+                                      if graphMatrix[vertex, uint j] <> Option.None then
+                                          if ans[j] = Option.None then
+                                              queue.Enqueue(uint j)
+                                              ans[j] <- Some current
 
                               answerFormation queue ans (current + 1u)
 
