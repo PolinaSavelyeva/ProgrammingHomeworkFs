@@ -1,6 +1,7 @@
 module SparseVector
 
 open System
+open Converters
 
 type BinTree<'value> =
     | None
@@ -10,13 +11,21 @@ type BinTree<'value> =
 let toSquare (arr: 'value option[]) =
     let length = arr.Length
     let log = Math.Log(length, 2)
-    if (ceil log) = log then length else int (2.0 ** ceil log)
+
+    if (ceil log) = log then
+        uint length
+    else
+        uint (2.0 ** ceil log)
+
+let toSquareValue (length: uint) =
+    let log = Math.Log(toDouble length, 2)
+    if (ceil log) = log then length else uint (2.0 ** ceil log)
 
 type squareArray<'value> =
     struct
         val Memory: array<Option<'value>>
-        val Head: int
-        val Length: int
+        val Head: uint
+        val Length: uint
 
         new(memory, head, length) =
             { Memory = memory
@@ -37,37 +46,79 @@ let toBinTree arr =
         let memory = squareArr.Memory
         let realLength = memory.Length
 
-        if hd >= realLength then
+        if hd >= uint realLength then
             BinTree.None
-        elif length = 1 then
-            fromOptionToBinTree memory[hd]
+        elif length = 1u then
+            fromOptionToBinTree memory[toInt hd]
         else
-            let left = binTreeFormation (squareArray (memory, hd, length / 2))
-            let right = binTreeFormation (squareArray (memory, hd + length / 2, length / 2))
+            let left = binTreeFormation (squareArray (memory, hd, length / 2u))
+            let right = binTreeFormation (squareArray (memory, hd + length / 2u, length / 2u))
 
             if left = BinTree.None && right = BinTree.None then
                 BinTree.None
             else
                 Node(left, right)
 
-    binTreeFormation (squareArray (arr, 0, toSquare arr))
+    binTreeFormation (squareArray (arr, 0u, toSquare arr))
+
+let toBinTreeFromCOO list realLength weight =
+
+    let partition list length =
+        let rec f list left right =
+            match list with
+            | [] -> left, right
+            | hd :: tl ->
+                if hd < length / 2u then
+                    f tl (hd :: left) right
+                else
+                    f tl left ((hd - length / 2u) :: right)
+
+        f list [] []
+
+    let rec binTreeFormation list length =
+        if length = 1u then
+            if List.length list = 0 then
+                BinTree.None
+            else
+                BinTree.Leaf(weight)
+        else
+            let left, right = partition list length
+
+            let left' = binTreeFormation left (length / 2u)
+            let right' = binTreeFormation right (length / 2u)
+
+            if left' = BinTree.None && right' = BinTree.None then
+                BinTree.None
+            else
+                BinTree.Node(left', right')
+
+    if realLength = 0u then
+        BinTree.None
+    else
+        let squareLength = uint (2.0 ** ceil (Math.Log(toDouble realLength, 2)))
+        binTreeFormation list squareLength
 
 type Vector<'value when 'value: equality> =
     struct
 
         val Storage: BinTree<'value>
-        val Length: int
-        val SquareLength: int
+        val Length: uint
+        val SquareLength: uint
 
         new(storage, length, squareLength) =
             { Storage = storage
               Length = length
               SquareLength = squareLength }
 
-        new(arr: array<Option<'value>>) =
+        new(arr) =
             { Storage = toBinTree arr
-              Length = arr.Length
+              Length = uint arr.Length
               SquareLength = toSquare arr }
+
+        new(list, realLength, weight) =
+            { Storage = toBinTreeFromCOO list realLength weight
+              Length = realLength
+              SquareLength = toSquareValue realLength }
 
         member this.Item
             with get i =
@@ -77,7 +128,7 @@ type Vector<'value when 'value: equality> =
                         | BinTree.Leaf x -> Some(x)
                         | BinTree.None -> Option.None
                         | BinTree.Node (left, right) ->
-                            let n = size / 2
+                            let n = size / 2u
 
                             if i < n then
                                 whichElement i n left
@@ -90,6 +141,8 @@ type Vector<'value when 'value: equality> =
                         failwith "Index out of the range. Error in -takeElementOfVector- function. "
 
                 takeElementOfVector i this
+
+        member this.IsEmpty = this.Storage = BinTree.None
     end
 
 let vectorAddition (plusOperation: 'value1 option -> 'value2 option -> 'value3 option) (vector1: Vector<'value1>) (vector2: Vector<'value2>) : Vector<'value3> =
@@ -131,4 +184,4 @@ let vectorAddition (plusOperation: 'value1 option -> 'value2 option -> 'value3 o
     if vector1.Length = vector2.Length then
         Vector(treesAddition vector1.Storage vector2.Storage, vector1.Length, vector1.SquareLength)
     else
-        failwith "Cannot add two vector. Expected vector1.Length = vector2.Length. "
+        failwith $"Cannot add vector. Expected vector1.Length : %A{vector1.Length} = vector2.Length : %A{vector2.Length}. "

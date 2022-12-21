@@ -2,9 +2,10 @@ module MatrixMultiplication
 
 open SparseVector
 open SparseMatrix
+open Converters
 open System
 
-let multiplication plusOperation (multiOperation: 'value1 option -> 'value2 option -> 'value3 option) (vector: Vector<'value1>) (matrix: Matrix<'value2>) : Vector<'value3> =
+let multiplication plusOperation (multiOperation: Option<'value1> -> Option<'value2> -> Option<'value3>) (vector: Vector<'value1>) (matrix: Matrix<'value2>) : Vector<'value3> =
 
     let rec multiTrees binTree quadTree =
         match binTree, quadTree with
@@ -47,12 +48,12 @@ let multiplication plusOperation (multiOperation: 'value1 option -> 'value2 opti
 
     let rec binTreeCutter (tree: BinTree<'value>) expectedSize currentSize =
         match tree with
-        | BinTree.Node (first, _) when expectedSize <> currentSize -> binTreeCutter first expectedSize (currentSize / 2)
+        | BinTree.Node (first, _) when expectedSize <> currentSize -> binTreeCutter first expectedSize (currentSize / 2u)
         | _ -> tree
 
     let rec binTreeGrower (tree: BinTree<'value>) expectedSize currentSize =
         if expectedSize <> currentSize then
-            binTreeGrower (BinTree.Node(tree, BinTree.None)) expectedSize (currentSize * 2)
+            binTreeGrower (BinTree.Node(tree, BinTree.None)) expectedSize (currentSize * 2u)
         else
             tree
 
@@ -65,7 +66,7 @@ let multiplication plusOperation (multiOperation: 'value1 option -> 'value2 opti
 
         let cutTree =
             if matrix.Length1 > matrix.Length2 then
-                let expectedLength = int (2.0 ** ceil (Math.Log(matrix.Length2, 2)))
+                let expectedLength = uint (2.0 ** ceil (Math.Log(toDouble matrix.Length2, 2)))
                 binTreeCutter growTree expectedLength matrix.SquareLength
             else
                 growTree
@@ -73,6 +74,6 @@ let multiplication plusOperation (multiOperation: 'value1 option -> 'value2 opti
         Vector(cutTree, vector.Length, vector.SquareLength)
     else
         failwith
-            "Multiplication operation is not defined.\n
-         Expected vector.Length = matrix.Length1.\n
+            $"Multiplication operation is not defined.\n
+         Expected %A{vector.Length} = %A{matrix.Length1}.\n
          Error in -multiplication- function. "

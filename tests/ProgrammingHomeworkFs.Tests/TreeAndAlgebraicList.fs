@@ -1,4 +1,4 @@
-namespace TreeAndAlgebraicList
+namespace TreeAndAlgebraicListTests
 
 open AlgebraicList
 open Tree

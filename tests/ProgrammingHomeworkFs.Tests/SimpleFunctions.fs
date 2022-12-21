@@ -1,4 +1,4 @@
-namespace ProgrammingHomeworkFs.Tests
+namespace SimpleFunctionsTests
 
 open Expecto
 open SimpleFunctions

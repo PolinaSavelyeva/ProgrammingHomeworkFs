@@ -1,6 +1,7 @@
-module SparseMatrixVector
+module SparseMatrixVectorTests
 
 open Expecto
+open Converters
 
 module SparseVectorTests =
     open SparseVector
@@ -14,20 +15,20 @@ module SparseVectorTests =
                   let arr =
                       toSquare [| Some(1); Some(2); Some(3); Some(4); Some(5); Some(6); Some(7); Some(8); Some(9) |]
 
-                  Expect.equal arr 16 "toSquare expected : 16"
+                  Expect.equal arr 16u "toSquare expected : 16"
               testCase "toSquare one element array"
               <| fun _ ->
                   let arr = toSquare [| Some(1) |]
-                  Expect.equal arr 1 "toSquare expected : 1"
+                  Expect.equal arr 1u "toSquare expected : 1"
               testCase "toSquare empty array"
               <| fun _ ->
                   let arr = toSquare [||]
-                  Expect.equal arr 0 "toSquare expected : 0"
+                  Expect.equal arr 0u "toSquare expected : 0"
               testProperty "toSquare property test array"
               <| fun (arr: array<Option<int>>) ->
                   Expect.isLessThanOrEqual
                   <| arr.Length
-                  <| toSquare arr
+                  <| toInt (toSquare arr)
                   <| "toSquare expected less than or equal array length result"
               testCase "toBinTree random array 1"
               <| fun _ ->
@@ -53,22 +54,22 @@ module SparseVectorTests =
               testProperty "takeElementOfVector property test"
               <| fun (arr: array<Option<int>>) (i: uint) ->
                   let arr' = Array.append arr [| Some(1) |]
-                  let i' = int i % arr'.Length
+                  let i' = toInt i % arr'.Length
 
                   Expect.equal
-                  <| arr'[int i']
-                  <| Vector(arr')[i']
+                  <| arr'[i']
+                  <| Vector(arr')[uint i']
                   <| "takeElementOfVector expected same result as Array.get"
               testCase "takeElementOfVector empty array"
               <| fun _ ->
                   let actualResult =
-                      Expect.throws (fun _ -> Vector([||])[152] |> ignore) "Index out of the range. Error in -takeElementOfVector- function."
+                      Expect.throws (fun _ -> Vector([||])[152u] |> ignore) "Index out of the range. Error in -takeElementOfVector- function."
 
                   actualResult
               testProperty "vectorAddition property test"
-              <| fun (x: int) ->
+              <| fun (x: uint) ->
 
-                  let length1 = (abs x) + 1
+                  let length1 = x + 1u |> toInt
 
                   let rnd = System.Random()
                   let arr1 = Array.init length1 (fun _ -> rnd.Next(100))
@@ -118,7 +119,7 @@ module SparseMatrixTests =
                   let arr =
                       toSquare (array2D [ [ Some(1); Some(2); Some(3) ]; [ Some(4); Some(5); Some(6) ]; [ Some(7); Some(8); Some(9) ] ])
 
-                  Expect.equal arr 4 "toSquare expected : 4"
+                  Expect.equal arr 4u "toSquare expected : 4"
               testCase "toSquare random array2D 2"
               <| fun _ ->
                   let arr =
@@ -132,24 +133,24 @@ module SparseMatrixTests =
                                 [ Some(1); Some(2); Some(3) ] ]
                       )
 
-                  Expect.equal arr 8 "toSquare expected : 8"
+                  Expect.equal arr 8u "toSquare expected : 8"
               testCase "toSquare one element array2D"
               <| fun _ ->
                   let arr = toSquare (array2D [ [ Some(1) ] ])
-                  Expect.equal arr 1 "toSquare expected : 1"
+                  Expect.equal arr 1u "toSquare expected : 1"
               testCase "toSquare random array2D 3"
               <| fun _ ->
                   let arr = toSquare (array2D [ [ Some(1) ]; [ Some(1) ] ])
-                  Expect.equal arr 2 "toSquare expected : 2"
+                  Expect.equal arr 2u "toSquare expected : 2"
               testCase "toSquare random array2D 4"
               <| fun _ ->
                   let arr = toSquare (array2D [ [ Some(1); Some(0) ] ])
-                  Expect.equal arr 2 "toSquare expected : 2"
+                  Expect.equal arr 2u "toSquare expected : 2"
               testProperty "toSquare property test array2D"
               <| fun (arr: int option[,]) ->
                   Expect.isLessThanOrEqual
                   <| max (Array2D.length1 arr) (Array2D.length2 arr)
-                  <| toSquare arr
+                  <| toInt (toSquare arr)
                   <| "toSquare expected less than or equal array length result"
               testCase "toQuadTree random array2D 1"
               <| fun _ ->
@@ -176,14 +177,14 @@ module SparseMatrixTests =
                       else
                           arr
 
-                  let i' = int i % (Array2D.length1 arr')
-                  let j' = int j % (Array2D.length2 arr')
+                  let i' = i % uint (Array2D.length1 arr')
+                  let j' = j % uint (Array2D.length2 arr')
 
                   Expect.equal <| arr'[int i', int j'] <| Matrix(arr')[i', j'] <| "Unexpected result"
               testCase "takeElementOfMatrix empty array"
               <| fun _ ->
                   let actualResult =
-                      Expect.throws (fun _ -> Matrix(array2D [ []; [] ])[152, 11] |> ignore) "Index out of the range. Error in -takeElementOfVector- function."
+                      Expect.throws (fun _ -> Matrix(array2D [ []; [] ])[152u, 11u] |> ignore) "Index out of the range. Error in -takeElementOfVector- function."
 
                   actualResult ]
 
@@ -259,10 +260,10 @@ module MatrixMultiplicationTests =
                       (BinTree.Node(BinTree.Node(BinTree.Leaf("abcsdabcsdabcsd"), BinTree.Leaf("ddd")), BinTree.Node(BinTree.Leaf("aaaa"), BinTree.None)))
                       "MatrixMultiplication expected : Node (Node (Leaf 'abcsdabcsdabcsd', Leaf 'ddd'), Node (Leaf 'aaaa', None)) "
               testProperty "MatrixMultiplication property test"
-              <| fun (x: int) (y: int) ->
+              <| fun (x: uint) (y: uint) ->
 
-                  let length1 = (abs x) + 1
-                  let length2 = (abs y) + 1
+                  let length1 = x + 1u |> toInt
+                  let length2 = y + 1u |> toInt
 
                   let rnd = System.Random()
                   let arr = Array.init length1 (fun _ -> rnd.Next(100))

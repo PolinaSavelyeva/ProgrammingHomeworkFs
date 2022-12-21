@@ -663,5 +663,3 @@ let main argv =
     Target.runOrDefaultWithArguments "CreatePackages"
 
     0
-
-
