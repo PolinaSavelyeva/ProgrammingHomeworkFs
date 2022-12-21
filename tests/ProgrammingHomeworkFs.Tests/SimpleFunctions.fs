@@ -52,47 +52,51 @@ module SayTests =
               <| fun _ ->
                   let actualResult = fastExpo -200.0 3
                   Expect.equal actualResult -8000000 "Fast exponentiation -200 x 3 = -8000000"
-              testCase "arrays test -- random int array"
+              testCase "maxMinOfArray test -- random int array"
               <| fun _ ->
-                  let actualResult = arrays [| -100; 20; 186; 918; 0; -192; 11 |]
+                  let actualResult = maxMinOfArray [| -100; 20; 186; 918; 0; -192; 11 |]
                   Expect.equal actualResult 1110 "Maximum - minimum of [|-100; 20; 186; 918; 0 ; -192; 11|] = 1110"
-              testCase "arrays test -- same negative int array"
+              testCase "maxMinOfArray test -- same negative int array"
               <| fun _ ->
-                  let actualResult = arrays [| -8; -8; -8; -8 |]
+                  let actualResult = maxMinOfArray [| -8; -8; -8; -8 |]
                   Expect.equal actualResult 0 "Maximum - minimum of [|-8; -8; -8; -8|] = 0"
-              testCase "arrays test -- random big int array"
-              <| fun _ ->
-                  let actualResult = arrays [| 102932; 12; -10; 2331141; -15; -19; 1991; 900; -1000 |]
-                  Expect.equal actualResult 2332141 "Maximum - minimum of [|102932; 12; -10; 2331141; -15; -19; 1991; 900; -1000|] = 2332141"
-              testCase "arrays test -- one value array"
-              <| fun _ ->
-                  let actualResult = arrays [| 1 |]
-                  Expect.equal actualResult 0 "Maximum - minimum of [|1|] = 0"
-              testCase "arrays test -- no values array"
+              testCase "maxMinOfArray test -- random big int array"
               <| fun _ ->
                   let actualResult =
-                      Expect.throws (fun _ -> arrays [||] |> ignore) "There is no max and min elements in empty array. Expected at least 1 element in array. \n Error when calling - arrays - function"
+                      maxMinOfArray [| 102932; 12; -10; 2331141; -15; -19; 1991; 900; -1000 |]
+
+                  Expect.equal actualResult 2332141 "Maximum - minimum of [|102932; 12; -10; 2331141; -15; -19; 1991; 900; -1000|] = 2332141"
+              testCase "maxMinOfArray test -- one value array"
+              <| fun _ ->
+                  let actualResult = maxMinOfArray [| 1 |]
+                  Expect.equal actualResult 0 "Maximum - minimum of [|1|] = 0"
+              testCase "maxMinOfArray test -- no values array"
+              <| fun _ ->
+                  let actualResult =
+                      Expect.throws
+                          (fun _ -> maxMinOfArray [||] |> ignore)
+                          "There is no max and min elements in empty array. Expected at least 1 element in array. \n Error when calling - maxMinOfArray - function"
 
                   actualResult
-              testCase "arrays test -- random float array"
+              testCase "maxMinOfArray test -- random float array"
               <| fun _ ->
                   let actualResult =
-                      arrays [| 1.02839; 12.393902; 16.18; -1928.32; 1892; 19930.9; 0 |]
+                      maxMinOfArray [| 1.02839; 12.393902; 16.18; -1928.32; 1892; 19930.9; 0 |]
 
                   Expect.equal actualResult 21859.22 "Maximum - minimum of [|1.02839; 12.393902; 16.18; -1928.32; 1892 ; 19930.9; 0|] = 21859.22"
-              testCase "arrays test -- same float array"
+              testCase "maxMinOfArray test -- same float array"
               <| fun _ ->
-                  let actualResult = arrays [| 2.2; 2.2; 2.2; 2.2 |]
+                  let actualResult = maxMinOfArray [| 2.2; 2.2; 2.2; 2.2 |]
                   Expect.equal actualResult 0 "Maximum - minimum of [|2.2; 2.2; 2.2; 2.2|] = 0"
-              testCase "odds test -- random non-negative int"
+              testCase "arrayOfOdds test -- random non-negative int"
               <| fun _ ->
-                  let actualResult = odds 3 12
-                  Expect.equal actualResult [| 5; 7; 9; 11 |] "Odds between 3 and 12: [|5;7;9;11|]"
-              testCase "odds test -- consecutive odd int"
+                  let actualResult = arrayOfOdds 3 12
+                  Expect.equal actualResult [| 5; 7; 9; 11 |] "arrayOfOdds between 3 and 12: [|5;7;9;11|]"
+              testCase "arrayOfOdds test -- consecutive odd int"
               <| fun _ ->
-                  let actualResult = odds 5 7
-                  Expect.equal actualResult [||] "There is no odds between 5 and 7: [||]"
-              testCase "odds test -- random negative int"
+                  let actualResult = arrayOfOdds 5 7
+                  Expect.equal actualResult [||] "There is no arrayOfOdds between 5 and 7: [||]"
+              testCase "arrayOfOdds test -- random negative int"
               <| fun _ ->
-                  let actualResult = odds -100 -110
-                  Expect.equal actualResult [| -109; -107; -105; -103; -101 |] "Odds between -100 and -110: [|-109; -107; -105; -103; -101|]" ]
+                  let actualResult = arrayOfOdds -100 -110
+                  Expect.equal actualResult [| -109; -107; -105; -103; -101 |] "arrayOfOdds between -100 and -110: [|-109; -107; -105; -103; -101|]" ]
