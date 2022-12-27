@@ -182,7 +182,7 @@ module BFSTests =
 
                   let graphMatrix = Matrix(tripleList, length, length)
 
-                  let naiveBFS (vertexList: list<uint>) (graphMatrix: Matrix<'value>) =
+                  let naiveBFS (vertexList: list<uint>) (graphMatrix: Matrix<'Value>) =
 
                       let rec answerFormation (queue: Queue<uint>) (ans: array<Option<uint>>) (current: uint) =
                           if queue.Count = 0 then

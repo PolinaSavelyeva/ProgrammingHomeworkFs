@@ -216,12 +216,15 @@ module dotnet =
     let fantomas args =
         DotNet.exec id "fantomas" args
 
+    let fsharplint args =
+        DotNet.exec id "fsharplint lint --file-type solution" args
+
 module FSharpAnalyzers =
     type Arguments =
     | Project of string
-    | Analyzers_Path of string
-    | Fail_On_Warnings of string list
-    | Ignore_Files of string list
+    | AnalyzersPath of string
+    | FailOnWarnings of string list
+    | IgnoreFiles of string list
     | Verbose
     with
         interface IArgParserTemplate with
@@ -357,9 +360,9 @@ let fsharpAnalyzers _ =
     |> Seq.iter(fun proj ->
         let args  =
             [
-                FSharpAnalyzers.Analyzers_Path (__SOURCE_DIRECTORY__ </> ".." </> "packages/analyzers")
+                FSharpAnalyzers.AnalyzersPath (__SOURCE_DIRECTORY__ </> ".." </> "packages/analyzers")
                 FSharpAnalyzers.Arguments.Project proj
-                FSharpAnalyzers.Arguments.Fail_On_Warnings [
+                FSharpAnalyzers.Arguments.FailOnWarnings [
                     "BDH0002"
                 ]
                 FSharpAnalyzers.Verbose
@@ -557,6 +560,13 @@ let formatCode _ =
     if not result.OK then
         printfn "Errors while formatting all files: %A" result.Messages
 
+let fSharpLint _ =
+     let result = sln |> dotnet.fsharplint
+     if result.OK then
+         Trace.log "No files need formatting"
+     else
+         failwith "Some files need formatting, please check output for more info"
+
 let checkFormatCode _ =
     let result =
         [
@@ -611,6 +621,7 @@ let initTargets () =
     Target.create "GitHubRelease" githubRelease
     Target.create "FormatCode" formatCode
     Target.create "CheckFormatCode" checkFormatCode
+    Target.create "FSharpLint" fSharpLint
     Target.create "Release" ignore
 
     //-----------------------------------------------------------------------------
@@ -637,6 +648,7 @@ let initTargets () =
     "DotnetRestore"
         ==> "CheckFormatCode"
         ==> "DotnetBuild"
+        ==> "FsharpLint"
         // ==> "FSharpAnalyzers"
         ==> "DotnetTest"
         =?> ("GenerateCoverageReport", not disableCodeCoverage)

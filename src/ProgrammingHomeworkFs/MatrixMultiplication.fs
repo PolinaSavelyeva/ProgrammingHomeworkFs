@@ -5,7 +5,7 @@ open SparseMatrix
 open Converters
 open System
 
-let multiplication plusOperation (multiOperation: Option<'value1> -> Option<'value2> -> Option<'value3>) (vector: Vector<'value1>) (matrix: Matrix<'value2>) : Vector<'value3> =
+let multiplication plusOperation (multiOperation: Option<'Value1> -> Option<'Value2> -> Option<'Value3>) (vector: Vector<'Value1>) (matrix: Matrix<'Value2>) =
 
     let rec multiTrees binTree quadTree =
         match binTree, quadTree with
@@ -46,12 +46,12 @@ let multiplication plusOperation (multiOperation: Option<'value1> -> Option<'val
             <| BinTree.Node(left, right)
             <| QuadTree.Node(QuadTree.Leaf x, QuadTree.Leaf x, QuadTree.Leaf x, QuadTree.Leaf x)
 
-    let rec binTreeCutter (tree: BinTree<'value>) expectedSize currentSize =
+    let rec binTreeCutter (tree: BinTree<'Value>) expectedSize currentSize =
         match tree with
         | BinTree.Node (first, _) when expectedSize <> currentSize -> binTreeCutter first expectedSize (currentSize / 2u)
         | _ -> tree
 
-    let rec binTreeGrower (tree: BinTree<'value>) expectedSize currentSize =
+    let rec binTreeGrower (tree: BinTree<'Value>) expectedSize currentSize =
         if expectedSize <> currentSize then
             binTreeGrower (BinTree.Node(tree, BinTree.None)) expectedSize (currentSize * 2u)
         else
@@ -76,4 +76,4 @@ let multiplication plusOperation (multiOperation: Option<'value1> -> Option<'val
         failwith
             $"Multiplication operation is not defined.\n
          Expected %A{vector.Length} = %A{matrix.Length1}.\n
-         Error in -multiplication- function. "
+         Error in -multiplication- function"
