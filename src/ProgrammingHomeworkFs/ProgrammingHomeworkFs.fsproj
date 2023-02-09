@@ -15,10 +15,6 @@
     </PropertyGroup>
     <ItemGroup>
         <Compile Include="AssemblyInfo.fs" />
-        <Content Include="Matrices\494_bus.mtx" />
-        <Content Include="Matrices\1138_bus.mtx" />
-        <Content Include="Matrices\662_bus.mtx" />
-        <Content Include="Matrices\NewFile.txt" />
         <None Include="App.config" />
         <Compile Include="Converters.fs" />
         <Compile Include="SimpleFunctions.fs" />
