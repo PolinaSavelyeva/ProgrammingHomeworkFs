@@ -1,7 +1,5 @@
 namespace ProgrammingHomeworkFs
 
-open MtxReader
-
 module Main =
 
     [<EntryPoint>]

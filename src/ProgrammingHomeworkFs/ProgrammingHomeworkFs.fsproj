@@ -16,6 +16,7 @@
     <ItemGroup>
         <Compile Include="AssemblyInfo.fs" />
         <None Include="App.config" />
+        <Content Include="1138_bus.mtx" />
         <Compile Include="Converters.fs" />
         <Compile Include="SimpleFunctions.fs" />
         <Compile Include="AlgebraicList.fs" />

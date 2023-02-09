@@ -7,10 +7,16 @@
     </PropertyGroup>
     <ItemGroup>
         <Compile Include="AssemblyInfo.fs" />
+        <Content Include="Matrices\1138_bus.mtx" />
+        <Content Include="Matrices\bcspwr08.mtx" />
+        <Content Include="Matrices\bcsstm25.mtx" />
+        <Content Include="Matrices\dwt_59.mtx" />
+        <Content Include="Matrices\dwt_2680.mtx" />
         <Compile Include="SimpleFunctions.fs" />
         <Compile Include="TreeAndAlgebraicList.fs" />
         <Compile Include="TypesAndFunctions.fs" />
         <Compile Include="SparseMatrixVector.fs" />
+        <Compile Include="MtxReader.fs" />
         <Compile Include="BFS.fs" />
         <Compile Include="Main.fs" />
     </ItemGroup>
