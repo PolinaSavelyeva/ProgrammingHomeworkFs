@@ -66,7 +66,7 @@ let symmetryIntMtxToGraph (array: array<string>) rows columns =
             let currentLine = array[ 0 ].Split()
             let vertexOne = uint currentLine[0] - 1u
             let vertexTwo = uint currentLine[1] - 1u
-            let weight = Some( int currentLine[2])
+            let weight = Some(int currentLine[2])
 
             if vertexOne = vertexTwo then
                 (vertexOne, vertexTwo, weight) :: (listOfIntFormation array[1..])
@@ -84,12 +84,14 @@ let symmetryDoubleMtxToGraph (array: array<string>) rows columns =
             let currentLine = array[ 0 ].Split()
             let vertexOne = uint currentLine[0] - 1u
             let vertexTwo = uint currentLine[1] - 1u
-            let weight = Some( float currentLine[2])
+            let weight = Some(float currentLine[2])
 
             if vertexOne = vertexTwo then
                 (vertexOne, vertexTwo, weight) :: (listOfDoubleFormation array[1..])
             else
-                (vertexOne, vertexTwo, weight) :: (vertexTwo, vertexOne, weight) :: (listOfDoubleFormation array[1..])
+                (vertexOne, vertexTwo, weight)
+                :: (vertexTwo, vertexOne, weight) :: (listOfDoubleFormation array[1..])
+
     Matrix(listOfDoubleFormation array[1..], rows, columns)
 
 let symmetryPatternMtxToGraph (array: array<string>) rows columns =
