@@ -12,7 +12,7 @@ let symmetryIntMtxToGraph (array: array<string>) =
         if array.Length = 0 then
             failwith
                 "Incorrect file was given. Expected MatrixMarket format file.\n
-                      Error in -commentsCutter- function"
+                      Error in -symmetryIntMtxToGraph- function"
         else if array[0][0] <> '%' then
             array
         else
@@ -43,7 +43,7 @@ let symmetryDoubleMtxToGraph (array: array<string>) =
         if array.Length = 0 then
             failwith
                 "Incorrect file was given. Expected MatrixMarket format file.\n
-                      Error in -commentsCutter- function"
+                      Error in -symmetryDoubleMtxToGraph- function"
         else if array[0][0] <> '%' then
             array
         else
@@ -74,7 +74,7 @@ let symmetryPatternMtxToGraph (array: array<string>) =
         if array.Length = 0 then
             failwith
                 "Incorrect file was given. Expected MatrixMarket format file.\n
-                      Error in -commentsCutter- function"
+                      Error in -symmetryPatternMtxToGraph- function"
         else if array[0][0] <> '%' then
             array
         else
