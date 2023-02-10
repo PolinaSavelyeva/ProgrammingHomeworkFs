@@ -16,7 +16,6 @@
     <ItemGroup>
         <Compile Include="AssemblyInfo.fs" />
         <None Include="App.config" />
-        <Content Include="1138_bus.mtx" />
         <Compile Include="Converters.fs" />
         <Compile Include="SimpleFunctions.fs" />
         <Compile Include="AlgebraicList.fs" />
@@ -25,6 +24,7 @@
         <Compile Include="SparseVector.fs" />
         <Compile Include="SparseMatrix.fs" />
         <Compile Include="MatrixMultiplication.fs" />
+        <Compile Include="ParallelMatrixAndVectorOperations.fs" />
         <Compile Include="MtxReader.fs" />
         <Compile Include="BFS.fs" />
         <Compile Include="Main.fs" />

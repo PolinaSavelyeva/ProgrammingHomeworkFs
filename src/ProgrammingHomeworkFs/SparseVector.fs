@@ -178,8 +178,8 @@ let vectorAddition (plusOperation: 'Value1 option -> 'Value2 option -> 'Value3 o
                 BinTree.None
             else
                 BinTree.Node(left, right)
-        | BinTree.Node (x, y), BinTree.Leaf z -> treesAddition <| BinTree.Node(x, y) <| BinTree.Node(BinTree.Leaf z, BinTree.Leaf z)
-        | BinTree.Leaf z, BinTree.Node (x, y) -> treesAddition <| BinTree.Node(BinTree.Leaf z, BinTree.Leaf z) <| BinTree.Node(x, y)
+        | BinTree.Node (x, y), BinTree.Leaf z -> treesAddition (BinTree.Node(x, y)) (BinTree.Node(BinTree.Leaf z, BinTree.Leaf z))
+        | BinTree.Leaf z, BinTree.Node (x, y) -> treesAddition (BinTree.Node(BinTree.Leaf z, BinTree.Leaf z)) (BinTree.Node(x, y))
 
     if vector1.Length = vector2.Length then
         Vector(treesAddition vector1.Storage vector2.Storage, vector1.Length, vector1.SquareLength)
