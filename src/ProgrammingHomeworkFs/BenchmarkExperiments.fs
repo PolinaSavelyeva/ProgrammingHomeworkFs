@@ -2,21 +2,27 @@ module BenchmarkExperiments
 
 open BenchmarkDotNet.Attributes
 
-type AdditionBenchmark() =
+let random = System.Random()
+
+let plusOperation opt1 opt2 =
+    match opt1, opt2 with
+    | Option.Some a, Option.Some b -> Option.Some(a + b)
+    | Option.Some a, Option.None
+    | Option.None, Option.Some a -> Option.Some(a)
+    | Option.None, Option.None -> Option.None
+
+let multiOperation opt1 opt2 =
+    match opt1, opt2 with
+    | Some a, Some b -> Some(a * b)
+    | Option.None, _
+    | _, Option.None -> Option.None
+
+(*type AdditionBenchmark() =
 
     let mutable vector1 = SparseVector.Vector([||])
     let mutable vector2 = SparseVector.Vector([||])
 
-    let plusOperation opt1 opt2 =
-        match opt1, opt2 with
-        | Option.Some a, Option.Some b -> Option.Some(a + b)
-        | Option.Some a, Option.None
-        | Option.None, Option.Some a -> Option.Some(a)
-        | Option.None, Option.None -> Option.None
-
-    let random = System.Random()
-
-    [<Params(10_000u, 100_000u, 1_000_000u)>]
+    [<Params(2_500_000u)>]
     member val Length = 0u with get, set
 
     [<Params(2u, 4u)>]
@@ -37,29 +43,14 @@ type AdditionBenchmark() =
         <| this.Level
         <| plusOperation
         <| vector1
-        <| vector1
+        <| vector1*)
 
 type MultiplicationBenchmark() =
 
     let mutable vector = SparseVector.Vector([||])
     let mutable matrix = SparseMatrix.Matrix(array2D [||])
 
-    let plusOperation opt1 opt2 =
-        match opt1, opt2 with
-        | Option.Some a, Option.Some b -> Option.Some(a + b)
-        | Option.Some a, Option.None
-        | Option.None, Option.Some a -> Option.Some(a)
-        | Option.None, Option.None -> Option.None
-
-    let multiOperation opt1 opt2 =
-        match opt1, opt2 with
-        | Some a, Some b -> Some(a * b)
-        | Option.None, _
-        | _, Option.None -> Option.None
-
-    let random = System.Random()
-
-    [<Params(1000u, 2000u, 3000u)>]
+    [<Params(3000u)>]
     member val Length = 0u with get, set
 
     [<Params(2u, 4u)>]

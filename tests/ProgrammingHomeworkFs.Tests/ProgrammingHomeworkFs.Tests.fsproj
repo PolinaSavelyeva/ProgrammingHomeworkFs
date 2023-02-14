@@ -16,6 +16,7 @@
         <Compile Include="TreeAndAlgebraicList.fs" />
         <Compile Include="TypesAndFunctions.fs" />
         <Compile Include="SparseMatrixVector.fs" />
+        <Compile Include="ParallelOperations.fs" />
         <Compile Include="MtxReader.fs" />
         <Compile Include="BFS.fs" />
         <Compile Include="Main.fs" />
