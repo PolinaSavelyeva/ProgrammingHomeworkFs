@@ -10,8 +10,8 @@ module SparseVectorTests =
     [<Tests>]
     let tests =
         testList
-            "vectorAddition test"
-            [ testProperty "VectorAddition property test"
+            "ParallelVectorAddition test"
+            [ testProperty "ParallelVectorAddition property test"
               <| fun (x: uint) ->
 
                   let length1 = x + 1u |> toInt
@@ -75,21 +75,21 @@ module MatrixMultiplicationTests =
     [<Tests>]
     let tests =
         testList
-            "MatrixMultiplication tests"
+            "ParallelMatrixMultiplication tests"
             [ testCase "MatrixMultiplication random vector and matrix"
               <| fun _ ->
                   let vec = Vector([| Some(0); Some(1) |])
                   let mat = Matrix(array2D [ [ Some(1); Some(1) ]; [ Some(1); Some(1) ] ])
                   let res = multiplication 2u fPlusInt fMultiInt vec mat
 
-                  Expect.equal res.Storage (BinTree.Node(BinTree.Leaf(1), BinTree.Leaf(1))) "MatrixMultiplication expected : Node (Leaf 1, Leaf 1)"
-              testCase "MatrixMultiplication empty vector and matrix"
+                  Expect.equal res.Storage (BinTree.Node(BinTree.Leaf(1), BinTree.Leaf(1))) "ParallelMatrixMultiplication expected : Node (Leaf 1, Leaf 1)"
+              testCase "ParallelMatrixMultiplication empty vector and matrix"
               <| fun _ ->
                   let vec = Vector([||])
                   let mat = Matrix(array2D [])
                   let res = multiplication 2u fPlusInt fMultiInt vec mat
-                  Expect.equal res.Storage BinTree.None "MatrixMultiplication expected : BinTree.None"
-              testCase "MatrixMultiplication None association vector and matrix"
+                  Expect.equal res.Storage BinTree.None "ParallelMatrixMultiplication expected : BinTree.None"
+              testCase "ParallelMatrixMultiplication None association vector and matrix"
               <| fun _ ->
                   let vec = Vector([| Some(1); Some(1); Some(1) |])
 
@@ -97,8 +97,8 @@ module MatrixMultiplicationTests =
                       Matrix(array2D [ [ Option.None; Option.None; Option.None ]; [ Option.None; Option.None; Option.None ]; [ Option.None; Option.None; Option.None ] ])
 
                   let res = multiplication 2u fPlusInt fMultiInt vec mat
-                  Expect.equal res.Storage BinTree.None "MatrixMultiplication expected : BinTree.None"
-              testCase "MatrixMultiplication string vector and matrix"
+                  Expect.equal res.Storage BinTree.None "ParallelMatrixMultiplication expected : BinTree.None"
+              testCase "ParallelMatrixMultiplication string vector and matrix"
               <| fun _ ->
                   let fPlusString (a: string option) (b: string option) =
                       match a, b with
@@ -123,8 +123,8 @@ module MatrixMultiplicationTests =
                   Expect.equal
                       res.Storage
                       (BinTree.Node(BinTree.Node(BinTree.Leaf("abcsdabcsdabcsd"), BinTree.Leaf("ddd")), BinTree.Node(BinTree.Leaf("aaaa"), BinTree.None)))
-                      "MatrixMultiplication expected : Node (Node (Leaf 'abcsdabcsdabcsd', Leaf 'ddd'), Node (Leaf 'aaaa', None)) "
-              testProperty "MatrixMultiplication property test"
+                      "ParallelMatrixMultiplication expected : Node (Node (Leaf 'abcsdabcsdabcsd', Leaf 'ddd'), Node (Leaf 'aaaa', None)) "
+              testProperty "ParallelMatrixMultiplication property test"
               <| fun (x: uint) (y: uint) ->
 
                   let length1 = x + 1u |> toInt
