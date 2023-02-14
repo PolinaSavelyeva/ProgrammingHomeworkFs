@@ -9,8 +9,9 @@ module SparseVectorTests =
 
     [<Tests>]
     let tests =
-        testList "vectorAddition test"
-              [testProperty "VectorAddition property test"
+        testList
+            "vectorAddition test"
+            [ testProperty "VectorAddition property test"
               <| fun (x: uint) ->
 
                   let length1 = x + 1u |> toInt
@@ -47,7 +48,9 @@ module SparseVectorTests =
                       result
 
                   let expectedResult = Vector(naiveAddition arr1Some arr2Some)
-                  let actualResult = ParallelMatrixAndVectorOperations.vectorAddition 2u fPlus vector1 vector2
+
+                  let actualResult =
+                      ParallelMatrixAndVectorOperations.vectorAddition 2u fPlus vector1 vector2
 
                   Expect.equal actualResult.Storage expectedResult.Storage "Undefined result. " ]
 
@@ -77,14 +80,14 @@ module MatrixMultiplicationTests =
               <| fun _ ->
                   let vec = Vector([| Some(0); Some(1) |])
                   let mat = Matrix(array2D [ [ Some(1); Some(1) ]; [ Some(1); Some(1) ] ])
-                  let res = multiplication 2u  fPlusInt fMultiInt vec mat
+                  let res = multiplication 2u fPlusInt fMultiInt vec mat
 
                   Expect.equal res.Storage (BinTree.Node(BinTree.Leaf(1), BinTree.Leaf(1))) "MatrixMultiplication expected : Node (Leaf 1, Leaf 1)"
               testCase "MatrixMultiplication empty vector and matrix"
               <| fun _ ->
                   let vec = Vector([||])
                   let mat = Matrix(array2D [])
-                  let res = multiplication 2u  fPlusInt fMultiInt vec mat
+                  let res = multiplication 2u fPlusInt fMultiInt vec mat
                   Expect.equal res.Storage BinTree.None "MatrixMultiplication expected : BinTree.None"
               testCase "MatrixMultiplication None association vector and matrix"
               <| fun _ ->
@@ -115,7 +118,7 @@ module MatrixMultiplicationTests =
                   let mat =
                       Matrix(array2D [ [ Option.None; Some("abcd"); Option.None ]; [ Option.None; Option.None; Some("aa") ]; [ Some("abcsd"); Some("d"); Option.None ] ])
 
-                  let res = multiplication 2u  fPlusString fMultiString vec mat
+                  let res = multiplication 2u fPlusString fMultiString vec mat
 
                   Expect.equal
                       res.Storage

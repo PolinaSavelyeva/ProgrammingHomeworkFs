@@ -17,7 +17,7 @@ let multiOperation opt1 opt2 =
     | Option.None, _
     | _, Option.None -> Option.None
 
-(*type AdditionBenchmark() =
+type AdditionBenchmark() =
 
     let mutable vector1 = SparseVector.Vector([||])
     let mutable vector2 = SparseVector.Vector([||])
@@ -43,7 +43,7 @@ let multiOperation opt1 opt2 =
         <| this.Level
         <| plusOperation
         <| vector1
-        <| vector1*)
+        <| vector1
 
 type MultiplicationBenchmark() =
 
