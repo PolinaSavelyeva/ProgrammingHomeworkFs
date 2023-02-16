@@ -23,7 +23,7 @@ type MtxFile(pathToFile: string) =
 let toSparseMatrix converter (file: MtxFile) =
 
     let rec symmetricListFormation (sequence: seq<string>) =
-        if Seq.length sequence = 0 then
+        if Seq.isEmpty sequence then
             []
         else
             let currentLine = (Seq.head sequence).Split()
@@ -38,7 +38,7 @@ let toSparseMatrix converter (file: MtxFile) =
                 :: (vertexTwo, vertexOne, weight) :: (symmetricListFormation <| Seq.removeAt 0 sequence)
 
     let rec generalListFormation (sequence: seq<string>) =
-        if Seq.length sequence = 0 then
+        if Seq.isEmpty sequence then
             []
         else
             let currentLine = (Seq.head sequence).Split()
