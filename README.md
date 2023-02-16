@@ -2,32 +2,6 @@
 
 ---
 
-### Developing
-
-Make sure the following **requirements** are installed on your system:
-
-- [dotnet SDK](https://www.microsoft.com/net/download/core) 3.0 or higher
-- [Mono](http://www.mono-project.com/) if you're on Linux or macOS.
-
-or
-
-- [VSCode Dev Container](https://code.visualstudio.com/docs/remote/containers)
-
-
----
-
-### Environment Variables
-
-- `CONFIGURATION` will set the [configuration](https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-build?tabs=netcore2x#options) of the dotnet commands.  If not set, it will default to Release.
-  - `CONFIGURATION=Debug ./build.sh` will result in `-c` additions to commands such as in `dotnet build -c Debug`
-- `GITHUB_TOKEN` will be used to upload release notes and NuGet packages to GitHub.
-  - Be sure to set this before releasing
-- `DISABLE_COVERAGE` Will disable running code coverage metrics.  AltCover can have [severe performance degradation](https://github.com/SteveGilham/altcover/issues/57) so it's worth disabling when looking to do a quicker feedback loop.
-  - `DISABLE_COVERAGE=1 ./build.sh`
-
-
----
-
 ### Building
 
 
