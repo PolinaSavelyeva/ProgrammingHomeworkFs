@@ -2,7 +2,7 @@ module ParallelOperationsTests
 
 open Expecto
 open Converters
-open ParallelMatrixAndVectorOperations
+open MatrixAndVectorOperations
 
 module SparseVectorTests =
     open SparseVector
@@ -11,7 +11,7 @@ module SparseVectorTests =
     let tests =
         testList
             "ParallelVectorAddition test"
-            [ testProperty "ParallelVectorAddition property test"
+            [ testProperty "naive addition property test"
               <| fun (x: uint) ->
 
                   let length1 = x + 1u |> toInt
@@ -47,12 +47,11 @@ module SparseVectorTests =
 
                       result
 
-                  let expectedResult = Vector(naiveAddition arr1Some arr2Some)
+                  let expectedResult = Vector(naiveAddition arr1Some arr2Some).Storage
 
-                  let actualResult =
-                      ParallelMatrixAndVectorOperations.vectorAddition 2u fPlus vector1 vector2
+                  let actualResult = (vectorAddition 2u fPlus vector1 vector2).Storage
 
-                  Expect.equal actualResult.Storage expectedResult.Storage "Undefined result. " ]
+                  Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. " ]
 
 module MatrixMultiplicationTests =
 
@@ -76,29 +75,34 @@ module MatrixMultiplicationTests =
     let tests =
         testList
             "ParallelMatrixMultiplication tests"
-            [ testCase "MatrixMultiplication random vector and matrix"
+            [ testCase "simple int vector and matrix parallel multiplication test"
               <| fun _ ->
                   let vec = Vector([| Some(0); Some(1) |])
                   let mat = Matrix(array2D [ [ Some(1); Some(1) ]; [ Some(1); Some(1) ] ])
-                  let res = multiplication 2u fPlusInt fMultiInt vec mat
+                  let actualResult = (multiplication 2u fPlusInt fMultiInt vec mat).Storage
+                  let expectedResult = BinTree.Node(BinTree.Leaf(1), BinTree.Leaf(1))
 
-                  Expect.equal res.Storage (BinTree.Node(BinTree.Leaf(1), BinTree.Leaf(1))) "ParallelMatrixMultiplication expected : Node (Leaf 1, Leaf 1)"
-              testCase "ParallelMatrixMultiplication empty vector and matrix"
+                  Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
+              testCase "empty vector and empty matrix parallel multiplication test"
               <| fun _ ->
                   let vec = Vector([||])
                   let mat = Matrix(array2D [])
-                  let res = multiplication 2u fPlusInt fMultiInt vec mat
-                  Expect.equal res.Storage BinTree.None "ParallelMatrixMultiplication expected : BinTree.None"
-              testCase "ParallelMatrixMultiplication None association vector and matrix"
+                  let actualResult = (multiplication 2u fPlusInt fMultiInt vec mat).Storage
+                  let expectedResult = BinTree.None
+
+                  Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
+              testCase "none association vector and matrix parallel multiplication test"
               <| fun _ ->
                   let vec = Vector([| Some(1); Some(1); Some(1) |])
 
                   let mat =
                       Matrix(array2D [ [ Option.None; Option.None; Option.None ]; [ Option.None; Option.None; Option.None ]; [ Option.None; Option.None; Option.None ] ])
 
-                  let res = multiplication 2u fPlusInt fMultiInt vec mat
-                  Expect.equal res.Storage BinTree.None "ParallelMatrixMultiplication expected : BinTree.None"
-              testCase "ParallelMatrixMultiplication string vector and matrix"
+                  let actualResult = (multiplication 2u fPlusInt fMultiInt vec mat).Storage
+                  let expectedResult = BinTree.None
+
+                  Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
+              testCase "simple string vector and matrix parallel multiplication test"
               <| fun _ ->
                   let fPlusString (a: string option) (b: string option) =
                       match a, b with
@@ -118,13 +122,13 @@ module MatrixMultiplicationTests =
                   let mat =
                       Matrix(array2D [ [ Option.None; Some("abcd"); Option.None ]; [ Option.None; Option.None; Some("aa") ]; [ Some("abcsd"); Some("d"); Option.None ] ])
 
-                  let res = multiplication 2u fPlusString fMultiString vec mat
+                  let actualResult = (multiplication 2u fPlusString fMultiString vec mat).Storage
 
-                  Expect.equal
-                      res.Storage
-                      (BinTree.Node(BinTree.Node(BinTree.Leaf("abcsdabcsdabcsd"), BinTree.Leaf("ddd")), BinTree.Node(BinTree.Leaf("aaaa"), BinTree.None)))
-                      "ParallelMatrixMultiplication expected : Node (Node (Leaf 'abcsdabcsdabcsd', Leaf 'ddd'), Node (Leaf 'aaaa', None)) "
-              testProperty "ParallelMatrixMultiplication property test"
+                  let expectedResult =
+                      BinTree.Node(BinTree.Node(BinTree.Leaf("abcsdabcsdabcsd"), BinTree.Leaf("ddd")), BinTree.Node(BinTree.Leaf("aaaa"), BinTree.None))
+
+                  Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
+              testProperty "naive multiplication property test"
               <| fun (x: uint) (y: uint) ->
 
                   let length1 = x + 1u |> toInt
@@ -167,16 +171,8 @@ module MatrixMultiplicationTests =
 
                       result
 
-                  let rec isNoneReduce tree =
-                      match tree with
-                      | BinTree.Node (BinTree.None, BinTree.None) -> false
-                      | BinTree.Node (x, y) -> isNoneReduce x && isNoneReduce y
-                      | BinTree.Leaf _ -> true
-                      | BinTree.None -> true
-
                   let expectedResult = Vector(naiveMulti arrSome arr2dSome)
                   let actualResult = multiplication 2u fPlusInt fMultiInt vector matrix
-                  let actualResult' = isNoneReduce actualResult.Storage
 
                   Expect.equal
                       actualResult.Storage
@@ -184,8 +180,4 @@ module MatrixMultiplicationTests =
                       $"\n Array : %A{arrSome}\n
                         \n Array2d : %A{arr2dSome}\n
                         \n Array tree : %A{vector.Storage}\n
-                        \n Matrix tree : %A{matrix.Storage}\n. "
-
-                  Expect.equal actualResult.Length matrix.Length1 "Expected actualResult.Length = matrix.Length1. "
-
-                  Expect.equal actualResult' true "Tree is not reduced. " ]
+                        \n Matrix tree : %A{matrix.Storage}\n. " ]

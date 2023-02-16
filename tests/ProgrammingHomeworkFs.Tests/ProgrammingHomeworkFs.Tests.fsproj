@@ -11,7 +11,7 @@
         <Content Include="Matrices\bcspwr08.mtx" />
         <Content Include="Matrices\bcsstm25.mtx" />
         <Content Include="Matrices\dwt_59.mtx" />
-        <Content Include="Matrices\dwt_2680.mtx" />
+        <Content Include="Matrices\dwt_50.mtx" />
         <Compile Include="SimpleFunctions.fs" />
         <Compile Include="TreeAndAlgebraicList.fs" />
         <Compile Include="TypesAndFunctions.fs" />

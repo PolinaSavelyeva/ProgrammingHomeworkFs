@@ -23,8 +23,7 @@
         <Compile Include="Tree.fs" />
         <Compile Include="SparseVector.fs" />
         <Compile Include="SparseMatrix.fs" />
-        <Compile Include="MatrixMultiplication.fs" />
-        <Compile Include="ParallelMatrixAndVectorOperations.fs" />
+        <Compile Include="MatrixAndVectorOperations.fs" />
         <Compile Include="MtxReader.fs" />
         <Compile Include="BFS.fs" />
         <Compile Include="BenchmarkExperiments.fs" />

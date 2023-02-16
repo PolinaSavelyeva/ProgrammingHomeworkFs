@@ -1,8 +1,10 @@
 module MtxReaderTests
 
 open Expecto
+open Microsoft.FSharp.Core
 open MtxReader
 open SparseMatrix
+open Converters
 
 module SayTests =
     [<Tests>]
@@ -13,7 +15,7 @@ module SayTests =
               <| fun _ ->
                   let path = __SOURCE_DIRECTORY__ + "/Matrices/1138_bus.mtx"
                   let file = MtxFile(path)
-                  let actualResult = symmetryDoubleMtxToGraph file.CutArray file.Rows file.Columns
+                  let actualResult = toSparseMatrix real file
 
                   let expectedResult =
                       Matrix(
@@ -36,7 +38,7 @@ module SayTests =
               <| fun _ ->
                   let path = __SOURCE_DIRECTORY__ + "/Matrices/dwt_59.mtx"
                   let file = MtxFile(path)
-                  let actualResult = symmetryPatternMtxToGraph file.CutArray file.Rows file.Columns
+                  let actualResult = toSparseMatrix pattern file
 
                   let expectedResult =
                       Matrix(
@@ -66,7 +68,7 @@ module SayTests =
               <| fun _ ->
                   let path = __SOURCE_DIRECTORY__ + "/Matrices/bcspwr08.mtx"
                   let file = MtxFile(path)
-                  let actualResult = symmetryPatternMtxToGraph file.CutArray file.Rows file.Columns
+                  let actualResult = toSparseMatrix pattern file
                   let expectedResult = Matrix([], 0u, 0u)
 
                   Expect.equal actualResult.Storage expectedResult.Storage $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}"
@@ -75,21 +77,20 @@ module SayTests =
               <| fun _ ->
                   let path = __SOURCE_DIRECTORY__ + "/Matrices/bcsstm25.mtx"
                   let file = MtxFile(path)
-                  let actualResult = symmetryIntMtxToGraph file.CutArray file.Rows file.Columns
+                  let actualResult = toSparseMatrix integer file
 
                   let expectedResult =
                       Matrix([ (0u, 0u, Some 1); (1u, 1u, Some 2); (2u, 2u, Some 3) ], 3u, 3u)
 
                   Expect.equal actualResult.Storage expectedResult.Storage $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}"
 
-              testCase "comments with incorrect body mtx test"
+              testCase "3x3 size integer general mtx test"
               <| fun _ ->
-                  let actualResult =
-                      let path = __SOURCE_DIRECTORY__ + "/Matrices/dwt_2680.mtx"
+                  let path = __SOURCE_DIRECTORY__ + "/Matrices/dwt_50.mtx"
+                  let file = MtxFile(path)
+                  let actualResult = toSparseMatrix integer file
 
-                      Expect.throws
-                          (fun _ -> MtxFile(path) |> ignore)
-                          "Incorrect file was given. Expected MatrixMarket format file.\n
-                          Error in -zeroArrayLine- value"
+                  let expectedResult =
+                      Matrix([ (0u, 0u, Some 1); (0u, 1u, Some 2); (0u, 2u, Some 3) ], 3u, 3u)
 
-                  actualResult ]
+                  Expect.equal actualResult.Storage expectedResult.Storage $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}" ]

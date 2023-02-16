@@ -1,4 +1,4 @@
-%%MatrixMarket matrix coordinate pattern symmetric
+%%MatrixMarket matrix coordinate integer general
 %-------------------------------------------------------------------------------
 % UF Sparse Matrix Collection, Tim Davis
 % http://www.cise.ufl.edu/research/sparse/matrices/HB/dwt_2680
@@ -11,7 +11,7 @@
 % fields: title A name id date author ed kind
 % kind: structural problem
 %-------------------------------------------------------------------------------
-ddd
-sgs
-sgggg
-ahaaa
+3 3 3
+1 1 1
+1 2 2
+1 3 3 

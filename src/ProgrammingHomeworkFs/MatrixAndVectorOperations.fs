@@ -1,4 +1,4 @@
-module ParallelMatrixAndVectorOperations
+module MatrixAndVectorOperations
 
 open SparseVector
 open SparseMatrix

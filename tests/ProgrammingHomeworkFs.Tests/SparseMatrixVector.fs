@@ -2,6 +2,7 @@ module SparseMatrixVectorTests
 
 open Expecto
 open Converters
+open MatrixAndVectorOperations
 
 module SparseVectorTests =
     open SparseVector
@@ -103,7 +104,7 @@ module SparseVectorTests =
                       result
 
                   let expectedResult = Vector(naiveAddition arr1Some arr2Some)
-                  let actualResult = vectorAddition fPlus vector1 vector2
+                  let actualResult = vectorAddition 0u fPlus vector1 vector2
 
                   Expect.equal actualResult.Storage expectedResult.Storage "Undefined result. " ]
 
@@ -188,9 +189,8 @@ module SparseMatrixTests =
 
                   actualResult ]
 
-module MatrixMultiplicationTests =
+module MatrixMultiplication =
 
-    open MatrixMultiplication
     open SparseVector
     open SparseMatrix
 
@@ -215,14 +215,14 @@ module MatrixMultiplicationTests =
               <| fun _ ->
                   let vec = Vector([| Some(0); Some(1) |])
                   let mat = Matrix(array2D [ [ Some(1); Some(1) ]; [ Some(1); Some(1) ] ])
-                  let res = multiplication fPlusInt fMultiInt vec mat
+                  let res = multiplication 0u fPlusInt fMultiInt vec mat
 
                   Expect.equal res.Storage (BinTree.Node(BinTree.Leaf(1), BinTree.Leaf(1))) "MatrixMultiplication expected : Node (Leaf 1, Leaf 1)"
               testCase "MatrixMultiplication empty vector and matrix"
               <| fun _ ->
                   let vec = Vector([||])
                   let mat = Matrix(array2D [])
-                  let res = multiplication fPlusInt fMultiInt vec mat
+                  let res = multiplication 0u fPlusInt fMultiInt vec mat
                   Expect.equal res.Storage BinTree.None "MatrixMultiplication expected : BinTree.None"
               testCase "MatrixMultiplication None association vector and matrix"
               <| fun _ ->
@@ -231,7 +231,7 @@ module MatrixMultiplicationTests =
                   let mat =
                       Matrix(array2D [ [ Option.None; Option.None; Option.None ]; [ Option.None; Option.None; Option.None ]; [ Option.None; Option.None; Option.None ] ])
 
-                  let res = multiplication fPlusInt fMultiInt vec mat
+                  let res = multiplication 0u fPlusInt fMultiInt vec mat
                   Expect.equal res.Storage BinTree.None "MatrixMultiplication expected : BinTree.None"
               testCase "MatrixMultiplication string vector and matrix"
               <| fun _ ->
@@ -253,7 +253,7 @@ module MatrixMultiplicationTests =
                   let mat =
                       Matrix(array2D [ [ Option.None; Some("abcd"); Option.None ]; [ Option.None; Option.None; Some("aa") ]; [ Some("abcsd"); Some("d"); Option.None ] ])
 
-                  let res = multiplication fPlusString fMultiString vec mat
+                  let res = multiplication 0u fPlusString fMultiString vec mat
 
                   Expect.equal
                       res.Storage
@@ -310,7 +310,7 @@ module MatrixMultiplicationTests =
                       | BinTree.None -> true
 
                   let expectedResult = Vector(naiveMulti arrSome arr2dSome)
-                  let actualResult = multiplication fPlusInt fMultiInt vector matrix
+                  let actualResult = multiplication 0u fPlusInt fMultiInt vector matrix
                   let actualResult' = isNoneReduce actualResult.Storage
 
                   Expect.equal

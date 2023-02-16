@@ -1,7 +1,7 @@
 module BreadthFirstSearch
 
 open SparseVector
-open MatrixMultiplication
+open MatrixAndVectorOperations
 
 let fPlus a b =
     match a, b with
@@ -34,11 +34,11 @@ let BFS startVertexList graphMatrix =
         if front.IsEmpty then
             visited
         else
-            let newFront = multiplication fPlus fMulti front graphMatrix
+            let newFront = multiplication 0u fPlus fMulti front graphMatrix
 
-            let front = vectorAddition fPlusMask newFront visited
+            let front = vectorAddition 0u fPlusMask newFront visited
 
-            let visited = vectorAddition (fPlusVisited iterationNumber) visited front
+            let visited = vectorAddition 0u (fPlusVisited iterationNumber) visited front
 
             inner front visited (iterationNumber + 1u)
 
