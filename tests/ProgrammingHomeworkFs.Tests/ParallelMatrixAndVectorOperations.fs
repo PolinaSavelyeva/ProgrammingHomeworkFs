@@ -75,34 +75,34 @@ module MatrixMultiplicationTests =
     let tests =
         testList
             "ParallelMatrixMultiplication tests"
-            [ testCase "simple int vector and matrix parallel multiplication test"
+            [ testCase "simple int vector and matrix parallel multiplication test: multi level 2, add level 1"
               <| fun _ ->
                   let vec = Vector([| Some(0); Some(1) |])
                   let mat = Matrix(array2D [ [ Some(1); Some(1) ]; [ Some(1); Some(1) ] ])
-                  let actualResult = (multiplication 2u fPlusInt fMultiInt vec mat).Storage
+                  let actualResult = (multiplication 2u 1u fPlusInt fMultiInt vec mat).Storage
                   let expectedResult = BinTree.Node(BinTree.Leaf(1), BinTree.Leaf(1))
 
                   Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
-              testCase "empty vector and empty matrix parallel multiplication test"
+              testCase "empty vector and empty matrix parallel multiplication test: multi level 2, add level 2"
               <| fun _ ->
                   let vec = Vector([||])
                   let mat = Matrix(array2D [])
-                  let actualResult = (multiplication 2u fPlusInt fMultiInt vec mat).Storage
+                  let actualResult = (multiplication 2u 2u fPlusInt fMultiInt vec mat).Storage
                   let expectedResult = BinTree.None
 
                   Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
-              testCase "none association vector and matrix parallel multiplication test"
+              testCase "none association vector and matrix parallel multiplication test: multi level 3, add level 0"
               <| fun _ ->
                   let vec = Vector([| Some(1); Some(1); Some(1) |])
 
                   let mat =
                       Matrix(array2D [ [ Option.None; Option.None; Option.None ]; [ Option.None; Option.None; Option.None ]; [ Option.None; Option.None; Option.None ] ])
 
-                  let actualResult = (multiplication 2u fPlusInt fMultiInt vec mat).Storage
+                  let actualResult = (multiplication 3u 0u fPlusInt fMultiInt vec mat).Storage
                   let expectedResult = BinTree.None
 
                   Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
-              testCase "simple string vector and matrix parallel multiplication test"
+              testCase "simple string vector and matrix parallel multiplication test: multi level 2, add level 2"
               <| fun _ ->
                   let fPlusString (a: string option) (b: string option) =
                       match a, b with
@@ -122,13 +122,13 @@ module MatrixMultiplicationTests =
                   let mat =
                       Matrix(array2D [ [ Option.None; Some("abcd"); Option.None ]; [ Option.None; Option.None; Some("aa") ]; [ Some("abcsd"); Some("d"); Option.None ] ])
 
-                  let actualResult = (multiplication 2u fPlusString fMultiString vec mat).Storage
+                  let actualResult = (multiplication 2u 2u fPlusString fMultiString vec mat).Storage
 
                   let expectedResult =
                       BinTree.Node(BinTree.Node(BinTree.Leaf("abcsdabcsdabcsd"), BinTree.Leaf("ddd")), BinTree.Node(BinTree.Leaf("aaaa"), BinTree.None))
 
                   Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
-              testProperty "naive multiplication property test"
+              testProperty "naive multiplication property test: multi level 1, add level 1"
               <| fun (x: uint) (y: uint) ->
 
                   let length1 = x + 1u |> toInt
@@ -172,7 +172,7 @@ module MatrixMultiplicationTests =
                       result
 
                   let expectedResult = Vector(naiveMulti arrSome arr2dSome)
-                  let actualResult = multiplication 2u fPlusInt fMultiInt vector matrix
+                  let actualResult = multiplication 1u 1u fPlusInt fMultiInt vector matrix
 
                   Expect.equal
                       actualResult.Storage

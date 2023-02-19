@@ -58,7 +58,7 @@ let vectorAddition level (plusOperation: 'Value1 option -> 'Value2 option -> 'Va
     else
         failwith $"Expected vector1.Length : %A{vector1.Length} = vector2.Length : %A{vector2.Length}"
 
-let multiplication level plusOperation (multiOperation: Option<'Value1> -> Option<'Value2> -> Option<'Value3>) (vector: Vector<'Value1>) (matrix: Matrix<'Value2>) =
+let multiplication multiLevel addLevel plusOperation (multiOperation: Option<'Value1> -> Option<'Value2> -> Option<'Value3>) (vector: Vector<'Value1>) (matrix: Matrix<'Value2>) =
 
     let rec multiTrees parallelLevel binTree quadTree =
         match binTree, quadTree with
@@ -73,14 +73,14 @@ let multiplication level plusOperation (multiOperation: Option<'Value1> -> Optio
         | BinTree.Node (left, right), QuadTree.Node (first, second, third, fourth) ->
             if parallelLevel = 0u then
                 let first =
-                    (vectorAddition 0u
+                    (vectorAddition addLevel
                      <| plusOperation
                      <| Vector(multiTrees 0u left first, vector.Length, vector.SquareLength)
                      <| Vector(multiTrees 0u right third, vector.Length, vector.SquareLength))
                         .Storage
 
                 let second =
-                    (vectorAddition 0u
+                    (vectorAddition addLevel
                      <| plusOperation
                      <| Vector(multiTrees 0u left second, vector.Length, vector.SquareLength)
                      <| Vector(multiTrees 0u right fourth, vector.Length, vector.SquareLength))
@@ -95,7 +95,7 @@ let multiplication level plusOperation (multiOperation: Option<'Value1> -> Optio
                     [| async {
                            return
                                vectorAddition
-                               <| parallelLevel
+                               <| addLevel
                                <| plusOperation
                                <| Vector(multiTrees (parallelLevel - 1u) left first, vector.Length, vector.SquareLength)
                                <| Vector(multiTrees (parallelLevel - 1u) right third, vector.Length, vector.SquareLength)
@@ -103,7 +103,7 @@ let multiplication level plusOperation (multiOperation: Option<'Value1> -> Optio
                        async {
                            return
                                vectorAddition
-                               <| parallelLevel
+                               <| addLevel
                                <| plusOperation
                                <| Vector(multiTrees (parallelLevel - 1u) left second, vector.Length, vector.SquareLength)
                                <| Vector(multiTrees (parallelLevel - 1u) right fourth, vector.Length, vector.SquareLength)
@@ -141,9 +141,9 @@ let multiplication level plusOperation (multiOperation: Option<'Value1> -> Optio
     if vector.Length = matrix.Length1 then
         let growTree =
             if vector.SquareLength <> matrix.SquareLength then
-                multiTrees level (binTreeGrower vector.Storage matrix.SquareLength vector.SquareLength) matrix.Storage
+                multiTrees multiLevel (binTreeGrower vector.Storage matrix.SquareLength vector.SquareLength) matrix.Storage
             else
-                multiTrees level vector.Storage matrix.Storage
+                multiTrees multiLevel vector.Storage matrix.Storage
 
         let cutTree =
             if matrix.Length1 > matrix.Length2 then
