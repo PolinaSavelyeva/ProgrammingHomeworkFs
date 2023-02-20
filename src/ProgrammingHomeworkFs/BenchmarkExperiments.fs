@@ -31,7 +31,7 @@ type AdditionBenchmark() =
 
     // Greater level equals more matrix's sparsity
     // Level 1 equals dense matrix
-    [<Params(1, 2, 3)>]
+    [<Params(1, 5, 10)>]
     member val DensityLevel = 1 with get, set
 
     [<GlobalSetup>]
@@ -67,16 +67,19 @@ type MultiplicationBenchmark() =
     let mutable vector = SparseVector.Vector([||])
     let mutable matrix = SparseMatrix.Matrix(array2D [||])
 
-    [<Params(1000u, 3000u)>]
+    [<Params(2500u)>]
     member val Length1 = 0u with get, set
 
-    [<Params(500u, 1000u, 2000u)>]
+    [<Params(2500u)>]
     member val Length2 = 0u with get, set
 
-    [<Params(1u, 2u, 3u, 4u)>]
-    member val ParallelLevel = 0u with get, set
+    [<Params(1u, 2u)>]
+    member val MultiParallelLevel = 0u with get, set
 
-    [<Params(1, 2, 3)>]
+    [<Params(0u, 1u)>]
+    member val AddParallelLevel = 0u with get, set
+
+    [<Params(1, 10)>]
     member val DensityLevel = 1 with get, set
 
     [<GlobalSetup>]
@@ -101,8 +104,14 @@ type MultiplicationBenchmark() =
 
     [<Benchmark(Baseline = true)>]
     member this.BaselineMultiplication() =
-        multiplication <| 0u <| IntPlusOperation <| IntMultiOperation <| vector <| matrix
+        multiplication <| 0u <| 0u <| IntPlusOperation <| IntMultiOperation <| vector <| matrix
 
     [<Benchmark>]
     member this.ParallelMultiplication() =
-        multiplication <| this.ParallelLevel <| IntPlusOperation <| IntMultiOperation <| vector <| matrix
+        multiplication
+        <| this.MultiParallelLevel
+        <| this.AddParallelLevel
+        <| IntPlusOperation
+        <| IntMultiOperation
+        <| vector
+        <| matrix

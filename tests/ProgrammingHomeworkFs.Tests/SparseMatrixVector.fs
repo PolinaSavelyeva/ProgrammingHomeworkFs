@@ -215,14 +215,14 @@ module MatrixMultiplication =
               <| fun _ ->
                   let vec = Vector([| Some(0); Some(1) |])
                   let mat = Matrix(array2D [ [ Some(1); Some(1) ]; [ Some(1); Some(1) ] ])
-                  let res = multiplication 0u fPlusInt fMultiInt vec mat
+                  let res = multiplication 0u 0u fPlusInt fMultiInt vec mat
 
                   Expect.equal res.Storage (BinTree.Node(BinTree.Leaf(1), BinTree.Leaf(1))) "MatrixMultiplication expected : Node (Leaf 1, Leaf 1)"
               testCase "MatrixMultiplication empty vector and matrix"
               <| fun _ ->
                   let vec = Vector([||])
                   let mat = Matrix(array2D [])
-                  let res = multiplication 0u fPlusInt fMultiInt vec mat
+                  let res = multiplication 0u 0u fPlusInt fMultiInt vec mat
                   Expect.equal res.Storage BinTree.None "MatrixMultiplication expected : BinTree.None"
               testCase "MatrixMultiplication None association vector and matrix"
               <| fun _ ->
@@ -231,7 +231,7 @@ module MatrixMultiplication =
                   let mat =
                       Matrix(array2D [ [ Option.None; Option.None; Option.None ]; [ Option.None; Option.None; Option.None ]; [ Option.None; Option.None; Option.None ] ])
 
-                  let res = multiplication 0u fPlusInt fMultiInt vec mat
+                  let res = multiplication 0u 0u fPlusInt fMultiInt vec mat
                   Expect.equal res.Storage BinTree.None "MatrixMultiplication expected : BinTree.None"
               testCase "MatrixMultiplication string vector and matrix"
               <| fun _ ->
@@ -253,7 +253,7 @@ module MatrixMultiplication =
                   let mat =
                       Matrix(array2D [ [ Option.None; Some("abcd"); Option.None ]; [ Option.None; Option.None; Some("aa") ]; [ Some("abcsd"); Some("d"); Option.None ] ])
 
-                  let res = multiplication 0u fPlusString fMultiString vec mat
+                  let res = multiplication 0u 0u fPlusString fMultiString vec mat
 
                   Expect.equal
                       res.Storage
@@ -310,7 +310,7 @@ module MatrixMultiplication =
                       | BinTree.None -> true
 
                   let expectedResult = Vector(naiveMulti arrSome arr2dSome)
-                  let actualResult = multiplication 0u fPlusInt fMultiInt vector matrix
+                  let actualResult = multiplication 0u 0u fPlusInt fMultiInt vector matrix
                   let actualResult' = isNoneReduce actualResult.Storage
 
                   Expect.equal

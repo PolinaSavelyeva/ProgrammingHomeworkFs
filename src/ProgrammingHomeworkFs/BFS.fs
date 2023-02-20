@@ -34,7 +34,7 @@ let BFS startVertexList graphMatrix =
         if front.IsEmpty then
             visited
         else
-            let newFront = multiplication 0u fPlus fMulti front graphMatrix
+            let newFront = multiplication 0u 0u fPlus fMulti front graphMatrix
 
             let front = vectorAddition 0u fPlusMask newFront visited
 
