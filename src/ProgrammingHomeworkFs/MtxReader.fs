@@ -22,7 +22,7 @@ type MtxFile(pathToFile: string) =
 
 let toSparseMatrix converter (file: MtxFile) =
 
-    let rec symmetricListFormation (sequence: seq<string>) =
+    let rec listOfSeq (sequence: seq<string>) =
         if Seq.isEmpty sequence then
             []
         else
@@ -32,23 +32,18 @@ let toSparseMatrix converter (file: MtxFile) =
             let weight = converter currentLine
 
             if vertexOne = vertexTwo then
-                (vertexOne, vertexTwo, weight) :: (symmetricListFormation <| Seq.removeAt 0 sequence)
+                (vertexOne, vertexTwo, weight) :: (listOfSeq <| Seq.removeAt 0 sequence)
             else
                 (vertexOne, vertexTwo, weight)
-                :: (vertexTwo, vertexOne, weight) :: (symmetricListFormation <| Seq.removeAt 0 sequence)
+                :: (vertexTwo, vertexOne, weight) :: (listOfSeq <| Seq.removeAt 0 sequence)
 
-    let rec generalListFormation (sequence: seq<string>) =
-        if Seq.isEmpty sequence then
-            []
-        else
-            let currentLine = (Seq.head sequence).Split()
-            let vertexOne = uint currentLine[0] - 1u
-            let vertexTwo = uint currentLine[1] - 1u
-            let weight = converter currentLine
+    let mapping (line: string) =
+        let splitLine = line.Split()
+        (uint splitLine[0] - 1u, uint splitLine[1] - 1u, converter splitLine)
 
-            (vertexOne, vertexTwo, weight) :: (generalListFormation <| Seq.removeAt 0 sequence)
+    let source = Seq.removeAt 0 file.NoCommentsData
 
     if file.IsSymmetric then
-        Matrix(symmetricListFormation <| Seq.removeAt 0 file.NoCommentsData, file.Rows, file.Columns)
+        Matrix(listOfSeq source, file.Rows, file.Columns)
     else
-        Matrix(generalListFormation <| Seq.removeAt 0 file.NoCommentsData, file.Rows, file.Columns)
+        Matrix(Seq.map mapping source |> Seq.toList, file.Rows, file.Columns)
