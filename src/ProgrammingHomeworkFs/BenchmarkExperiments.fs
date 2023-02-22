@@ -29,16 +29,15 @@ type AdditionBenchmark() =
     [<Params(1u, 2u, 3u, 4u)>]
     member val ParallelLevel = 0u with get, set
 
-    // Greater level equals more matrix's sparsity
-    // Level 1 equals dense matrix
-    [<Params(1u, 5u, 10u)>]
-    member val DensityLevel = 0u with get, set
+    // Level 100.0f equals 100% non-empty elements in matrix
+    [<Params(100.0f, 50.0f, 10.0f)>]
+    member val DensityLevel = 0.0f with get, set
 
     [<GlobalSetup>]
     member this.SetUpVectors() =
 
         let initializer n =
-            if n % Converters.toInt this.DensityLevel <> 0 then
+            if n % int (100.0f / this.DensityLevel) <> 0 then
                 Option.None
             else
                 Some(random.Next())
@@ -61,32 +60,32 @@ type MultiplicationBenchmark() =
     let mutable vector = SparseVector.Vector([||])
     let mutable matrix = SparseMatrix.Matrix(array2D [||])
 
-    [<Params(1500u, 3000u)>]
+    [<Params(3000u, 3500u)>]
     member val Length1 = 0u with get, set
 
-    [<Params(2500u)>]
+    [<Params(3000u)>]
     member val Length2 = 0u with get, set
 
     [<Params(1u, 2u, 3u)>]
     member val MultiParallelLevel = 0u with get, set
 
-    [<Params(0u, 1u)>]
+    [<Params(0u)>]
     member val AddParallelLevel = 0u with get, set
 
-    [<Params(1u, 10u)>]
-    member val DensityLevel = 0u with get, set
+    [<Params(90.0f, 5.0f)>]
+    member val DensityLevel = 0.0f with get, set
 
     [<GlobalSetup>]
     member this.SetUpVectorAndMatrix() =
 
         let arrayInitializer n =
-            if n % Converters.toInt this.DensityLevel <> 0 then
+            if n % int (100.0f / this.DensityLevel) <> 0 then
                 Option.None
             else
                 Some(random.Next())
 
         let array2DInitializer n _ =
-            if n % Converters.toInt this.DensityLevel <> 0 then
+            if n % int (100.0f / this.DensityLevel) <> 0 then
                 Option.None
             else
                 Some(random.Next())
