@@ -91,32 +91,28 @@ let multiplication multiLevel addLevel plusOperation (multiOperation: Option<'Va
                 else
                     BinTree.Node(first, second)
             else
-                let tasks =
-                    [| async {
-                           return
-                               vectorAddition
-                               <| addLevel
-                               <| plusOperation
-                               <| Vector(multiTrees (parallelLevel - 1u) left first, vector.Length, vector.SquareLength)
-                               <| Vector(multiTrees (parallelLevel - 1u) right third, vector.Length, vector.SquareLength)
-                       }
-                       async {
-                           return
-                               vectorAddition
-                               <| addLevel
-                               <| plusOperation
-                               <| Vector(multiTrees (parallelLevel - 1u) left second, vector.Length, vector.SquareLength)
-                               <| Vector(multiTrees (parallelLevel - 1u) right fourth, vector.Length, vector.SquareLength)
-                       } |]
+                let multiTasks =
+                    [| async { return Vector(multiTrees (parallelLevel - 1u) left first, vector.Length, vector.SquareLength) }
+                       async { return Vector(multiTrees (parallelLevel - 1u) right third, vector.Length, vector.SquareLength) }
+                       async { return Vector(multiTrees (parallelLevel - 1u) left second, vector.Length, vector.SquareLength) }
+                       async { return Vector(multiTrees (parallelLevel - 1u) right fourth, vector.Length, vector.SquareLength) } |]
 
-                let results = tasks |> Async.Parallel |> Async.RunSynchronously
-                let tree1 = results[0].Storage
-                let tree2 = results[1].Storage
+                let multiResults = multiTasks |> Async.Parallel |> Async.RunSynchronously
 
-                if tree1 = BinTree.None && tree2 = BinTree.None then
+                let leftTree1 = multiResults[0]
+                let leftTree2 = multiResults[1]
+                let rightTree1 = multiResults[2]
+                let rightTree2 = multiResults[3]
+
+                let addTasks =
+                    [| async { return (vectorAddition addLevel plusOperation leftTree1 leftTree2).Storage }; async { return (vectorAddition addLevel plusOperation rightTree1 rightTree2).Storage } |]
+
+                let addResults = addTasks |> Async.Parallel |> Async.RunSynchronously
+
+                if addResults[0] = BinTree.None && addResults[1] = BinTree.None then
                     BinTree.None
                 else
-                    BinTree.Node(tree1, tree2)
+                    BinTree.Node(addResults[0], addResults[1])
 
         | BinTree.Leaf x, QuadTree.Node (first, second, third, fourth) ->
             multiTrees parallelLevel
