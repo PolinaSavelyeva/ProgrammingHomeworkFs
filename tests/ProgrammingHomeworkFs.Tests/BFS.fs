@@ -52,6 +52,7 @@ module MatrixTests =
                   Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. " ]
 
 module BFSTests =
+    open Graph
     open SparseMatrix
     open BreadthFirstSearch
 
@@ -67,10 +68,10 @@ module BFSTests =
                   let tripleList =
                       [ (1u, 3u, Some 3); (1u, 2u, Some 2); (3u, 5u, Some 5); (1u, 4u, Some 9) ]
 
-                  let gMatrix = Matrix(tripleList, length, length)
+                  let graph = Graph(tripleList, length)
                   let startVertexList = [ 1u ]
 
-                  let actualResult = (BFS startVertexList gMatrix).Storage
+                  let actualResult = (BFS startVertexList graph).Storage
 
                   let expectedResult =
                       [| Option.None
@@ -103,9 +104,9 @@ module BFSTests =
 
                   let startVertexList = []
 
-                  let gMatrix = Matrix(tripleList, length, length)
+                  let graph = Graph(tripleList, length)
 
-                  let actualResult = (BFS startVertexList gMatrix).Storage
+                  let actualResult = (BFS startVertexList graph).Storage
                   let expectedResult = BinTree.None
 
                   Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
@@ -120,9 +121,9 @@ module BFSTests =
 
                   let startVertexList = [ 0u; 1u; 2u; 3u ]
 
-                  let gMatrix = Matrix(tripleList, length, length)
+                  let graph = Graph(tripleList, length)
 
-                  let actualResult = (BFS startVertexList gMatrix).Storage
+                  let actualResult = (BFS startVertexList graph).Storage
 
                   let expectedResult =
                       BinTree.Node(BinTree.Node(BinTree.Leaf 0u, BinTree.Leaf 0u), BinTree.Node(BinTree.Leaf 0u, BinTree.Leaf 0u))
@@ -137,9 +138,9 @@ module BFSTests =
                   let tripleList = []
                   let startVertexList = []
 
-                  let gMatrix = Matrix(tripleList, length, length)
+                  let graph = Graph(tripleList, length)
 
-                  let actualResult = (BFS startVertexList gMatrix).Storage
+                  let actualResult = (BFS startVertexList graph).Storage
                   let expectedResult = BinTree.None
 
                   Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
@@ -155,9 +156,9 @@ module BFSTests =
                   let triple = List.maxBy (fun z -> first z + second z) tripleList
                   let length = max (first triple + second triple) (List.max newVertexList) + 1u
 
-                  let graphMatrix = Matrix(tripleList, length, length)
+                  let graph = Graph(tripleList, length)
 
-                  let actualResult = (graphMatrix |> BFS newVertexList).Storage
+                  let actualResult = (graph |> BFS newVertexList).Storage
 
                   let expectedResult =
                       Array.init (toInt length) (fun n ->
@@ -180,9 +181,9 @@ module BFSTests =
                   let triple = List.maxBy (fun z -> first z + second z) tripleList
                   let length = max (first triple + second triple) (List.max newVertexList) + 1u
 
-                  let graphMatrix = Matrix(tripleList, length, length)
+                  let graph = Graph(tripleList, length)
 
-                  let naiveBFS (vertexList: list<uint>) (graphMatrix: Matrix<'Value>) =
+                  let naiveBFS (vertexList: list<uint>) (graph: Graph<'Value>) =
 
                       let rec answerFormation (queue: Queue<uint>) (ans: array<Option<uint>>) (current: uint) =
                           if queue.Count = 0 then
@@ -193,8 +194,8 @@ module BFSTests =
                               for i in 0 .. size - 1 do
                                   let vertex = queue.Dequeue()
 
-                                  for j in 0 .. toInt graphMatrix.Length2 - 1 do
-                                      if graphMatrix[vertex, uint j] <> Option.None then
+                                  for j in 0 .. toInt graph.VerticesCount - 1 do
+                                      if graph.AdjacencyMatrix[vertex, uint j] <> Option.None then
                                           if ans[j] = Option.None then
                                               queue.Enqueue(uint j)
                                               ans[j] <- Some current
@@ -204,7 +205,7 @@ module BFSTests =
                       let queue = Queue(vertexList)
 
                       let ans =
-                          Array.init (toInt graphMatrix.Length1) (fun n ->
+                          Array.init (toInt graph.VerticesCount) (fun n ->
                               if List.contains (uint n) vertexList then
                                   Some 0u
                               else
@@ -212,7 +213,7 @@ module BFSTests =
 
                       answerFormation queue ans 1u
 
-                  let actualResult = (graphMatrix |> BFS newVertexList).Storage
-                  let expectedResult = naiveBFS newVertexList graphMatrix |> toBinTree
+                  let actualResult = (graph |> BFS newVertexList).Storage
+                  let expectedResult = naiveBFS newVertexList graph |> toBinTree
 
                   Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. " ]

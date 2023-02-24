@@ -4,7 +4,7 @@ open SparseMatrix
 
 type MtxFile(pathToFile: string) =
 
-    let data = seq { yield! System.IO.File.ReadLines pathToFile }
+    let data = System.IO.File.ReadLines pathToFile
     let noCommentsData = Seq.skipWhile (fun (n: string) -> n[0] = '%') data
     let firstDataLine = (Seq.head data).Split()
     let afterCommentsLine = (Seq.head noCommentsData).Split()

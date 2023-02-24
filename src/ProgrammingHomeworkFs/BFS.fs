@@ -1,5 +1,6 @@
 module BreadthFirstSearch
 
+open Graph
 open SparseVector
 open MatrixAndVectorOperations
 
@@ -28,13 +29,13 @@ let fPlusVisited number =
 
     f
 
-let BFS startVertexList graphMatrix =
+let BFS startVertexList (graph: Graph<'Value>) =
 
     let rec inner (front: Vector<unit>) visited iterationNumber =
         if front.IsEmpty then
             visited
         else
-            let newFront = multiplication 0u 0u fPlus fMulti front graphMatrix
+            let newFront = multiplication 0u 0u fPlus fMulti front graph.AdjacencyMatrix
 
             let front = vectorAddition 0u fPlusMask newFront visited
 
@@ -42,7 +43,7 @@ let BFS startVertexList graphMatrix =
 
             inner front visited (iterationNumber + 1u)
 
-    let front = Vector(startVertexList, graphMatrix.Length1, ())
-    let visited = Vector(startVertexList, graphMatrix.Length1, 0u)
+    let front = Vector(startVertexList, graph.VerticesCount, ())
+    let visited = Vector(startVertexList, graph.VerticesCount, 0u)
 
     inner front visited 1u

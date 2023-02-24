@@ -1,4 +1,4 @@
-module BenchmarkExperiments
+module BenchmarkOperationsExperiments
 
 open BenchmarkDotNet.Attributes
 open MatrixAndVectorOperations
