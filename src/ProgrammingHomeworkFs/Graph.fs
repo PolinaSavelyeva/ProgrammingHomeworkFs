@@ -23,13 +23,9 @@ type Graph<'Value when 'Value: equality> =
           VerticesCount = verticesCount }
 
     new(mtxFile: MtxFile, converter) =
-        { AdjacencyMatrix = toSparseMatrix converter mtxFile
-          VerticesCount =
-            if mtxFile.Rows <> mtxFile.Columns then
-                failwith
-                    $"Incorrect MatrixMarket file was given.\n
-                    Expected rows : %A{mtxFile.Rows} = columns : %A{mtxFile.Columns}."
-            else
-                mtxFile.Rows }
+        let adjacencyMatrix = toSparseMatrix converter mtxFile
+
+        { AdjacencyMatrix = adjacencyMatrix
+          VerticesCount = Graph(adjacencyMatrix).VerticesCount }
 
     member this.GetEdge(u, v) = this.AdjacencyMatrix[u, v]
