@@ -195,7 +195,7 @@ module BFSTests =
                                   let vertex = queue.Dequeue()
 
                                   for j in 0 .. toInt graph.VerticesCount - 1 do
-                                      if graph.AdjacencyMatrix[vertex, uint j] <> Option.None then
+                                      if graph.GetEdge(vertex, uint j) <> Option.None then
                                           if ans[j] = Option.None then
                                               queue.Enqueue(uint j)
                                               ans[j] <- Some current
