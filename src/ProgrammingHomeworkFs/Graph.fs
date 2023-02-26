@@ -24,8 +24,6 @@ type Graph<'Value when 'Value: equality> =
 
     new(mtxFile: MtxFile, converter) =
         let adjacencyMatrix = toSparseMatrix converter mtxFile
-
-        { AdjacencyMatrix = adjacencyMatrix
-          VerticesCount = Graph(adjacencyMatrix).VerticesCount }
+        Graph(adjacencyMatrix)
 
     member this.GetEdge(u, v) = this.AdjacencyMatrix[u, v]
