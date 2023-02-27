@@ -18,9 +18,9 @@ type Graph<'Value when 'Value: equality> =
             else
                 adjacencyMatrix.Length1 }
 
-    new(tripleList, verticesCount) =
-        { AdjacencyMatrix = Matrix(tripleList, verticesCount, verticesCount)
-          VerticesCount = verticesCount }
+    new(tripleList: list<uint * uint * Option<'Value>>, verticesCount) =
+        let adjacencyMatrix = Matrix(tripleList, verticesCount, verticesCount)
+        Graph(adjacencyMatrix)
 
     new(mtxFile: MtxFile, converter) =
         let adjacencyMatrix = toSparseMatrix converter mtxFile

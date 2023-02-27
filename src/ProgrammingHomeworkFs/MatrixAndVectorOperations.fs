@@ -54,7 +54,7 @@ let vectorAddition level (plusOperation: 'Value1 option -> 'Value2 option -> 'Va
         | BinTree.Leaf z, BinTree.Node (x, y) -> treesAddition parallelLevel (BinTree.Node(BinTree.Leaf z, BinTree.Leaf z)) (BinTree.Node(x, y))
 
     if vector1.Length = vector2.Length then
-        Vector(treesAddition level vector1.Storage vector2.Storage, vector1.Length, vector1.SquareLength)
+        Vector(treesAddition level vector1.Storage vector2.Storage, vector1.Length)
     else
         failwith $"Expected vector1.Length : %A{vector1.Length} = vector2.Length : %A{vector2.Length}"
 
@@ -75,15 +75,15 @@ let multiplication multiLevel addLevel plusOperation (multiOperation: Option<'Va
                 let first =
                     (vectorAddition addLevel
                      <| plusOperation
-                     <| Vector(multiTrees 0u left first, vector.Length, vector.SquareLength)
-                     <| Vector(multiTrees 0u right third, vector.Length, vector.SquareLength))
+                     <| Vector(multiTrees 0u left first, vector.Length)
+                     <| Vector(multiTrees 0u right third, vector.Length))
                         .Storage
 
                 let second =
                     (vectorAddition addLevel
                      <| plusOperation
-                     <| Vector(multiTrees 0u left second, vector.Length, vector.SquareLength)
-                     <| Vector(multiTrees 0u right fourth, vector.Length, vector.SquareLength))
+                     <| Vector(multiTrees 0u left second, vector.Length)
+                     <| Vector(multiTrees 0u right fourth, vector.Length))
                         .Storage
 
                 if first = BinTree.None && second = BinTree.None then
@@ -92,10 +92,10 @@ let multiplication multiLevel addLevel plusOperation (multiOperation: Option<'Va
                     BinTree.Node(first, second)
             else
                 let multiTasks =
-                    [| async { return Vector(multiTrees (parallelLevel - 1u) left first, vector.Length, vector.SquareLength) }
-                       async { return Vector(multiTrees (parallelLevel - 1u) right third, vector.Length, vector.SquareLength) }
-                       async { return Vector(multiTrees (parallelLevel - 1u) left second, vector.Length, vector.SquareLength) }
-                       async { return Vector(multiTrees (parallelLevel - 1u) right fourth, vector.Length, vector.SquareLength) } |]
+                    [| async { return Vector(multiTrees (parallelLevel - 1u) left first, vector.Length) }
+                       async { return Vector(multiTrees (parallelLevel - 1u) right third, vector.Length) }
+                       async { return Vector(multiTrees (parallelLevel - 1u) left second, vector.Length) }
+                       async { return Vector(multiTrees (parallelLevel - 1u) right fourth, vector.Length) } |]
 
                 let multiResults = multiTasks |> Async.Parallel |> Async.RunSynchronously
 
@@ -148,7 +148,7 @@ let multiplication multiLevel addLevel plusOperation (multiOperation: Option<'Va
             else
                 growTree
 
-        Vector(cutTree, vector.Length, vector.SquareLength)
+        Vector(cutTree, vector.Length)
     else
         failwith
             $"Multiplication operation is not defined.\n

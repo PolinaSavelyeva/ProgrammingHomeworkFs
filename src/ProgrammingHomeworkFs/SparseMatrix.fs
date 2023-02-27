@@ -12,17 +12,6 @@ type QuadTree<'Value> =
     | Leaf of 'Value
     | Node of QuadTree<'Value> * QuadTree<'Value> * QuadTree<'Value> * QuadTree<'Value>
 
-let toSquare arr =
-    let length1 = Array2D.length1 arr
-    let length2 = Array2D.length2 arr
-    let log1 = Math.Log(length1, 2)
-    let log2 = Math.Log(length2, 2)
-
-    if ceil log1 = log1 && ceil log2 = log2 && log1 = log2 then
-        uint length1
-    else
-        uint (2.0 ** ceil (max log1 log2))
-
 let toSquareValue length1 length2 =
     let log1 = Math.Log(toDouble length1, 2)
     let log2 = Math.Log(toDouble length2, 2)
@@ -80,7 +69,7 @@ let toQuadTree arr =
             else
                 Node(first, second, third, fourth)
 
-    qTreeFormation (SquareArray(arr, 0u, 0u, toSquare arr))
+    qTreeFormation (SquareArray(arr, 0u, 0u, toSquareValue <| uint (Array2D.length1 arr) <| uint (Array2D.length2 arr)))
 
 
 let toQuadTreeFromCOO (tripleList: list<uint * uint * Option<'Value>>) rows columns =
@@ -136,23 +125,21 @@ type Matrix<'Value when 'Value: equality> =
     val Length2: uint
     val SquareLength: uint
 
-    new(storage, length1, length2, squareLength) =
+    new(storage, length1, length2) =
         { Storage = storage
           Length1 = length1
           Length2 = length2
-          SquareLength = squareLength }
-
-    new(arr: 'Value option[,]) =
-        { Storage = toQuadTree arr
-          Length1 = Array2D.length1 arr |> uint
-          Length2 = Array2D.length2 arr |> uint
-          SquareLength = toSquare arr }
+          SquareLength = toSquareValue length1 length2 }
 
     new(tripleList, rows, columns) =
-        { Storage = toQuadTreeFromCOO tripleList rows columns
-          Length1 = rows
-          Length2 = columns
-          SquareLength = toSquareValue rows columns }
+        let storage = toQuadTreeFromCOO tripleList rows columns
+        Matrix(storage, rows, columns)
+
+    new(arr: 'Value option[,]) =
+        let storage = toQuadTree arr
+        let length1 = Array2D.length1 arr |> uint
+        let length2 = Array2D.length2 arr |> uint
+        Matrix(storage, length1, length2)
 
     member this.Item
         with get (i, j) =

@@ -104,20 +104,19 @@ type Vector<'Value when 'Value: equality> =
     val Length: uint
     val SquareLength: uint
 
-    new(storage, length, squareLength) =
+    new(storage, length) =
         { Storage = storage
           Length = length
-          SquareLength = squareLength }
+          SquareLength = toSquareValue length }
 
     new(arr) =
-        { Storage = toBinTree arr
-          Length = uint arr.Length
-          SquareLength = toSquare arr }
+        let storage = toBinTree arr
+        let length = uint arr.Length
+        Vector(storage, length)
 
     new(list, realLength, weight) =
-        { Storage = toBinTreeFromCOO list realLength weight
-          Length = realLength
-          SquareLength = toSquareValue realLength }
+        let storage = toBinTreeFromCOO list realLength weight
+        Vector(storage, realLength)
 
     member this.Item
         with get i =
