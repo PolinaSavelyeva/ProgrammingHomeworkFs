@@ -225,14 +225,16 @@ var assemblies = [
     "name": "ProgrammingHomeworkFs",
     "classes": [
       { "name": "AlgebraicList", "rp": "ProgrammingHomeworkFs_AlgebraicList.html", "cl": 24, "ucl": 1, "cal": 25, "tl": 49, "ct": "LineCoverage", "mc": "-", "cb": 19, "tb": 20, "lch": [], "bch": [], "hc": [] },
+      { "name": "BenchmarkExperiments", "rp": "ProgrammingHomeworkFs_BenchmarkExperiments.html", "cl": 0, "ucl": 39, "cal": 39, "tl": 105, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 14, "lch": [], "bch": [], "hc": [] },
       { "name": "BreadthFirstSearch", "rp": "ProgrammingHomeworkFs_BreadthFirstSearch.html", "cl": 20, "ucl": 3, "cal": 23, "tl": 48, "ct": "LineCoverage", "mc": "-", "cb": 13, "tb": 18, "lch": [], "bch": [], "hc": [] },
-      { "name": "Converters", "rp": "ProgrammingHomeworkFs_Converters.html", "cl": 4, "ucl": 4, "cal": 8, "tl": 15, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 8, "lch": [], "bch": [], "hc": [] },
-      { "name": "MatrixMultiplication", "rp": "ProgrammingHomeworkFs_MatrixMultiplication.html", "cl": 35, "ucl": 11, "cal": 46, "tl": 79, "ct": "LineCoverage", "mc": "-", "cb": 24, "tb": 28, "lch": [], "bch": [], "hc": [] },
+      { "name": "Converters", "rp": "ProgrammingHomeworkFs_Converters.html", "cl": 7, "ucl": 4, "cal": 11, "tl": 21, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 8, "lch": [], "bch": [], "hc": [] },
+      { "name": "MatrixAndVectorOperations", "rp": "ProgrammingHomeworkFs_MatrixAndVectorOperations.html", "cl": 78, "ucl": 16, "cal": 94, "tl": 156, "ct": "LineCoverage", "mc": "-", "cb": 57, "tb": 66, "lch": [], "bch": [], "hc": [] },
+      { "name": "MtxReader", "rp": "ProgrammingHomeworkFs_MtxReader.html", "cl": 28, "ucl": 2, "cal": 30, "tl": 49, "ct": "LineCoverage", "mc": "-", "cb": 6, "tb": 6, "lch": [], "bch": [], "hc": [] },
       { "name": "OopList", "rp": "ProgrammingHomeworkFs_OopList.html", "cl": 45, "ucl": 40, "cal": 85, "tl": 138, "ct": "LineCoverage", "mc": "-", "cb": 36, "tb": 48, "lch": [], "bch": [], "hc": [] },
-      { "name": "ProgrammingHomeworkFs.Main", "rp": "ProgrammingHomeworkFs_Main.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 6, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "ProgrammingHomeworkFs.Main", "rp": "ProgrammingHomeworkFs_Main.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 11, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "SimpleFunctions", "rp": "ProgrammingHomeworkFs_SimpleFunctions.html", "cl": 32, "ucl": 19, "cal": 51, "tl": 72, "ct": "LineCoverage", "mc": "-", "cb": 31, "tb": 43, "lch": [], "bch": [], "hc": [] },
       { "name": "SparseMatrix", "rp": "ProgrammingHomeworkFs_SparseMatrix.html", "cl": 90, "ucl": 6, "cal": 96, "tl": 182, "ct": "LineCoverage", "mc": "-", "cb": 67, "tb": 68, "lch": [], "bch": [], "hc": [] },
-      { "name": "SparseVector", "rp": "ProgrammingHomeworkFs_SparseVector.html", "cl": 88, "ucl": 4, "cal": 92, "tl": 187, "ct": "LineCoverage", "mc": "-", "cb": 56, "tb": 60, "lch": [], "bch": [], "hc": [] },
+      { "name": "SparseVector", "rp": "ProgrammingHomeworkFs_SparseVector.html", "cl": 68, "ucl": 0, "cal": 68, "tl": 146, "ct": "LineCoverage", "mc": "-", "cb": 34, "tb": 34, "lch": [], "bch": [], "hc": [] },
       { "name": "Tree", "rp": "ProgrammingHomeworkFs_Tree.html", "cl": 9, "ucl": 0, "cal": 9, "tl": 27, "ct": "LineCoverage", "mc": "-", "cb": 2, "tb": 2, "lch": [], "bch": [], "hc": [] },
     ]},
 ];
@@ -247,11 +249,18 @@ var riskHotspotMetrics = [
 
 var riskHotspots = [
   {
-    "assembly": "ProgrammingHomeworkFs", "class": "SparseVector", "reportPath": "ProgrammingHomeworkFs_SparseVector.html", "methodName": "SparseVector/BinTree`1<Value3> SparseVector/treesAddition@158::Invoke(SparseVector/BinTree`1<Value1>,SparseVector/BinTree`1<Value2>)", "methodShortName": "Invoke(...)", "fileIndex": 0, "line": 158,
+    "assembly": "ProgrammingHomeworkFs", "class": "MatrixAndVectorOperations", "reportPath": "ProgrammingHomeworkFs_MatrixAndVectorOperations.html", "methodName": "SparseVector/BinTree`1<Value3> MatrixAndVectorOperations/treesAddition@18::Invoke(System.UInt32,SparseVector/BinTree`1<Value1>,SparseVector/BinTree`1<Value2>)", "methodShortName": "Invoke(...)", "fileIndex": 0, "line": 18,
+    "metrics": [
+      { "value": 16, "exceeded": false },
+      { "value": 5120, "exceeded": true },
+      { "value": 16.67, "exceeded": true },
+    ]},
+  {
+    "assembly": "ProgrammingHomeworkFs", "class": "MatrixAndVectorOperations", "reportPath": "ProgrammingHomeworkFs_MatrixAndVectorOperations.html", "methodName": "SparseVector/BinTree`1<Value3> MatrixAndVectorOperations/multiTrees@64::Invoke(System.UInt32,SparseVector/BinTree`1<Value1>,SparseMatrix/QuadTree`1<Value2>)", "methodShortName": "Invoke(...)", "fileIndex": 0, "line": 64,
     "metrics": [
       { "value": 13, "exceeded": false },
       { "value": 640, "exceeded": true },
-      { "value": 13.67, "exceeded": false },
+      { "value": 13.13, "exceeded": false },
     ]},
   {
     "assembly": "ProgrammingHomeworkFs", "class": "SparseMatrix", "reportPath": "ProgrammingHomeworkFs_SparseMatrix.html", "methodName": "Microsoft.FSharp.Core.FSharpOption`1<a> SparseMatrix/whichElement@162-1T::Invoke(System.UInt32,System.UInt32,System.UInt32,SparseMatrix/QuadTree`1<a>)", "methodShortName": "Invoke(...)", "fileIndex": 0, "line": 163,
@@ -259,6 +268,13 @@ var riskHotspots = [
       { "value": 9, "exceeded": false },
       { "value": 256, "exceeded": true },
       { "value": 9, "exceeded": false },
+    ]},
+  {
+    "assembly": "ProgrammingHomeworkFs", "class": "BenchmarkExperiments", "reportPath": "ProgrammingHomeworkFs_BenchmarkExperiments.html", "methodName": "System.Void BenchmarkExperiments/AdditionBenchmark::SetUpVectors()", "methodShortName": "SetUpVectors()", "fileIndex": 0, "line": 45,
+    "metrics": [
+      { "value": 5, "exceeded": false },
+      { "value": 0, "exceeded": false },
+      { "value": 30, "exceeded": true },
     ]},
   {
     "assembly": "ProgrammingHomeworkFs", "class": "SimpleFunctions", "reportPath": "ProgrammingHomeworkFs_SimpleFunctions.html", "methodName": "a SimpleFunctions::maxMinOfArray(Value[])", "methodShortName": "maxMinOfArray(...)", "fileIndex": 0, "line": 48,
@@ -273,6 +289,13 @@ var riskHotspots = [
       { "value": 5, "exceeded": false },
       { "value": 16, "exceeded": false },
       { "value": 30, "exceeded": true },
+    ]},
+  {
+    "assembly": "ProgrammingHomeworkFs", "class": "BenchmarkExperiments", "reportPath": "ProgrammingHomeworkFs_BenchmarkExperiments.html", "methodName": "Microsoft.FSharp.Core.FSharpOption`1<System.Int32> BenchmarkExperiments::fPlusInt(Microsoft.FSharp.Core.FSharpOption`1<System.Int32>,Microsoft.FSharp.Core.FSharpOption`1<System.Int32>)", "methodShortName": "fPlusInt(...)", "fileIndex": 0, "line": 9,
+    "metrics": [
+      { "value": 4, "exceeded": false },
+      { "value": 4, "exceeded": false },
+      { "value": 20, "exceeded": true },
     ]},
 ];
 

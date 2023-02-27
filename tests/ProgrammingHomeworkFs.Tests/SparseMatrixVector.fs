@@ -2,6 +2,7 @@ module SparseMatrixVectorTests
 
 open Expecto
 open Converters
+open MatrixAndVectorOperations
 
 module SparseVectorTests =
     open SparseVector
@@ -103,7 +104,7 @@ module SparseVectorTests =
                       result
 
                   let expectedResult = Vector(naiveAddition arr1Some arr2Some)
-                  let actualResult = vectorAddition fPlus vector1 vector2
+                  let actualResult = vectorAddition 0u fPlus vector1 vector2
 
                   Expect.equal actualResult.Storage expectedResult.Storage "Undefined result. " ]
 
@@ -114,44 +115,13 @@ module SparseMatrixTests =
     let tests =
         testList
             "SparseMatrix tests"
-            [ testCase "toSquare random array2D 1"
+            [ testCase "toSquareValue 3 and 3"
               <| fun _ ->
-                  let arr =
-                      toSquare (array2D [ [ Some(1); Some(2); Some(3) ]; [ Some(4); Some(5); Some(6) ]; [ Some(7); Some(8); Some(9) ] ])
+                  let length1 = 3u
+                  let length2 = 3u
 
-                  Expect.equal arr 4u "toSquare expected : 4"
-              testCase "toSquare random array2D 2"
-              <| fun _ ->
-                  let arr =
-                      toSquare (
-                          array2D
-                              [ [ Some(1); Some(2); Some(3) ]
-                                [ Some(4); Some(5); Some(6) ]
-                                [ Some(7); Some(8); Some(9) ]
-                                [ Some(1); Some(2); Some(3) ]
-                                [ Some(1); Some(2); Some(3) ]
-                                [ Some(1); Some(2); Some(3) ] ]
-                      )
-
-                  Expect.equal arr 8u "toSquare expected : 8"
-              testCase "toSquare one element array2D"
-              <| fun _ ->
-                  let arr = toSquare (array2D [ [ Some(1) ] ])
-                  Expect.equal arr 1u "toSquare expected : 1"
-              testCase "toSquare random array2D 3"
-              <| fun _ ->
-                  let arr = toSquare (array2D [ [ Some(1) ]; [ Some(1) ] ])
-                  Expect.equal arr 2u "toSquare expected : 2"
-              testCase "toSquare random array2D 4"
-              <| fun _ ->
-                  let arr = toSquare (array2D [ [ Some(1); Some(0) ] ])
-                  Expect.equal arr 2u "toSquare expected : 2"
-              testProperty "toSquare property test array2D"
-              <| fun (arr: int option[,]) ->
-                  Expect.isLessThanOrEqual
-                  <| max (Array2D.length1 arr) (Array2D.length2 arr)
-                  <| toInt (toSquare arr)
-                  <| "toSquare expected less than or equal array length result"
+                  let actualResult = toSquareValue length1 length2
+                  Expect.equal actualResult 4u "toSquareValue expected : 4"
               testCase "toQuadTree random array2D 1"
               <| fun _ ->
                   let tree = toQuadTree (array2D [ [ Some(1) ]; [ Some(1) ] ])
@@ -188,9 +158,8 @@ module SparseMatrixTests =
 
                   actualResult ]
 
-module MatrixMultiplicationTests =
+module MatrixMultiplication =
 
-    open MatrixMultiplication
     open SparseVector
     open SparseMatrix
 
@@ -215,14 +184,14 @@ module MatrixMultiplicationTests =
               <| fun _ ->
                   let vec = Vector([| Some(0); Some(1) |])
                   let mat = Matrix(array2D [ [ Some(1); Some(1) ]; [ Some(1); Some(1) ] ])
-                  let res = multiplication fPlusInt fMultiInt vec mat
+                  let res = multiplication 0u 0u fPlusInt fMultiInt vec mat
 
                   Expect.equal res.Storage (BinTree.Node(BinTree.Leaf(1), BinTree.Leaf(1))) "MatrixMultiplication expected : Node (Leaf 1, Leaf 1)"
               testCase "MatrixMultiplication empty vector and matrix"
               <| fun _ ->
                   let vec = Vector([||])
                   let mat = Matrix(array2D [])
-                  let res = multiplication fPlusInt fMultiInt vec mat
+                  let res = multiplication 0u 0u fPlusInt fMultiInt vec mat
                   Expect.equal res.Storage BinTree.None "MatrixMultiplication expected : BinTree.None"
               testCase "MatrixMultiplication None association vector and matrix"
               <| fun _ ->
@@ -231,7 +200,7 @@ module MatrixMultiplicationTests =
                   let mat =
                       Matrix(array2D [ [ Option.None; Option.None; Option.None ]; [ Option.None; Option.None; Option.None ]; [ Option.None; Option.None; Option.None ] ])
 
-                  let res = multiplication fPlusInt fMultiInt vec mat
+                  let res = multiplication 0u 0u fPlusInt fMultiInt vec mat
                   Expect.equal res.Storage BinTree.None "MatrixMultiplication expected : BinTree.None"
               testCase "MatrixMultiplication string vector and matrix"
               <| fun _ ->
@@ -253,7 +222,7 @@ module MatrixMultiplicationTests =
                   let mat =
                       Matrix(array2D [ [ Option.None; Some("abcd"); Option.None ]; [ Option.None; Option.None; Some("aa") ]; [ Some("abcsd"); Some("d"); Option.None ] ])
 
-                  let res = multiplication fPlusString fMultiString vec mat
+                  let res = multiplication 0u 0u fPlusString fMultiString vec mat
 
                   Expect.equal
                       res.Storage
@@ -310,7 +279,7 @@ module MatrixMultiplicationTests =
                       | BinTree.None -> true
 
                   let expectedResult = Vector(naiveMulti arrSome arr2dSome)
-                  let actualResult = multiplication fPlusInt fMultiInt vector matrix
+                  let actualResult = multiplication 0u 0u fPlusInt fMultiInt vector matrix
                   let actualResult' = isNoneReduce actualResult.Storage
 
                   Expect.equal

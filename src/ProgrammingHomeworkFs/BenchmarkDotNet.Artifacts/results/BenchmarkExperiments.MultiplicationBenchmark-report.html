@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>BenchmarkExperiments.MultiplicationBenchmark-20230222-204226</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.13.4, OS=macOS Monterey 12.5 (21G72) [Darwin 21.6.0]
+Intel Core i5-5350U CPU 1.80GHz (Broadwell), 1 CPU, 4 logical and 2 physical cores
+.NET SDK=6.0.401
+  [Host]     : .NET 6.0.9 (6.0.922.41905), X64 RyuJIT AVX2 DEBUG
+  DefaultJob : .NET 6.0.9 (6.0.922.41905), X64 RyuJIT AVX2
+</code></pre>
+<pre><code></code></pre>
+
+<table>
+<thead><tr><th>          Method</th><th>Length1</th><th>Length2</th><th>MultiParallelLevel</th><th>AddParallelLevel</th><th>DensityLevel</th><th>Mean</th><th>Error</th><th>StdDev</th><th>Median</th><th>Ratio</th><th>RatioSD</th>
+</tr>
+</thead><tbody><tr><td>BaselineMultiplication</td><td>3000</td><td>3000</td><td>1</td><td>0</td><td>5</td><td>644.9 ms</td><td>12.89 ms</td><td>22.91 ms</td><td>641.3 ms</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>ParallelMultiplication</td><td>3000</td><td>3000</td><td>1</td><td>0</td><td>5</td><td>591.6 ms</td><td>11.78 ms</td><td>22.98 ms</td><td>591.0 ms</td><td>0.92</td><td>0.05</td>
+</tr><tr><td>BaselineMultiplication</td><td>3000</td><td>3000</td><td>1</td><td>0</td><td>90</td><td>3,321.6 ms</td><td>64.91 ms</td><td>77.28 ms</td><td>3,305.3 ms</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>ParallelMultiplication</td><td>3000</td><td>3000</td><td>1</td><td>0</td><td>90</td><td>3,147.9 ms</td><td>60.62 ms</td><td>59.53 ms</td><td>3,142.0 ms</td><td>0.95</td><td>0.03</td>
+</tr><tr><td>BaselineMultiplication</td><td>3000</td><td>3000</td><td>2</td><td>0</td><td>5</td><td>649.3 ms</td><td>12.57 ms</td><td>21.68 ms</td><td>643.7 ms</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>ParallelMultiplication</td><td>3000</td><td>3000</td><td>2</td><td>0</td><td>5</td><td>630.3 ms</td><td>22.29 ms</td><td>64.32 ms</td><td>611.2 ms</td><td>0.97</td><td>0.10</td>
+</tr><tr><td>BaselineMultiplication</td><td>3000</td><td>3000</td><td>2</td><td>0</td><td>90</td><td>3,201.2 ms</td><td>54.23 ms</td><td>48.08 ms</td><td>3,199.1 ms</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>ParallelMultiplication</td><td>3000</td><td>3000</td><td>2</td><td>0</td><td>90</td><td>3,467.3 ms</td><td>54.02 ms</td><td>47.89 ms</td><td>3,464.2 ms</td><td>1.08</td><td>0.02</td>
+</tr><tr><td>BaselineMultiplication</td><td>3000</td><td>3000</td><td>3</td><td>0</td><td>5</td><td>645.3 ms</td><td>12.51 ms</td><td>17.94 ms</td><td>646.1 ms</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>ParallelMultiplication</td><td>3000</td><td>3000</td><td>3</td><td>0</td><td>5</td><td>750.4 ms</td><td>18.86 ms</td><td>55.31 ms</td><td>743.2 ms</td><td>1.17</td><td>0.09</td>
+</tr><tr><td>BaselineMultiplication</td><td>3000</td><td>3000</td><td>3</td><td>0</td><td>90</td><td>4,435.4 ms</td><td>433.58 ms</td><td>1,278.41 ms</td><td>3,504.3 ms</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>ParallelMultiplication</td><td>3000</td><td>3000</td><td>3</td><td>0</td><td>90</td><td>5,374.3 ms</td><td>323.47 ms</td><td>829.17 ms</td><td>5,811.9 ms</td><td>1.23</td><td>0.46</td>
+</tr><tr><td>BaselineMultiplication</td><td>3500</td><td>3000</td><td>1</td><td>0</td><td>5</td><td>753.9 ms</td><td>15.03 ms</td><td>22.95 ms</td><td>747.0 ms</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>ParallelMultiplication</td><td>3500</td><td>3000</td><td>1</td><td>0</td><td>5</td><td>677.7 ms</td><td>13.26 ms</td><td>19.43 ms</td><td>677.7 ms</td><td>0.90</td><td>0.03</td>
+</tr><tr><td>BaselineMultiplication</td><td>3500</td><td>3000</td><td>1</td><td>0</td><td>90</td><td>3,855.2 ms</td><td>48.57 ms</td><td>45.43 ms</td><td>3,848.1 ms</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>ParallelMultiplication</td><td>3500</td><td>3000</td><td>1</td><td>0</td><td>90</td><td>3,485.8 ms</td><td>68.50 ms</td><td>81.55 ms</td><td>3,489.8 ms</td><td>0.91</td><td>0.02</td>
+</tr><tr><td>BaselineMultiplication</td><td>3500</td><td>3000</td><td>2</td><td>0</td><td>5</td><td>750.4 ms</td><td>14.79 ms</td><td>27.05 ms</td><td>747.4 ms</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>ParallelMultiplication</td><td>3500</td><td>3000</td><td>2</td><td>0</td><td>5</td><td>693.8 ms</td><td>13.82 ms</td><td>24.57 ms</td><td>693.9 ms</td><td>0.93</td><td>0.05</td>
+</tr><tr><td>BaselineMultiplication</td><td>3500</td><td>3000</td><td>2</td><td>0</td><td>90</td><td>3,818.6 ms</td><td>64.80 ms</td><td>60.61 ms</td><td>3,820.8 ms</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>ParallelMultiplication</td><td>3500</td><td>3000</td><td>2</td><td>0</td><td>90</td><td>4,279.1 ms</td><td>62.83 ms</td><td>58.77 ms</td><td>4,291.9 ms</td><td>1.12</td><td>0.02</td>
+</tr><tr><td>BaselineMultiplication</td><td>3500</td><td>3000</td><td>3</td><td>0</td><td>5</td><td>746.1 ms</td><td>14.72 ms</td><td>22.48 ms</td><td>741.8 ms</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>ParallelMultiplication</td><td>3500</td><td>3000</td><td>3</td><td>0</td><td>5</td><td>962.6 ms</td><td>26.70 ms</td><td>78.71 ms</td><td>946.6 ms</td><td>1.31</td><td>0.11</td>
+</tr><tr><td>BaselineMultiplication</td><td>3500</td><td>3000</td><td>3</td><td>0</td><td>90</td><td>3,834.6 ms</td><td>71.40 ms</td><td>66.79 ms</td><td>3,811.9 ms</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>ParallelMultiplication</td><td>3500</td><td>3000</td><td>3</td><td>0</td><td>90</td><td>7,365.0 ms</td><td>302.08 ms</td><td>890.69 ms</td><td>7,727.4 ms</td><td>1.64</td><td>0.29</td>
+</tr></tbody></table>
+</body>
+</html>

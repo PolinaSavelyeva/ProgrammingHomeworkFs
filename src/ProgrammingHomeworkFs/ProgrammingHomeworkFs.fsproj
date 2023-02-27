@@ -23,11 +23,15 @@
         <Compile Include="Tree.fs" />
         <Compile Include="SparseVector.fs" />
         <Compile Include="SparseMatrix.fs" />
-        <Compile Include="MatrixMultiplication.fs" />
+        <Compile Include="MatrixAndVectorOperations.fs" />
+        <Compile Include="MtxReader.fs" />
+        <Compile Include="Graph.fs" />
         <Compile Include="BFS.fs" />
+        <Compile Include="BenchmarkOperationsExperiments.fs" />
         <Compile Include="Main.fs" />
     </ItemGroup>
     <ItemGroup>
+      <PackageReference Include="BenchmarkDotNet" Version="0.13.4" />
       <PackageReference Include="Expecto.FsCheck" Version="9.0.4" />
     </ItemGroup>
     <Import Project="..\..\.paket\Paket.Restore.targets" />

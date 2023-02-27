@@ -99,89 +99,45 @@ let toBinTreeFromCOO list realLength weight =
         binTreeFormation list squareLength
 
 type Vector<'Value when 'Value: equality> =
-    struct
 
-        val Storage: BinTree<'Value>
-        val Length: uint
-        val SquareLength: uint
+    val Storage: BinTree<'Value>
+    val Length: uint
+    val SquareLength: uint
 
-        new(storage, length, squareLength) =
-            { Storage = storage
-              Length = length
-              SquareLength = squareLength }
+    new(storage, length) =
+        { Storage = storage
+          Length = length
+          SquareLength = toSquareValue length }
 
-        new(arr) =
-            { Storage = toBinTree arr
-              Length = uint arr.Length
-              SquareLength = toSquare arr }
+    new(arr) =
+        let storage = toBinTree arr
+        let length = uint arr.Length
+        Vector(storage, length)
 
-        new(list, realLength, weight) =
-            { Storage = toBinTreeFromCOO list realLength weight
-              Length = realLength
-              SquareLength = toSquareValue realLength }
+    new(list, realLength, weight) =
+        let storage = toBinTreeFromCOO list realLength weight
+        Vector(storage, realLength)
 
-        member this.Item
-            with get i =
-                let takeElementOfVector i (vector: Vector<'Value>) =
-                    let rec whichElement i size tree =
-                        match tree with
-                        | BinTree.Leaf x -> Some(x)
-                        | BinTree.None -> Option.None
-                        | BinTree.Node (left, right) ->
-                            let n = size / 2u
+    member this.Item
+        with get i =
+            let takeElementOfVector i (vector: Vector<'Value>) =
+                let rec whichElement i size tree =
+                    match tree with
+                    | BinTree.Leaf x -> Some(x)
+                    | BinTree.None -> Option.None
+                    | BinTree.Node (left, right) ->
+                        let n = size / 2u
 
-                            if i < n then
-                                whichElement i n left
-                            else
-                                whichElement (i - n) n right
+                        if i < n then
+                            whichElement i n left
+                        else
+                            whichElement (i - n) n right
 
-                    if i < vector.Length then
-                        whichElement i vector.SquareLength vector.Storage
-                    else
-                        failwith "Index out of the range. Error in -takeElementOfVector- function"
+                if i < vector.Length then
+                    whichElement i vector.SquareLength vector.Storage
+                else
+                    failwith "Index out of the range. Error in -takeElementOfVector- function"
 
-                takeElementOfVector i this
+            takeElementOfVector i this
 
-        member this.IsEmpty = this.Storage = BinTree.None
-    end
-
-let vectorAddition (plusOperation: 'Value1 option -> 'Value2 option -> 'Value3 option) (vector1: Vector<'Value1>) (vector2: Vector<'Value2>) : Vector<'Value3> =
-
-    let f x y =
-        let z = plusOperation x y
-
-        match z with
-        | Option.None -> BinTree.None
-        | Some z -> BinTree.Leaf z
-
-    let rec treesAddition tree1 tree2 =
-        match tree1, tree2 with
-        | BinTree.Leaf x, BinTree.Leaf y -> f (Some x) (Some y)
-
-        | BinTree.None, x ->
-            match x with
-            | Leaf a -> f Option.None (Some a)
-            | BinTree.None -> BinTree.None
-            | BinTree.Node (a, b) -> treesAddition (BinTree.Node(BinTree.None, BinTree.None)) (BinTree.Node(a, b))
-
-        | x, BinTree.None ->
-            match x with
-            | Leaf a -> f (Some a) Option.None
-            | BinTree.None -> BinTree.None
-            | BinTree.Node (a, b) -> treesAddition (BinTree.Node(a, b)) (BinTree.Node(BinTree.None, BinTree.None))
-
-        | BinTree.Node (x, y), BinTree.Node (z, w) ->
-            let left = treesAddition x z
-            let right = treesAddition y w
-
-            if left = BinTree.None && right = BinTree.None then
-                BinTree.None
-            else
-                BinTree.Node(left, right)
-        | BinTree.Node (x, y), BinTree.Leaf z -> treesAddition <| BinTree.Node(x, y) <| BinTree.Node(BinTree.Leaf z, BinTree.Leaf z)
-        | BinTree.Leaf z, BinTree.Node (x, y) -> treesAddition <| BinTree.Node(BinTree.Leaf z, BinTree.Leaf z) <| BinTree.Node(x, y)
-
-    if vector1.Length = vector2.Length then
-        Vector(treesAddition vector1.Storage vector2.Storage, vector1.Length, vector1.SquareLength)
-    else
-        failwith $"Expected vector1.Length : %A{vector1.Length} = vector2.Length : %A{vector2.Length}"
+    member this.IsEmpty = this.Storage = BinTree.None
