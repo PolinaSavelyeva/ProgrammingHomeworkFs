@@ -1,5 +1,5 @@
 # ProgrammingHomeworkFs
-
+SPBU's F# course project
 
 
 ---
@@ -11,13 +11,6 @@ GitHub Actions |
 :---: |
 [![GitHub Actions](https://github.com/PolinaSavelyeva/ProgrammingHomeworkFs/workflows/Build%20master/badge.svg)](https://github.com/PolinaSavelyeva/ProgrammingHomeworkFs/actions?query=branch%3Amaster) |
 [![Build History](https://buildstats.info/github/chart/PolinaSavelyeva/ProgrammingHomeworkFs)](https://github.com/PolinaSavelyeva/ProgrammingHomeworkFs/actions?query=branch%3Amaster) |
-
-## NuGet
-
-Package | Stable | Prerelease
---- | --- | ---
-ProgrammingHomeworkFs | [![NuGet Badge](https://buildstats.info/nuget/ProgrammingHomeworkFs)](https://www.nuget.org/packages/ProgrammingHomeworkFs/) | [![NuGet Badge](https://buildstats.info/nuget/ProgrammingHomeworkFs?includePreReleases=true)](https://www.nuget.org/packages/ProgrammingHomeworkFs/)
-
 
 ---
 
