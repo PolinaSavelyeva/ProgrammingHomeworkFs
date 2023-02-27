@@ -115,44 +115,13 @@ module SparseMatrixTests =
     let tests =
         testList
             "SparseMatrix tests"
-            [ testCase "toSquare random array2D 1"
+            [ testCase "toSquareValue 3 and 3"
               <| fun _ ->
-                  let arr =
-                      toSquare (array2D [ [ Some(1); Some(2); Some(3) ]; [ Some(4); Some(5); Some(6) ]; [ Some(7); Some(8); Some(9) ] ])
+                  let length1 = 3u
+                  let length2 = 3u
 
-                  Expect.equal arr 4u "toSquare expected : 4"
-              testCase "toSquare random array2D 2"
-              <| fun _ ->
-                  let arr =
-                      toSquare (
-                          array2D
-                              [ [ Some(1); Some(2); Some(3) ]
-                                [ Some(4); Some(5); Some(6) ]
-                                [ Some(7); Some(8); Some(9) ]
-                                [ Some(1); Some(2); Some(3) ]
-                                [ Some(1); Some(2); Some(3) ]
-                                [ Some(1); Some(2); Some(3) ] ]
-                      )
-
-                  Expect.equal arr 8u "toSquare expected : 8"
-              testCase "toSquare one element array2D"
-              <| fun _ ->
-                  let arr = toSquare (array2D [ [ Some(1) ] ])
-                  Expect.equal arr 1u "toSquare expected : 1"
-              testCase "toSquare random array2D 3"
-              <| fun _ ->
-                  let arr = toSquare (array2D [ [ Some(1) ]; [ Some(1) ] ])
-                  Expect.equal arr 2u "toSquare expected : 2"
-              testCase "toSquare random array2D 4"
-              <| fun _ ->
-                  let arr = toSquare (array2D [ [ Some(1); Some(0) ] ])
-                  Expect.equal arr 2u "toSquare expected : 2"
-              testProperty "toSquare property test array2D"
-              <| fun (arr: int option[,]) ->
-                  Expect.isLessThanOrEqual
-                  <| max (Array2D.length1 arr) (Array2D.length2 arr)
-                  <| toInt (toSquare arr)
-                  <| "toSquare expected less than or equal array length result"
+                  let actualResult = toSquareValue length1 length2
+                  Expect.equal actualResult 4u "toSquareValue expected : 4"
               testCase "toQuadTree random array2D 1"
               <| fun _ ->
                   let tree = toQuadTree (array2D [ [ Some(1) ]; [ Some(1) ] ])
