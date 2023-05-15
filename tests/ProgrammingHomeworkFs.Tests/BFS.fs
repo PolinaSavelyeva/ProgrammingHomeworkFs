@@ -71,7 +71,7 @@ module BFSTests =
                   let graph = Graph(tripleList, length)
                   let startVertexList = [ 1u ]
 
-                  let actualResult = (BFS startVertexList graph).Storage
+                  let actualResult = (BFS 0u 0u 0u startVertexList graph).Storage
 
                   let expectedResult =
                       [| Option.None
@@ -106,7 +106,7 @@ module BFSTests =
 
                   let graph = Graph(tripleList, length)
 
-                  let actualResult = (BFS startVertexList graph).Storage
+                  let actualResult = (BFS 0u 0u 0u startVertexList graph).Storage
                   let expectedResult = BinTree.None
 
                   Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
@@ -123,7 +123,7 @@ module BFSTests =
 
                   let graph = Graph(tripleList, length)
 
-                  let actualResult = (BFS startVertexList graph).Storage
+                  let actualResult = (BFS 0u 0u 0u startVertexList graph).Storage
 
                   let expectedResult =
                       BinTree.Node(BinTree.Node(BinTree.Leaf 0u, BinTree.Leaf 0u), BinTree.Node(BinTree.Leaf 0u, BinTree.Leaf 0u))
@@ -140,7 +140,7 @@ module BFSTests =
 
                   let graph = Graph(tripleList, length)
 
-                  let actualResult = (BFS startVertexList graph).Storage
+                  let actualResult = (BFS 0u 0u 0u startVertexList graph).Storage
                   let expectedResult = BinTree.None
 
                   Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
@@ -158,7 +158,7 @@ module BFSTests =
 
                   let graph = Graph(tripleList, length)
 
-                  let actualResult = (graph |> BFS newVertexList).Storage
+                  let actualResult = (graph |> BFS 0u 0u 0u newVertexList).Storage
 
                   let expectedResult =
                       Array.init (toInt length) (fun n ->
@@ -213,7 +213,7 @@ module BFSTests =
 
                       answerFormation queue ans 1u
 
-                  let actualResult = (graph |> BFS newVertexList).Storage
+                  let actualResult = (graph |> BFS 0u 0u 0u newVertexList).Storage
                   let expectedResult = naiveBFS newVertexList graph |> toBinTree
 
                   Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. " ]

@@ -21,6 +21,14 @@
         <Compile Include="AlgebraicList.fs" />
         <Compile Include="OopList.fs" />
         <Compile Include="Tree.fs" />
+        <Content Include="Graphs\5489-5489-1.mtx" />
+        <Content Include="Graphs\4410-4410-1.mtx" />
+        <Content Include="Graphs\3363-3363-1.mtx" />
+        <Content Include="Graphs\2003-2003-2.mtx" />
+        <Content Include="Graphs\1000-1000-2.mtx" />
+        <Content Include="Graphs\531-531-2.mtx" />
+        <Content Include="Graphs\132-132-2.mtx" />
+        <Content Include="Graphs\coAuthorsCiteseer.mtx" />
         <Compile Include="SparseVector.fs" />
         <Compile Include="SparseMatrix.fs" />
         <Compile Include="MatrixAndVectorOperations.fs" />

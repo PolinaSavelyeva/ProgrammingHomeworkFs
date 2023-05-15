@@ -22,8 +22,8 @@ type Graph<'Value when 'Value: equality> =
         let adjacencyMatrix = Matrix(tripleList, verticesCount, verticesCount)
         Graph(adjacencyMatrix)
 
-    new(mtxFile: MtxFile, converter) =
-        let adjacencyMatrix = toSparseMatrix converter mtxFile
+    new(mtxPath: string, converter) =
+        let adjacencyMatrix = toSparseMatrix converter (MtxFile mtxPath)
         Graph(adjacencyMatrix)
 
     member this.GetEdge(u, v) = this.AdjacencyMatrix[u, v]
