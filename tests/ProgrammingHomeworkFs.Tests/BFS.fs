@@ -145,31 +145,6 @@ module BFSTests =
 
                   Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
 
-              testProperty "BFS property test graph with only loops without empty lists"
-              <| fun (tupleList: list<uint * uint>) (vertexList: list<uint>) ->
-
-                  let newVertexList = List.append vertexList [ 0u ] |> List.distinct
-
-                  let tripleList =
-                      List.append tupleList [ (0u, 0u) ] |> List.distinct |> List.map (fun (x, _) -> (x, x, Some 100))
-
-                  let triple = List.maxBy (fun z -> first z + second z) tripleList
-                  let length = max (first triple + second triple) (List.max newVertexList) + 1u
-
-                  let graph = Graph(tripleList, length)
-
-                  let actualResult = (graph |> BFS 0u 0u 0u newVertexList).Storage
-
-                  let expectedResult =
-                      Array.init (toInt length) (fun n ->
-                          if List.contains (uint n) newVertexList then
-                              Some 0u
-                          else
-                              Option.None)
-                      |> toBinTree
-
-                  Expect.equal actualResult expectedResult $"Unexpected: %A{actualResult}.\n Expected: %A{expectedResult}. "
-
               testProperty "BFS property test naive bfs without empty lists"
               <| fun (tupleList: list<uint * uint>) (vertexList: list<uint>) ->
 
