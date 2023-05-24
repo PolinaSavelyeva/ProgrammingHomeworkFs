@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>BenchmarkOperationsExperiments.BFSBenchmark-20230518-203236</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.13.4, OS=Windows 11 (10.0.22621.1702)
+AMD Ryzen 5 5600X, 1 CPU, 12 logical and 6 physical cores
+.NET SDK=6.0.408
+  [Host]     : .NET 6.0.16 (6.0.1623.17311), X64 RyuJIT AVX2 DEBUG
+  DefaultJob : .NET 6.0.16 (6.0.1623.17311), X64 RyuJIT AVX2
+</code></pre>
+<pre><code></code></pre>
+
+<table>
+<thead><tr><th>Method</th><th>MultiParallelLevel</th><th>AddMultiParallelLevel</th><th>AddParallelLevel</th><th> Mean</th><th>Error</th><th>StdDev</th><th>Median</th>
+</tr>
+</thead><tbody><tr><td>BFS5000</td><td>0</td><td>0</td><td>0</td><td>262.16 ms</td><td>2.347 ms</td><td>2.196 ms</td><td>262.77 ms</td>
+</tr><tr><td>BFS5000</td><td>0</td><td>0</td><td>1</td><td>267.91 ms</td><td>0.641 ms</td><td>0.568 ms</td><td>267.72 ms</td>
+</tr><tr><td>BFS5000</td><td>0</td><td>0</td><td>2</td><td>269.79 ms</td><td>1.531 ms</td><td>1.432 ms</td><td>270.07 ms</td>
+</tr><tr><td>BFS5000</td><td>0</td><td>0</td><td>3</td><td>269.66 ms</td><td>0.858 ms</td><td>0.760 ms</td><td>269.71 ms</td>
+</tr><tr><td>BFS5000</td><td>0</td><td>0</td><td>4</td><td>268.04 ms</td><td>1.413 ms</td><td>1.322 ms</td><td>267.79 ms</td>
+</tr><tr><td>BFS5000</td><td>0</td><td>1</td><td>0</td><td>1,870.52 ms</td><td>23.127 ms</td><td>21.633 ms</td><td>1,867.76 ms</td>
+</tr><tr><td>BFS5000</td><td>0</td><td>1</td><td>1</td><td>1,899.29 ms</td><td>9.790 ms</td><td>9.158 ms</td><td>1,901.63 ms</td>
+</tr><tr><td>BFS5000</td><td>0</td><td>1</td><td>2</td><td>1,871.83 ms</td><td>10.177 ms</td><td>9.519 ms</td><td>1,869.96 ms</td>
+</tr><tr><td>BFS5000</td><td>0</td><td>1</td><td>3</td><td>1,893.03 ms</td><td>15.964 ms</td><td>14.151 ms</td><td>1,893.55 ms</td>
+</tr><tr><td>BFS5000</td><td>0</td><td>1</td><td>4</td><td>1,882.46 ms</td><td>17.916 ms</td><td>16.759 ms</td><td>1,888.01 ms</td>
+</tr><tr><td>BFS5000</td><td>0</td><td>2</td><td>0</td><td>2,769.62 ms</td><td>7.095 ms</td><td>6.636 ms</td><td>2,769.20 ms</td>
+</tr><tr><td>BFS5000</td><td>0</td><td>2</td><td>1</td><td>2,786.25 ms</td><td>6.705 ms</td><td>5.944 ms</td><td>2,787.64 ms</td>
+</tr><tr><td>BFS5000</td><td>0</td><td>2</td><td>2</td><td>2,761.45 ms</td><td>9.955 ms</td><td>8.825 ms</td><td>2,760.30 ms</td>
+</tr><tr><td>BFS5000</td><td>0</td><td>2</td><td>3</td><td>2,764.76 ms</td><td>19.353 ms</td><td>18.103 ms</td><td>2,764.28 ms</td>
+</tr><tr><td>BFS5000</td><td>0</td><td>2</td><td>4</td><td>2,771.94 ms</td><td>12.087 ms</td><td>11.306 ms</td><td>2,776.91 ms</td>
+</tr><tr><td>BFS5000</td><td>1</td><td>0</td><td>0</td><td>217.52 ms</td><td>1.799 ms</td><td>1.682 ms</td><td>217.39 ms</td>
+</tr><tr><td>BFS5000</td><td>1</td><td>0</td><td>1</td><td>217.32 ms</td><td>0.966 ms</td><td>0.904 ms</td><td>217.24 ms</td>
+</tr><tr><td>BFS5000</td><td>1</td><td>0</td><td>2</td><td>216.01 ms</td><td>0.901 ms</td><td>0.843 ms</td><td>216.09 ms</td>
+</tr><tr><td>BFS5000</td><td>1</td><td>0</td><td>3</td><td>216.61 ms</td><td>0.942 ms</td><td>0.881 ms</td><td>216.49 ms</td>
+</tr><tr><td>BFS5000</td><td>1</td><td>0</td><td>4</td><td>217.04 ms</td><td>1.585 ms</td><td>1.483 ms</td><td>217.16 ms</td>
+</tr><tr><td>BFS5000</td><td>1</td><td>1</td><td>0</td><td>1,229.51 ms</td><td>15.757 ms</td><td>13.968 ms</td><td>1,232.06 ms</td>
+</tr><tr><td>BFS5000</td><td>1</td><td>1</td><td>1</td><td>1,273.86 ms</td><td>21.951 ms</td><td>20.533 ms</td><td>1,264.24 ms</td>
+</tr><tr><td>BFS5000</td><td>1</td><td>1</td><td>2</td><td>1,250.09 ms</td><td>11.180 ms</td><td>9.335 ms</td><td>1,249.57 ms</td>
+</tr><tr><td>BFS5000</td><td>1</td><td>1</td><td>3</td><td>1,258.25 ms</td><td>8.164 ms</td><td>7.237 ms</td><td>1,258.22 ms</td>
+</tr><tr><td>BFS5000</td><td>1</td><td>1</td><td>4</td><td>1,250.26 ms</td><td>18.123 ms</td><td>16.952 ms</td><td>1,251.78 ms</td>
+</tr><tr><td>BFS5000</td><td>1</td><td>2</td><td>0</td><td>2,203.00 ms</td><td>10.172 ms</td><td>9.515 ms</td><td>2,202.55 ms</td>
+</tr><tr><td>BFS5000</td><td>1</td><td>2</td><td>1</td><td>2,207.94 ms</td><td>18.318 ms</td><td>15.296 ms</td><td>2,201.91 ms</td>
+</tr><tr><td>BFS5000</td><td>1</td><td>2</td><td>2</td><td>2,182.82 ms</td><td>9.912 ms</td><td>7.739 ms</td><td>2,185.33 ms</td>
+</tr><tr><td>BFS5000</td><td>1</td><td>2</td><td>3</td><td>2,204.99 ms</td><td>9.725 ms</td><td>8.121 ms</td><td>2,205.38 ms</td>
+</tr><tr><td>BFS5000</td><td>1</td><td>2</td><td>4</td><td>2,194.89 ms</td><td>10.729 ms</td><td>10.036 ms</td><td>2,195.37 ms</td>
+</tr><tr><td>BFS5000</td><td>2</td><td>0</td><td>0</td><td>123.72 ms</td><td>0.685 ms</td><td>0.607 ms</td><td>123.78 ms</td>
+</tr><tr><td>BFS5000</td><td>2</td><td>0</td><td>1</td><td>122.89 ms</td><td>0.744 ms</td><td>0.696 ms</td><td>122.89 ms</td>
+</tr><tr><td>BFS5000</td><td>2</td><td>0</td><td>2</td><td>120.49 ms</td><td>0.887 ms</td><td>0.830 ms</td><td>120.38 ms</td>
+</tr><tr><td>BFS5000</td><td>2</td><td>0</td><td>3</td><td>120.24 ms</td><td>0.654 ms</td><td>0.612 ms</td><td>120.22 ms</td>
+</tr><tr><td>BFS5000</td><td>2</td><td>0</td><td>4</td><td>120.48 ms</td><td>0.815 ms</td><td>0.722 ms</td><td>120.43 ms</td>
+</tr><tr><td>BFS5000</td><td>2</td><td>1</td><td>0</td><td>616.25 ms</td><td>7.386 ms</td><td>6.548 ms</td><td>614.31 ms</td>
+</tr><tr><td>BFS5000</td><td>2</td><td>1</td><td>1</td><td>624.05 ms</td><td>11.149 ms</td><td>10.428 ms</td><td>622.67 ms</td>
+</tr><tr><td>BFS5000</td><td>2</td><td>1</td><td>2</td><td>619.50 ms</td><td>8.556 ms</td><td>7.584 ms</td><td>619.50 ms</td>
+</tr><tr><td>BFS5000</td><td>2</td><td>1</td><td>3</td><td>622.07 ms</td><td>7.810 ms</td><td>6.521 ms</td><td>624.50 ms</td>
+</tr><tr><td>BFS5000</td><td>2</td><td>1</td><td>4</td><td>620.13 ms</td><td>11.147 ms</td><td>10.427 ms</td><td>618.02 ms</td>
+</tr><tr><td>BFS5000</td><td>2</td><td>2</td><td>0</td><td>1,093.32 ms</td><td>20.489 ms</td><td>35.886 ms</td><td>1,083.95 ms</td>
+</tr><tr><td>BFS5000</td><td>2</td><td>2</td><td>1</td><td>1,098.23 ms</td><td>18.920 ms</td><td>29.456 ms</td><td>1,100.58 ms</td>
+</tr><tr><td>BFS5000</td><td>2</td><td>2</td><td>2</td><td>1,089.87 ms</td><td>21.781 ms</td><td>41.440 ms</td><td>1,069.70 ms</td>
+</tr><tr><td>BFS5000</td><td>2</td><td>2</td><td>3</td><td>1,096.93 ms</td><td>21.534 ms</td><td>39.915 ms</td><td>1,091.02 ms</td>
+</tr><tr><td>BFS5000</td><td>2</td><td>2</td><td>4</td><td>1,091.78 ms</td><td>21.615 ms</td><td>40.599 ms</td><td>1,087.94 ms</td>
+</tr><tr><td>BFS5000</td><td>3</td><td>0</td><td>0</td><td>99.07 ms</td><td>1.952 ms</td><td>4.714 ms</td><td>97.99 ms</td>
+</tr><tr><td>BFS5000</td><td>3</td><td>0</td><td>1</td><td>100.97 ms</td><td>2.133 ms</td><td>6.255 ms</td><td>99.01 ms</td>
+</tr><tr><td>BFS5000</td><td>3</td><td>0</td><td>2</td><td>99.46 ms</td><td>1.919 ms</td><td>5.221 ms</td><td>97.90 ms</td>
+</tr><tr><td>BFS5000</td><td>3</td><td>0</td><td>3</td><td>99.26 ms</td><td>2.113 ms</td><td>6.129 ms</td><td>98.86 ms</td>
+</tr><tr><td>BFS5000</td><td>3</td><td>0</td><td>4</td><td>102.22 ms</td><td>1.618 ms</td><td>1.434 ms</td><td>101.97 ms</td>
+</tr><tr><td>BFS5000</td><td>3</td><td>1</td><td>0</td><td>457.87 ms</td><td>9.116 ms</td><td>15.965 ms</td><td>458.30 ms</td>
+</tr><tr><td>BFS5000</td><td>3</td><td>1</td><td>1</td><td>453.59 ms</td><td>8.246 ms</td><td>14.443 ms</td><td>454.63 ms</td>
+</tr><tr><td>BFS5000</td><td>3</td><td>1</td><td>2</td><td>457.90 ms</td><td>9.153 ms</td><td>19.506 ms</td><td>454.95 ms</td>
+</tr><tr><td>BFS5000</td><td>3</td><td>1</td><td>3</td><td>446.80 ms</td><td>8.787 ms</td><td>13.419 ms</td><td>447.26 ms</td>
+</tr><tr><td>BFS5000</td><td>3</td><td>1</td><td>4</td><td>461.73 ms</td><td>9.181 ms</td><td>17.017 ms</td><td>462.47 ms</td>
+</tr><tr><td>BFS5000</td><td>3</td><td>2</td><td>0</td><td>764.10 ms</td><td>15.255 ms</td><td>28.652 ms</td><td>760.46 ms</td>
+</tr><tr><td>BFS5000</td><td>3</td><td>2</td><td>1</td><td>742.16 ms</td><td>12.802 ms</td><td>11.349 ms</td><td>740.57 ms</td>
+</tr><tr><td>BFS5000</td><td>3</td><td>2</td><td>2</td><td>748.94 ms</td><td>14.188 ms</td><td>14.570 ms</td><td>748.43 ms</td>
+</tr><tr><td>BFS5000</td><td>3</td><td>2</td><td>3</td><td>741.14 ms</td><td>14.042 ms</td><td>13.135 ms</td><td>741.84 ms</td>
+</tr><tr><td>BFS5000</td><td>3</td><td>2</td><td>4</td><td>765.47 ms</td><td>15.213 ms</td><td>31.416 ms</td><td>763.63 ms</td>
+</tr><tr><td>BFS5000</td><td>4</td><td>0</td><td>0</td><td>111.89 ms</td><td>5.827 ms</td><td>16.436 ms</td><td>104.73 ms</td>
+</tr><tr><td>BFS5000</td><td>4</td><td>0</td><td>1</td><td>107.82 ms</td><td>4.225 ms</td><td>11.638 ms</td><td>104.64 ms</td>
+</tr><tr><td>BFS5000</td><td>4</td><td>0</td><td>2</td><td>117.84 ms</td><td>8.094 ms</td><td>22.829 ms</td><td>109.43 ms</td>
+</tr><tr><td>BFS5000</td><td>4</td><td>0</td><td>3</td><td>134.79 ms</td><td>14.159 ms</td><td>41.747 ms</td><td>121.28 ms</td>
+</tr><tr><td>BFS5000</td><td>4</td><td>0</td><td>4</td><td>138.71 ms</td><td>16.374 ms</td><td>48.023 ms</td><td>128.03 ms</td>
+</tr><tr><td>BFS5000</td><td>4</td><td>1</td><td>0</td><td>468.07 ms</td><td>9.136 ms</td><td>16.001 ms</td><td>465.86 ms</td>
+</tr><tr><td>BFS5000</td><td>4</td><td>1</td><td>1</td><td>469.14 ms</td><td>9.177 ms</td><td>13.736 ms</td><td>468.13 ms</td>
+</tr><tr><td>BFS5000</td><td>4</td><td>1</td><td>2</td><td>462.74 ms</td><td>9.228 ms</td><td>15.417 ms</td><td>460.75 ms</td>
+</tr><tr><td>BFS5000</td><td>4</td><td>1</td><td>3</td><td>465.51 ms</td><td>9.150 ms</td><td>14.776 ms</td><td>465.64 ms</td>
+</tr><tr><td>BFS5000</td><td>4</td><td>1</td><td>4</td><td>447.86 ms</td><td>8.027 ms</td><td>7.509 ms</td><td>450.59 ms</td>
+</tr><tr><td>BFS5000</td><td>4</td><td>2</td><td>0</td><td>775.24 ms</td><td>8.015 ms</td><td>7.105 ms</td><td>774.05 ms</td>
+</tr><tr><td>BFS5000</td><td>4</td><td>2</td><td>1</td><td>776.71 ms</td><td>12.230 ms</td><td>10.841 ms</td><td>772.04 ms</td>
+</tr><tr><td>BFS5000</td><td>4</td><td>2</td><td>2</td><td>777.49 ms</td><td>3.763 ms</td><td>3.336 ms</td><td>776.94 ms</td>
+</tr><tr><td>BFS5000</td><td>4</td><td>2</td><td>3</td><td>771.44 ms</td><td>5.807 ms</td><td>5.432 ms</td><td>770.97 ms</td>
+</tr><tr><td>BFS5000</td><td>4</td><td>2</td><td>4</td><td>771.15 ms</td><td>9.210 ms</td><td>7.191 ms</td><td>769.05 ms</td>
+</tr></tbody></table>
+</body>
+</html>

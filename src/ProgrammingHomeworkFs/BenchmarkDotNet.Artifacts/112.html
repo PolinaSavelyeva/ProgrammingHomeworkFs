@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>BenchmarkOperationsExperiments.BFSBenchmark112-20230522-000613</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.13.4, OS=Windows 11 (10.0.22621.1702)
+AMD Ryzen 5 5600X, 1 CPU, 12 logical and 6 physical cores
+.NET SDK=6.0.408
+  [Host]     : .NET 6.0.16 (6.0.1623.17311), X64 RyuJIT AVX2 DEBUG
+  DefaultJob : .NET 6.0.16 (6.0.1623.17311), X64 RyuJIT AVX2
+</code></pre>
+<pre><code></code></pre>
+
+<table>
+<thead><tr><th>Method</th><th>MultiParallelLevel</th><th>AddMultiParallelLevel</th><th>AddParallelLevel</th><th>Mean</th><th>Error</th><th>StdDev</th>
+</tr>
+</thead><tbody><tr><td>BFS100k</td><td>0</td><td>0</td><td>0</td><td>15.61 &mu;s</td><td>0.108 &mu;s</td><td>0.096 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>0</td><td>0</td><td>1</td><td>41.95 &mu;s</td><td>0.449 &mu;s</td><td>0.375 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>0</td><td>0</td><td>2</td><td>53.49 &mu;s</td><td>0.317 &mu;s</td><td>0.296 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>0</td><td>0</td><td>3</td><td>68.53 &mu;s</td><td>0.668 &mu;s</td><td>0.521 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>0</td><td>0</td><td>4</td><td>85.68 &mu;s</td><td>0.253 &mu;s</td><td>0.237 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>0</td><td>1</td><td>0</td><td>70.52 &mu;s</td><td>0.662 &mu;s</td><td>0.619 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>0</td><td>1</td><td>1</td><td>82.56 &mu;s</td><td>1.457 &mu;s</td><td>1.363 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>0</td><td>1</td><td>2</td><td>92.90 &mu;s</td><td>0.294 &mu;s</td><td>0.261 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>0</td><td>1</td><td>3</td><td>109.57 &mu;s</td><td>0.731 &mu;s</td><td>0.648 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>0</td><td>1</td><td>4</td><td>130.04 &mu;s</td><td>0.754 &mu;s</td><td>0.629 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>0</td><td>2</td><td>0</td><td>94.95 &mu;s</td><td>0.222 &mu;s</td><td>0.186 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>0</td><td>2</td><td>1</td><td>104.48 &mu;s</td><td>1.157 &mu;s</td><td>1.082 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>0</td><td>2</td><td>2</td><td>115.78 &mu;s</td><td>2.126 &mu;s</td><td>1.775 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>0</td><td>2</td><td>3</td><td>133.19 &mu;s</td><td>0.380 &mu;s</td><td>0.317 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>0</td><td>2</td><td>4</td><td>152.37 &mu;s</td><td>0.841 &mu;s</td><td>0.745 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>1</td><td>0</td><td>0</td><td>47.12 &mu;s</td><td>0.116 &mu;s</td><td>0.103 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>1</td><td>0</td><td>1</td><td>56.06 &mu;s</td><td>0.348 &mu;s</td><td>0.326 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>1</td><td>0</td><td>2</td><td>67.85 &mu;s</td><td>0.210 &mu;s</td><td>0.197 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>1</td><td>0</td><td>3</td><td>83.21 &mu;s</td><td>0.291 &mu;s</td><td>0.258 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>1</td><td>0</td><td>4</td><td>100.05 &mu;s</td><td>0.324 &mu;s</td><td>0.270 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>1</td><td>1</td><td>0</td><td>76.89 &mu;s</td><td>0.384 &mu;s</td><td>0.321 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>1</td><td>1</td><td>1</td><td>91.24 &mu;s</td><td>0.305 &mu;s</td><td>0.286 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>1</td><td>1</td><td>2</td><td>99.29 &mu;s</td><td>0.258 &mu;s</td><td>0.229 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>1</td><td>1</td><td>3</td><td>115.83 &mu;s</td><td>0.454 &mu;s</td><td>0.403 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>1</td><td>1</td><td>4</td><td>135.08 &mu;s</td><td>0.365 &mu;s</td><td>0.341 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>1</td><td>2</td><td>0</td><td>112.47 &mu;s</td><td>0.399 &mu;s</td><td>0.354 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>1</td><td>2</td><td>1</td><td>124.72 &mu;s</td><td>1.830 &mu;s</td><td>1.712 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>1</td><td>2</td><td>2</td><td>135.12 &mu;s</td><td>1.534 &mu;s</td><td>1.360 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>1</td><td>2</td><td>3</td><td>153.17 &mu;s</td><td>2.983 &mu;s</td><td>3.192 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>1</td><td>2</td><td>4</td><td>172.02 &mu;s</td><td>0.632 &mu;s</td><td>0.494 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>2</td><td>0</td><td>0</td><td>55.78 &mu;s</td><td>0.228 &mu;s</td><td>0.202 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>2</td><td>0</td><td>1</td><td>68.38 &mu;s</td><td>1.029 &mu;s</td><td>0.912 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>2</td><td>0</td><td>2</td><td>80.39 &mu;s</td><td>0.460 &mu;s</td><td>0.408 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>2</td><td>0</td><td>3</td><td>97.90 &mu;s</td><td>0.328 &mu;s</td><td>0.307 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>2</td><td>0</td><td>4</td><td>115.99 &mu;s</td><td>0.249 &mu;s</td><td>0.233 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>2</td><td>1</td><td>0</td><td>94.88 &mu;s</td><td>0.396 &mu;s</td><td>0.330 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>2</td><td>1</td><td>1</td><td>108.49 &mu;s</td><td>0.556 &mu;s</td><td>0.520 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>2</td><td>1</td><td>2</td><td>119.87 &mu;s</td><td>0.677 &mu;s</td><td>0.633 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>2</td><td>1</td><td>3</td><td>135.61 &mu;s</td><td>0.496 &mu;s</td><td>0.464 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>2</td><td>1</td><td>4</td><td>152.12 &mu;s</td><td>0.589 &mu;s</td><td>0.551 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>2</td><td>2</td><td>0</td><td>131.37 &mu;s</td><td>0.663 &mu;s</td><td>0.587 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>2</td><td>2</td><td>1</td><td>146.57 &mu;s</td><td>0.559 &mu;s</td><td>0.466 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>2</td><td>2</td><td>2</td><td>158.93 &mu;s</td><td>0.569 &mu;s</td><td>0.504 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>2</td><td>2</td><td>3</td><td>174.22 &mu;s</td><td>0.903 &mu;s</td><td>0.800 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>2</td><td>2</td><td>4</td><td>192.47 &mu;s</td><td>1.837 &mu;s</td><td>1.628 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>3</td><td>0</td><td>0</td><td>69.55 &mu;s</td><td>0.234 &mu;s</td><td>0.219 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>3</td><td>0</td><td>1</td><td>79.81 &mu;s</td><td>0.492 &mu;s</td><td>0.384 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>3</td><td>0</td><td>2</td><td>92.01 &mu;s</td><td>0.534 &mu;s</td><td>0.473 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>3</td><td>0</td><td>3</td><td>110.27 &mu;s</td><td>0.431 &mu;s</td><td>0.360 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>3</td><td>0</td><td>4</td><td>127.67 &mu;s</td><td>0.347 &mu;s</td><td>0.324 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>3</td><td>1</td><td>0</td><td>109.07 &mu;s</td><td>0.651 &mu;s</td><td>0.577 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>3</td><td>1</td><td>1</td><td>119.64 &mu;s</td><td>0.582 &mu;s</td><td>0.516 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>3</td><td>1</td><td>2</td><td>134.20 &mu;s</td><td>0.602 &mu;s</td><td>0.503 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>3</td><td>1</td><td>3</td><td>147.14 &mu;s</td><td>0.381 &mu;s</td><td>0.357 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>3</td><td>1</td><td>4</td><td>168.76 &mu;s</td><td>0.793 &mu;s</td><td>0.742 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>3</td><td>2</td><td>0</td><td>150.49 &mu;s</td><td>0.425 &mu;s</td><td>0.377 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>3</td><td>2</td><td>1</td><td>165.67 &mu;s</td><td>0.421 &mu;s</td><td>0.373 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>3</td><td>2</td><td>2</td><td>177.90 &mu;s</td><td>0.445 &mu;s</td><td>0.416 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>3</td><td>2</td><td>3</td><td>193.02 &mu;s</td><td>2.765 &mu;s</td><td>2.587 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>3</td><td>2</td><td>4</td><td>212.31 &mu;s</td><td>0.647 &mu;s</td><td>0.574 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>4</td><td>0</td><td>0</td><td>81.76 &mu;s</td><td>0.939 &mu;s</td><td>0.879 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>4</td><td>0</td><td>1</td><td>92.72 &mu;s</td><td>0.259 &mu;s</td><td>0.216 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>4</td><td>0</td><td>2</td><td>104.74 &mu;s</td><td>0.484 &mu;s</td><td>0.404 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>4</td><td>0</td><td>3</td><td>125.24 &mu;s</td><td>2.456 &mu;s</td><td>2.297 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>4</td><td>0</td><td>4</td><td>141.50 &mu;s</td><td>0.366 &mu;s</td><td>0.325 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>4</td><td>1</td><td>0</td><td>123.57 &mu;s</td><td>0.479 &mu;s</td><td>0.425 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>4</td><td>1</td><td>1</td><td>139.50 &mu;s</td><td>2.747 &mu;s</td><td>2.570 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>4</td><td>1</td><td>2</td><td>149.41 &mu;s</td><td>0.475 &mu;s</td><td>0.445 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>4</td><td>1</td><td>3</td><td>163.22 &mu;s</td><td>0.760 &mu;s</td><td>0.674 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>4</td><td>1</td><td>4</td><td>183.68 &mu;s</td><td>0.676 &mu;s</td><td>0.599 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>4</td><td>2</td><td>0</td><td>168.11 &mu;s</td><td>1.443 &mu;s</td><td>1.279 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>4</td><td>2</td><td>1</td><td>182.29 &mu;s</td><td>1.667 &mu;s</td><td>1.477 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>4</td><td>2</td><td>2</td><td>191.33 &mu;s</td><td>0.566 &mu;s</td><td>0.502 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>4</td><td>2</td><td>3</td><td>210.37 &mu;s</td><td>1.870 &mu;s</td><td>1.658 &mu;s</td>
+</tr><tr><td>BFS100k</td><td>4</td><td>2</td><td>4</td><td>226.63 &mu;s</td><td>0.630 &mu;s</td><td>0.558 &mu;s</td>
+</tr></tbody></table>
+</body>
+</html>

@@ -2,9 +2,10 @@ namespace ProgrammingHomeworkFs
 
 open BenchmarkDotNet.Running
 open BenchmarkOperationsExperiments
+open SparseVector
 
 module Main =
     [<EntryPoint>]
     let main _ =
-        //let summaryBFS = BenchmarkRunner.Run<BFSBenchmark>()
+        let summaryResult = BenchmarkRunner.Run<BFSBenchmark>()
         0
