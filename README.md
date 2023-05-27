@@ -1,5 +1,5 @@
 # ProgrammingHomeworkFs
-SPBU's F# 1--2 semester homeworks
+SPBU's F# 1—2 semester homeworks
 
 ## Tasks
 
@@ -13,9 +13,9 @@ Implement things below.
 
 ### Homework №2
 For two types of lists, invented during the class, implement things below.
-1. `Bubble Sort` --- a function that takes a list and returns the sorted list.
-2. `Quick Sort` --- a function that takes a list and returns the sorted list using the Hoare partition scheme.
-3. `Concatenation` of two lists --- a function that takes two lists and returns a third list, which is the concatenation of the two input lists
+1. `Bubble Sort` — a function that takes a list and returns the sorted list.
+2. `Quick Sort` — a function that takes a list and returns the sorted list using the Hoare partition scheme.
+3. `Concatenation` of two lists — a function that takes two lists and returns a third list, which is the concatenation of the two input lists
 4. Add `tests` for all of this functions.
 
 ### Homework №3
