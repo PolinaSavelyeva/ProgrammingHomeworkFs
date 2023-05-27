@@ -1,138 +1,68 @@
 # ProgrammingHomeworkFs
-SPBU's F# course project
+SPBU's F# 1--2 semester homeworks
+
+## Tasks
+
+### Homework №1 
+Implement things below.
+1. A function that takes two numbers (base and exponent) and calculates the `power in a naive way`. 
+2. A function that takes two numbers (base and exponent) and calculates the `power using fast exponentiation`.
+3. A function that takes an array and returns the `difference between the largest and smallest elements` in that array.
+4. A function that takes two integers and returns an `array of odd numbers` strictly between them.
+5.  Add `tests` for all of this functions.
+
+### Homework №2
+For two types of lists, invented during the class, implement things below.
+1. `Bubble Sort` --- a function that takes a list and returns the sorted list.
+2. `Quick Sort` --- a function that takes a list and returns the sorted list using the Hoare partition scheme.
+3. `Concatenation` of two lists --- a function that takes two lists and returns a third list, which is the concatenation of the two input lists
+4. Add `tests` for all of this functions.
+
+### Homework №3
+Use recursion and unmutable variables.
+1. Describe an algebraic type that defines a `tree` in which each node can have an arbitrary number of children. The leaves and nodes store values of some arbitrary (same for all) type.
+2. Implement a function that  finds the number of `different elements` stored in the nodes. 
+3. Implement a function that constructs a list containing `all the values from all the nodes`.
+5.  Add `tests` for all of this functions.
+
+### Homework №4
+1. Using algebraic data types, implement the `trees` necessary for representing sparse matrices and sparse vectors. Provide the ability to store values of different types in vectors and matrices (matrices can have rows of strings, rows of integers, etc.).
+2. Implement the `vector type` and the `matrix type` using the previously implemented trees.
+3. Implement a function for `multiplying a vector by a matrix`.
+4. Add `tests` for all of this functions.
+
+### Homework №5
+
+1. Implement the `necessary operations` for BFS. The mask can be any vector. The element-wise operation can be any operation.
+2. Implement the `BFS` algorithm using matrix-vector operations.
+3. Add `tests` for both individual operations and the BFS.
+
+### Homework №6
+0. Configure [FSharpLint](https://fsprojects.github.io/FSharpLint/) to run on the server during project build.
+1. Learn how to read files in the [matrix market format](https://math.nist.gov/MatrixMarket/).
+2. Learn how to construct a `graph` based on the read adjacency matrix.
+3. Implement `parallel versions` of matrix and vector operations.
+4. Conduct `experimental performance` research on BFS and answer the questions below.
+   a. Under what graph parameter settings is it more beneficial to use the parallel version of the algorithm?
+   b. What is the optimal number of threads that yields the highest performance improvement? Why?
+5. Prepare a [report](https://github.com/PolinaSavelyeva/Articles/tree/main/2023/BFS_report) on the conducted research.
 
 
----
+## Running
+### Requirements
 
-## Builds
+Make sure the following requirements are installed on your system:
 
-
-GitHub Actions |
-:---: |
-[![GitHub Actions](https://github.com/PolinaSavelyeva/ProgrammingHomeworkFs/workflows/Build%20master/badge.svg)](https://github.com/PolinaSavelyeva/ProgrammingHomeworkFs/actions?query=branch%3Amaster) |
-[![Build History](https://buildstats.info/github/chart/PolinaSavelyeva/ProgrammingHomeworkFs)](https://github.com/PolinaSavelyeva/ProgrammingHomeworkFs/actions?query=branch%3Amaster) |
-
----
-
-### Developing
-
-Make sure the following **requirements** are installed on your system:
-
-- [dotnet SDK](https://www.microsoft.com/net/download/core) 3.0 or higher
+- [dotnet SDK](https://www.microsoft.com/net/download/core) 3.0 or higher (recommended 6.0+)
 - [Mono](http://www.mono-project.com/) if you're on Linux or macOS.
-
 or
-
 - [VSCode Dev Container](https://code.visualstudio.com/docs/remote/containers)
-
-
----
-
-### Environment Variables
-
-- `CONFIGURATION` will set the [configuration](https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-build?tabs=netcore2x#options) of the dotnet commands.  If not set, it will default to Release.
-  - `CONFIGURATION=Debug ./build.sh` will result in `-c` additions to commands such as in `dotnet build -c Debug`
-- `GITHUB_TOKEN` will be used to upload release notes and NuGet packages to GitHub.
-  - Be sure to set this before releasing
-- `DISABLE_COVERAGE` Will disable running code coverage metrics.  AltCover can have [severe performance degradation](https://github.com/SteveGilham/altcover/issues/57) so it's worth disabling when looking to do a quicker feedback loop.
-  - `DISABLE_COVERAGE=1 ./build.sh`
-
-
----
 
 ### Building
 
-
 ```sh
 > build.cmd <optional buildtarget> // on windows
-$ ./build.sh  <optional buildtarget>// on unix
+$ ./build.sh  <optional buildtarget> // on unix
 ```
-
----
-
-### Build Targets
-
-
-- `Clean` - Cleans artifact and temp directories.
-- `DotnetRestore` - Runs [dotnet restore](https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-restore?tabs=netcore2x) on the [solution file](https://docs.microsoft.com/en-us/visualstudio/extensibility/internals/solution-dot-sln-file?view=vs-2019).
-- [`DotnetBuild`](#Building) - Runs [dotnet build](https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-build?tabs=netcore2x) on the [solution file](https://docs.microsoft.com/en-us/visualstudio/extensibility/internals/solution-dot-sln-file?view=vs-2019).
-- `DotnetTest` - Runs [dotnet test](https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-test?tabs=netcore21) on the [solution file](https://docs.microsoft.com/en-us/visualstudio/extensibility/internals/solution-dot-sln-file?view=vs-2019.).
-- `GenerateCoverageReport` - Code coverage is run during `DotnetTest` and this generates a report via [ReportGenerator](https://github.com/danielpalme/ReportGenerator).
-- `WatchApp` - Runs [dotnet watch](https://docs.microsoft.com/en-us/aspnet/core/tutorials/dotnet-watch?view=aspnetcore-3.0) on the application. Useful for rapid feedback loops.
-- `WatchTests` - Runs [dotnet watch](https://docs.microsoft.com/en-us/aspnet/core/tutorials/dotnet-watch?view=aspnetcore-3.0) with the test projects. Useful for rapid feedback loops.
-- `GenerateAssemblyInfo` - Generates [AssemblyInfo](https://docs.microsoft.com/en-us/dotnet/api/microsoft.visualbasic.applicationservices.assemblyinfo?view=netframework-4.8) for libraries.
-- `CreatePackages` - Runs the packaging task from [dotnet-packaging](https://github.com/qmfrederik/dotnet-packaging). This creates applications for `win-x64`, `osx-x64` and `linux-x64` - [Runtime Identifiers](https://docs.microsoft.com/en-us/dotnet/core/rid-catalog).  
-    - Bundles the `win-x64` application in a .zip file.
-    - Bundles the `osx-x64` application in a .tar.gz file.
-    - Bundles the `linux-x64` application in a .tar.gz file.
-- `GitRelease` - Creates a commit message with the [Release Notes](https://fake.build/apidocs/v5/fake-core-releasenotes.html) and a git tag via the version in the `Release Notes`.
-- `GitHubRelease` - Publishes a [GitHub Release](https://help.github.com/en/articles/creating-releases) with the Release Notes and any NuGet packages.
-- `FormatCode` - Runs [Fantomas](https://github.com/fsprojects/fantomas) on the solution file.
-- [`Release`](#Releasing) - Task that runs all release type tasks such as `GitRelease` and `GitHubRelease`. Make sure to read [Releasing](#Releasing) to setup your environment correctly for releases.
-
----
-
-
-### Releasing
-
-- [Start a git repo with a remote](https://help.github.com/articles/adding-an-existing-project-to-github-using-the-command-line/)
-
-```sh
-git add .
-git commit -m "Scaffold"
-git remote add origin https://github.com/user/MyCoolNewApp.git
-git push -u origin master
-```
-
-- [Create a GitHub OAuth Token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/)
-  - You can then set the `GITHUB_TOKEN` to upload release notes and artifacts to github
-  - Otherwise it will fallback to username/password
-
-- Then update the `CHANGELOG.md` with an "Unreleased" section containing release notes for this version, in [KeepAChangelog](https://keepachangelog.com/en/1.1.0/) format.
-
-
-NOTE: Its highly recommend to add a link to the Pull Request next to the release note that it affects. The reason for this is when the `RELEASE` target is run, it will add these new notes into the body of git commit. GitHub will notice the links and will update the Pull Request with what commit referenced it saying ["added a commit that referenced this pull request"](https://github.com/TheAngryByrd/MiniScaffold/pull/179#ref-commit-837ad59). Since the build script automates the commit message, it will say "Bump Version to x.y.z". The benefit of this is when users goto a Pull Request, it will be clear when and which version those code changes released. Also when reading the `CHANGELOG`, if someone is curious about how or why those changes were made, they can easily discover the work and discussions.
-
-
-
-Here's an example of adding an "Unreleased" section to a `CHANGELOG.md` with a `0.1.0` section already released.
-
-```markdown
-## [Unreleased]
-
-### Added
-- Does cool stuff!
-
-### Fixed
-- Fixes that silly oversight
-
-## [0.1.0] - 2017-03-17
-First release
-
-### Added
-- This release already has lots of features
-
-[Unreleased]: https://github.com/user/MyCoolNewApp.git/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/user/MyCoolNewApp.git/releases/tag/v0.1.0
-```
-
-- You can then use the `Release` target, specifying the version number either in the `RELEASE_VERSION` environment
-  variable, or else as a parameter after the target name.  This will:
-  - update `CHANGELOG.md`, moving changes from the `Unreleased` section into a new `0.2.0` section
-    - if there were any prerelease versions of 0.2.0 in the changelog, it will also collect their changes into the final 0.2.0 entry
-  - make a commit bumping the version:  `Bump version to 0.2.0` and adds the new changelog section to the commit's body
-  - push a git tag
-  - create a GitHub release for that git tag
-
-
-macOS/Linux Parameter:
-
-```sh
-./build.sh Release 0.2.0
-```
-
-macOS/Linux Environment Variable:
-
-```sh
-RELEASE_VERSION=0.2.0 ./build.sh Release
-```
+### Template
+To find more options take a look at the [MiniScaffold](https://github.com/TheAngryByrd/MiniScaffold) template.
