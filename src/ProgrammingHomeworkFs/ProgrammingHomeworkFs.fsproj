@@ -21,6 +21,7 @@
         <Compile Include="AlgebraicList.fs" />
         <Compile Include="OopList.fs" />
         <Compile Include="Tree.fs" />
+        <Content Include="Graphs\512.mtx" />
         <Compile Include="SparseVector.fs" />
         <Compile Include="SparseMatrix.fs" />
         <Compile Include="MatrixAndVectorOperations.fs" />

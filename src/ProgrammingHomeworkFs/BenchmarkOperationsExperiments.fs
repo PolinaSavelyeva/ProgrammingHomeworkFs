@@ -1,105 +1,46 @@
 module BenchmarkOperationsExperiments
 
 open BenchmarkDotNet.Attributes
-open MatrixAndVectorOperations
+open BreadthFirstSearch
 
-let random = System.Random()
+let graph112 =
+    Graph.Graph(__SOURCE_DIRECTORY__ + "/Graphs/112.mtx", Converters.pattern)
 
-let fPlusInt opt1 opt2 =
-    match opt1, opt2 with
-    | Option.Some a, Option.Some b -> Option.Some(a + b)
-    | Option.Some a, Option.None
-    | Option.None, Option.Some a -> Option.Some(a)
-    | Option.None, Option.None -> Option.None
+let graph512 =
+    Graph.Graph(__SOURCE_DIRECTORY__ + "/Graphs/512.mtx", Converters.pattern)
 
-let fMultiInt opt1 opt2 =
-    match opt1, opt2 with
-    | Some a, Some b -> Some(a * b)
-    | Option.None, _
-    | _, Option.None -> Option.None
+let graph1000 =
+    Graph.Graph(__SOURCE_DIRECTORY__ + "/Graphs/1000.mtx", Converters.pattern)
 
-type AdditionBenchmark() =
+let graph5000 =
+    Graph.Graph(__SOURCE_DIRECTORY__ + "/Graphs/5000.mtx", Converters.pattern)
 
-    let mutable vector1 = SparseVector.Vector([||])
-    let mutable vector2 = SparseVector.Vector([||])
+let graph10000 =
+    Graph.Graph(__SOURCE_DIRECTORY__ + "/Graphs/10000.mtx", Converters.pattern)
 
-    [<Params(2_500_000u, 3_500_000u)>]
-    member val Length = 0u with get, set
+type BFSBenchmark() =
 
-    [<Params(1u, 2u, 3u, 4u)>]
-    member val ParallelLevel = 0u with get, set
-
-    // Level 100.0f equals 100% non-empty elements in matrix
-    [<Params(100.0f, 50.0f, 10.0f)>]
-    member val DensityLevel = 0.0f with get, set
-
-    [<GlobalSetup>]
-    member this.SetUpVectors() =
-
-        let initializer n =
-            if n % int (100.0f / this.DensityLevel) <> 0 then
-                Option.None
-            else
-                Some(random.Next())
-
-        let intLength = Converters.toInt this.Length
-
-        vector1 <- SparseVector.Vector(Array.init intLength initializer)
-        vector2 <- SparseVector.Vector(Array.init intLength initializer)
-
-    [<Benchmark(Baseline = true)>]
-    member this.BaselineAddition() =
-        vectorAddition 0u fPlusInt vector1 vector2
-
-    [<Benchmark>]
-    member this.ParallelAddition() =
-        vectorAddition this.ParallelLevel fPlusInt vector1 vector1
-
-type MultiplicationBenchmark() =
-
-    let mutable vector = SparseVector.Vector([||])
-    let mutable matrix = SparseMatrix.Matrix(array2D [||])
-
-    [<Params(3000u, 3500u)>]
-    member val Length1 = 0u with get, set
-
-    [<Params(3000u)>]
-    member val Length2 = 0u with get, set
-
-    [<Params(1u, 2u, 3u)>]
+    [<Params(0u, 1u, 2u, 3u, 4u)>]
     member val MultiParallelLevel = 0u with get, set
 
-    [<Params(0u)>]
+    [<Params(0u, 1u, 2u)>]
+    member val AddMultiParallelLevel = 0u with get, set
+
+    [<Params(0u, 1u, 2u, 3u, 4u)>]
     member val AddParallelLevel = 0u with get, set
 
-    [<Params(90.0f, 5.0f)>]
-    member val DensityLevel = 0.0f with get, set
-
-    [<GlobalSetup>]
-    member this.SetUpVectorAndMatrix() =
-
-        let arrayInitializer n =
-            if n % int (100.0f / this.DensityLevel) <> 0 then
-                Option.None
-            else
-                Some(random.Next())
-
-        let array2DInitializer n _ =
-            if n % int (100.0f / this.DensityLevel) <> 0 then
-                Option.None
-            else
-                Some(random.Next())
-
-        let intLength1 = Converters.toInt this.Length1
-        let intLength2 = Converters.toInt this.Length2
-
-        vector <- SparseVector.Vector(Array.init intLength1 arrayInitializer)
-        matrix <- SparseMatrix.Matrix(Array2D.init intLength1 intLength2 array2DInitializer)
-
-    [<Benchmark(Baseline = true)>]
-    member this.BaselineMultiplication() =
-        multiplication 0u 0u fPlusInt fMultiInt vector matrix
-
     [<Benchmark>]
-    member this.ParallelMultiplication() =
-        multiplication this.MultiParallelLevel this.AddParallelLevel fPlusInt fMultiInt vector matrix
+    member this.BFS112() =
+        BFS this.MultiParallelLevel this.AddMultiParallelLevel this.AddParallelLevel (List.init 1 uint) graph112
+
+    member this.BFS512() =
+        BFS this.MultiParallelLevel this.AddMultiParallelLevel this.AddParallelLevel (List.init 1 uint) graph512
+
+    member this.BFS1000() =
+        BFS this.MultiParallelLevel this.AddMultiParallelLevel this.AddParallelLevel (List.init 1 uint) graph1000
+
+    member this.BFS5000() =
+        BFS this.MultiParallelLevel this.AddMultiParallelLevel this.AddParallelLevel (List.init 1 uint) graph5000
+
+    member this.BFS10000() =
+        BFS this.MultiParallelLevel this.AddMultiParallelLevel this.AddParallelLevel (List.init 1 uint) graph10000

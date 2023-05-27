@@ -71,52 +71,77 @@ let toQuadTree arr =
 
     qTreeFormation (SquareArray(arr, 0u, 0u, toSquareValue <| uint (Array2D.length1 arr) <| uint (Array2D.length2 arr)))
 
+type COOMatrix<'Value> =
+    struct
+        val Data: list<uint * uint * Option<'Value>>
+        val SquareLength: uint
+
+        new(tripleList, rows, columns) =
+            { Data = tripleList
+              SquareLength = toSquareValue rows columns }
+
+        new(tripleList, squareLength) =
+            { Data = tripleList
+              SquareLength = squareLength }
+    end
 
 let toQuadTreeFromCOO (tripleList: list<uint * uint * Option<'Value>>) rows columns =
 
-    let partition list length =
-        let rec f list one two three four =
-            match list with
-            | [] -> one, two, three, four
-            | hd :: tl ->
-                if first hd < length / 2u then
-                    if second hd < length / 2u then
-                        f tl (hd :: one) two three four
-                    else
-                        f tl one ((first hd, second hd - length / 2u, third hd) :: two) three four
-                elif second hd < length / 2u then
-                    f tl one two ((first hd - length / 2u, second hd, third hd) :: three) four
-                else
-                    f tl one two three ((first hd - length / 2u, second hd - length / 2u, third hd) :: four)
+    let maxRowIndex = rows - 1u
+    let maxColumnIndex = columns - 1u
 
-        f list [] [] [] []
-
-    let rec quadTreeFormation list length =
-        if length = 1u then
-            if List.isEmpty list then
-                QuadTree.None
-            else
-                match third list[0] with
-                | Option.None -> QuadTree.None
-                | Some x -> QuadTree.Leaf x
+    let partition (matrix: COOMatrix<'Value>) =
+        //TODO delete
+        if matrix.SquareLength = 0u then
+            matrix, matrix, matrix, matrix
         else
-            let one, two, three, four = partition list length
+            let halfSquareLength = matrix.SquareLength / 2u
 
-            let one' = quadTreeFormation one (length / 2u)
-            let two' = quadTreeFormation two (length / 2u)
-            let three' = quadTreeFormation three (length / 2u)
-            let four' = quadTreeFormation four (length / 2u)
+            let rec inner list one two three four =
+                match list with
+                | [] -> one, two, three, four
+                | (i, j, value) :: tl ->
 
-            if one' = QuadTree.None && two' = QuadTree.None && three' = QuadTree.None && four' = QuadTree.None then
-                QuadTree.None
-            else
-                QuadTree.Node(one', two', three', four')
+                    if i < halfSquareLength && j < halfSquareLength then
+                        inner tl ((i, j, value) :: one) two three four
+                    elif i < halfSquareLength && j >= halfSquareLength then
+                        inner tl one ((i, j - halfSquareLength, value) :: two) three four
+                    elif i >= halfSquareLength && j < halfSquareLength then
+                        inner tl one two ((i - halfSquareLength, j, value) :: three) four
+                    else
+                        inner tl one two three ((i - halfSquareLength, j - halfSquareLength, value) :: four)
+
+            let one, two, three, four = inner matrix.Data [] [] [] []
+
+            COOMatrix(one, halfSquareLength), COOMatrix(two, halfSquareLength), COOMatrix(three, halfSquareLength), COOMatrix(four, halfSquareLength)
+
+    let rec quadTreeFormation (matrix: COOMatrix<'Value>) =
+
+        if
+            matrix.SquareLength = 1u
+            && matrix.Data.Length = 1
+            && first matrix.Data.Head <= maxRowIndex
+            && second matrix.Data.Head <= maxColumnIndex
+        then
+            QuadTree.Leaf (third matrix.Data.Head).Value
+        elif matrix.Data.Length < 1 then
+            QuadTree.None
+        else
+            let one, two, three, four = partition matrix
+
+            let one' = quadTreeFormation one
+            let two' = quadTreeFormation two
+            let three' = quadTreeFormation three
+            let four' = quadTreeFormation four
+
+            match one', two', three', four' with
+            | QuadTree.None, QuadTree.None, QuadTree.None, QuadTree.None -> QuadTree.None
+            | _ -> QuadTree.Node(one', two', three', four')
 
     if tripleList.Length = 0 then
         QuadTree.None
     else
-        let squareLength = toSquareValue rows columns
-        quadTreeFormation tripleList squareLength
+        quadTreeFormation <| COOMatrix(tripleList, rows, columns)
 
 type Matrix<'Value when 'Value: equality> =
 
@@ -131,15 +156,9 @@ type Matrix<'Value when 'Value: equality> =
           Length2 = length2
           SquareLength = toSquareValue length1 length2 }
 
-    new(tripleList, rows, columns) =
-        let storage = toQuadTreeFromCOO tripleList rows columns
-        Matrix(storage, rows, columns)
+    new(tripleList, rows, columns) = Matrix(toQuadTreeFromCOO tripleList rows columns, rows, columns)
 
-    new(arr: 'Value option[,]) =
-        let storage = toQuadTree arr
-        let length1 = Array2D.length1 arr |> uint
-        let length2 = Array2D.length2 arr |> uint
-        Matrix(storage, length1, length2)
+    new(arr: 'Value option[,]) = Matrix(toQuadTree arr, Array2D.length1 arr |> uint, Array2D.length2 arr |> uint)
 
     member this.Item
         with get (i, j) =

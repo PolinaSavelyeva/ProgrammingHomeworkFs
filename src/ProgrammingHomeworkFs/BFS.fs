@@ -29,17 +29,18 @@ let fPlusVisited number =
 
     f
 
-let BFS startVertexList (graph: Graph<'Value>) =
+let BFS multiLevel addMultiLevel addLevel startVertexList (graph: Graph<'Value>) =
 
     let rec inner (front: Vector<unit>) visited iterationNumber =
         if front.IsEmpty then
             visited
         else
-            let newFront = multiplication 0u 0u fPlus fMulti front graph.AdjacencyMatrix
+            let newFront =
+                multiplication multiLevel addMultiLevel fPlus fMulti front graph.AdjacencyMatrix
 
-            let front = vectorAddition 0u fPlusMask newFront visited
+            let front = vectorAddition addLevel fPlusMask newFront visited
 
-            let visited = vectorAddition 0u (fPlusVisited iterationNumber) visited front
+            let visited = vectorAddition addLevel (fPlusVisited iterationNumber) visited front
 
             inner front visited (iterationNumber + 1u)
 

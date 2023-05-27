@@ -22,28 +22,27 @@ type MtxFile(pathToFile: string) =
 
 let toSparseMatrix converter (file: MtxFile) =
 
-    let rec listOfSeq (sequence: seq<string>) =
-        if Seq.isEmpty sequence then
-            []
-        else
-            let currentLine = (Seq.head sequence).Split()
-            let vertexOne = uint currentLine[0] - 1u
-            let vertexTwo = uint currentLine[1] - 1u
-            let weight = converter currentLine
+    let source = Seq.removeAt 0 file.NoCommentsData
 
-            if vertexOne = vertexTwo then
-                (vertexOne, vertexTwo, weight) :: (listOfSeq <| Seq.removeAt 0 sequence)
-            else
-                (vertexOne, vertexTwo, weight)
-                :: (vertexTwo, vertexOne, weight) :: (listOfSeq <| Seq.removeAt 0 sequence)
+    let tripleMapping triple =
+        let i, j, v = triple
+        (j, i, v)
 
-    let mapping (line: string) =
+    let lineMapping (line: string) =
         let splitLine = line.Split()
         (uint splitLine[0] - 1u, uint splitLine[1] - 1u, converter splitLine)
 
-    let source = Seq.removeAt 0 file.NoCommentsData
+    let tripleSeq = Seq.map lineMapping source
 
     if file.IsSymmetric then
-        Matrix(listOfSeq source, file.Rows, file.Columns)
+        Matrix(
+            tripleSeq
+            |> Seq.filter (fun (i, j, _) -> i <> j)
+            |> Seq.map tripleMapping
+            |> Seq.append tripleSeq
+            |> Seq.toList,
+            file.Rows,
+            file.Columns
+        )
     else
-        Matrix(Seq.map mapping source |> Seq.toList, file.Rows, file.Columns)
+        Matrix(tripleSeq |> Seq.toList, file.Rows, file.Columns)
